@@ -24,7 +24,7 @@ Actualizado: 2026-10-31, America/Bogota. Implementación nueva en `/home/jhonata
 
 - Crear desde cero; no copiar/modificar referencia.
 - Preparar un **proyecto Supabase nuevo**; no reactivar/reutilizar los anteriores.
-- Crear/subir a GitHub solicitado; `gh` requiere autenticación humana segura.
+- Crear/subir a GitHub solicitado; sesión KingOwls válida comprobada fuera del sandbox.
 - No hay autorización de despliegue final ni de costes distintos de cero.
 
 ## Siguiente trabajo

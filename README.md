@@ -51,7 +51,7 @@ La UI G0 permanece sin sesión hasta implementar el flujo G1 completo. Añadir v
 
 ## GitHub
 
-El repositorio local es nuevo, en rama `main`, sin relación con `KingOwls/ProjectWebVideoGame`. La creación y subida remota están autorizadas por la petición humana, pero requieren reparar la sesión local:
+El repositorio local es nuevo, en rama `main`, sin relación con `KingOwls/ProjectWebVideoGame`. La creación y subida remota están autorizadas por la petición humana, y la sesión local se verificó con acceso de red/keyring. Para otro equipo, autenticar antes de crear:
 
 ```bash
 gh auth login -h github.com
@@ -59,7 +59,7 @@ gh auth status
 gh repo create KingOwls/GameHive --public --source=. --remote=origin --push
 ```
 
-Ejecutar la creación solo después de comprobar que el nombre sigue libre y que no existe un remoto accidental. El 2026-10-31 el conector respondió 404 a `KingOwls/GameHive` y `gh` informó un token inválido. No se ha inventado una URL de entrega ni una ejecución CI.
+Ejecutar la creación solo después de comprobar que el nombre sigue libre y que no existe un remoto accidental. El 2026-10-31 el conector respondió 404 a `KingOwls/GameHive` y `gh` inicialmente informó un token inválido dentro del sandbox. Fuera del sandbox la sesión funcionó; ver QA-005. Consultar PROGRESS para el remoto y CI observados.
 
 ## Método y límites
 
