@@ -6,9 +6,9 @@
 
 | ID | Tarea | Depende | Comprobación mínima | Estado actual |
 |---|---|---|---|---|
-| GH-001 | Crear workspace y repositorio GameHive NUEVO, sin tocar original | — | `git remote -v` apunta al repo nuevo; no se escribió al original | blocked |
-| GH-002 | Crear React + Vite + TypeScript, React Router, scripts y README Ubuntu | GH-001 | dev/build/typecheck/lint funcionan | in_progress |
-| GH-003 | Configurar Vitest/RTL/Playwright y CI básica | GH-002 | tests de ejemplo ejecutados y reporte de CI | in_progress |
+| GH-001 | Crear workspace y repositorio GameHive NUEVO, sin tocar original | — | `git remote -v` apunta al repo nuevo; no se escribió al original | verified |
+| GH-002 | Crear React + Vite + TypeScript, React Router, scripts y README Ubuntu | GH-001 | dev/build/typecheck/lint funcionan | verified |
+| GH-003 | Configurar Vitest/RTL/Playwright y CI básica | GH-002 | tests de ejemplo ejecutados y reporte de CI | verified |
 | GH-004 | Configurar BMAD estable y AGENTS.md, contexto y registros de decisiones | GH-001 | versión verificada, carpetas correctas y guía de uso | verified |
 | GH-005 | Definir diseño original, tokens, componentes principales, 2 temas y movimiento reducido | GH-002 | componentes Storybook o vitrina equivalente, accesibilidad básica | verified |
 | GH-006 | Configurar service interfaces, tipos de dominio, errores y mocks SOLO de tests | GH-002 | tests de contratos y manejo de estados | verified |
@@ -111,4 +111,4 @@ No hacer implementaciones monolíticas que no se puedan probar. Terminar un fluj
 
 ## Actualización 2026-10-31
 
-Estados con alcance y evidencia en `docs/PROGRESS.md` y `docs/REQUIREMENTS.md`. `verified` en GH-004–006 corresponde a base local G0, no al producto completo. GH-002 conserva pendiente prueba de dev, GH-003 conserva pendiente CI remota y GH-001 conserva pendiente remoto/push. Catálogo curado es avance local y no cierra G2. Revisión humana de integración todavía pendiente.
+Estados con alcance y evidencia en `docs/PROGRESS.md` y `docs/REQUIREMENTS.md`. `verified` en GH-004–006 corresponde a base local G0, no al producto completo. GH-001–006 tienen evidencia local/remota; dev y CI remota pasaron. Catálogo curado es avance local y no cierra G2. Revisión humana de integración todavía pendiente.

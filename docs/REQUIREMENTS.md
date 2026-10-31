@@ -4,9 +4,9 @@ Estado por ticket, 2026-10-31. `verified` tiene alcance local explícito. Todos 
 
 | Ticket | Requisito | Estado | Evidencia / brecha |
 |---|---|---|---|
-| GH-001 | Crear workspace y repositorio GameHive NUEVO, sin tocar original | blocked | Git local nuevo; remoto/push bloqueados (B-01). |
-| GH-002 | Crear React + Vite + TypeScript, React Router, scripts y README Ubuntu | in_progress | Build, lint, tipos y preview pasaron; dev pendiente de setup. |
-| GH-003 | Configurar Vitest/RTL/Playwright y CI básica | in_progress | 32 tests Vitest y 4 E2E locales; CI preparada, ejecución GitHub pendiente. |
+| GH-001 | Crear workspace y repositorio GameHive NUEVO, sin tocar original | verified | Git, origin KingOwls/GameHive y push main comprobados. |
+| GH-002 | Crear React + Vite + TypeScript, React Router, scripts y README Ubuntu | verified | Build, lint, tipos, preview y dev pasaron; ver G0-FLOW.md. |
+| GH-003 | Configurar Vitest/RTL/Playwright y CI básica | verified | 32 tests Vitest y 4 E2E locales; CI real pasó: actions/runs/41253679920. |
 | GH-004 | Configurar BMAD estable y AGENTS.md, contexto y registros de decisiones | verified | BMAD status 6.12.4, 29 skills, renderer/config resolver ejecutados; docs/BMAD.md. |
 | GH-005 | Definir diseño original, tokens, componentes principales, 2 temas y movimiento reducido | verified | src/styles.css y /design-system; axe ambos temas, teclado, reduce-motion E2E. |
 | GH-006 | Configurar service interfaces, tipos de dominio, errores y mocks SOLO de tests | verified | src/domain, src/services; contrato catálogo y errores probados en tests. |

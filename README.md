@@ -2,7 +2,7 @@
 
 Implementación independiente desde cero para el proyecto universitario. React + Vite + TypeScript; backend previsto Supabase PostgreSQL/Auth/RLS; alojamiento final previsto Vercel.
 
-**Estado: base G0 comprobada localmente; producto P0 todavía incompleto.** Consulta [avance real](docs/PROGRESS.md), [bloqueos](docs/BLOCKERS.md), [matriz de requisitos](docs/REQUIREMENTS.md) y [resultados QA](qa-reports/G0-RESULTS.md). No hay autenticación simulada. El catálogo de ocho juegos es editorial, explícitamente sin conexión, con enlaces oficiales; no es una integración RAWG certificada.
+**Estado: G0 verificado con pruebas locales y CI real; código en https://github.com/KingOwls/GameHive. Producto P0 todavía incompleto.** Consulta [avance real](docs/PROGRESS.md), [bloqueos](docs/BLOCKERS.md), [matriz de requisitos](docs/REQUIREMENTS.md) y [resultados QA](qa-reports/G0-RESULTS.md). No hay autenticación simulada. El catálogo de ocho juegos es editorial, explícitamente sin conexión, con enlaces oficiales; no es una integración RAWG certificada.
 
 ## Ejecutar en Ubuntu
 
@@ -41,7 +41,7 @@ npm run test:e2e
 - `tests/`: unitarias, integración UI, seguridad cliente y E2E.
 - `_bmad/`, `.agents/skills/`: BMAD 6.12.4 instalado para Codex.
 - `_bmad-output/`: planificación e historias; `docs/`: decisiones y trazabilidad.
-- `.github/workflows/ci.yml`: pipeline preparado, pendiente de ejecución externa.
+- `.github/workflows/ci.yml`: pipeline ejecutado en GitHub; evidencia en PROGRESS.
 
 ## Configuración y credenciales
 
@@ -51,7 +51,7 @@ La UI G0 permanece sin sesión hasta implementar el flujo G1 completo. Añadir v
 
 ## GitHub
 
-El repositorio local es nuevo, en rama `main`, sin relación con `KingOwls/ProjectWebVideoGame`. La creación y subida remota están autorizadas por la petición humana, y la sesión local se verificó con acceso de red/keyring. Para otro equipo, autenticar antes de crear:
+El repositorio local es nuevo, en rama `main`, sin relación con `KingOwls/ProjectWebVideoGame`. Repositorio creado y subido: https://github.com/KingOwls/GameHive. Para clonar en otro equipo, usar `git clone https://github.com/KingOwls/GameHive.git`. La sesión local se verificó con acceso de red/keyring; no hace falta recrear el repositorio. Comandos usados en la creación (solo como registro):
 
 ```bash
 gh auth login -h github.com
