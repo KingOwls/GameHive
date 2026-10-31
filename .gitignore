@@ -1,0 +1,15 @@
+node_modules/
+dist/
+.env
+.env.*
+!.env.example
+.vercel/
+coverage/
+playwright-report/
+test-results/
+*.tsbuildinfo
+supabase/.temp/
+_bmad/render/
+_bmad/config.user.toml
+_bmad/custom/config.user.toml
+__pycache__/
