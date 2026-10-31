@@ -5,7 +5,7 @@ Actualizado: 2026-10-31, America/Bogota. Implementación nueva en `/home/jhonata
 | Gate | Estado | Evidencia y brecha |
 |---|---|---|
 | G0 Preparación | verified | Base local funcional y verificada; BMAD instalado, 32 Vitest + 4 E2E, CI real pasó. GitHub remoto/push verificados en https://github.com/KingOwls/GameHive; CI real pasó en [41253679920](https://github.com/KingOwls/GameHive/actions/runs/41253679920), commit `4bb1b37295bf45d96ecd8a8f44a9c66e2eaccb22`. Dev y preview comprobados; ver G0-FLOW. CI con Actions actualizadas también pasó: [41253884624](https://github.com/KingOwls/GameHive/actions/runs/41253884624), commit `d30323ad6a93f42b4f58ebf51be4cf1605789883`. |
-| G1 Identidad/datos | blocked | Historia concreta preparada para revisión. Sin proyecto Supabase nuevo ni SQL/Auth/RLS ejecutados; organización y Docker pendientes. |
+| G1 Identidad/datos | blocked | Historia concreta preparada para revisión. Sin proyecto Supabase nuevo ni SQL/Auth/RLS ejecutados; organización y aprobación BMAD pendientes; Docker disponible fuera del sandbox. |
 | G2 Descubrimiento | blocked | Catálogo curado explícito de 8 juegos con filtros/ficha y flujo local probado. Sin RAWG ni viabilidad API certificada; no cierra G2. |
 | G3 Comunidad | pending | Contratos y validación cliente preliminar. Sin reseñas, votos ni comentarios persistentes. |
 | G4 Biblioteca/perfiles | pending | Sin persistencia/onboarding/seguimiento todavía. |
@@ -30,7 +30,7 @@ Actualizado: 2026-10-31, America/Bogota. Implementación nueva en `/home/jhonata
 ## Siguiente trabajo
 
 1. B-01 resuelto; remoto nuevo y push verificados. CI pasó: https://github.com/KingOwls/GameHive/actions/runs/41253679920.
-2. Revisar historia BMAD `_bmad-output/implementation-artifacts/spec-gh-007-identidad-segura.md` y resolver organización/coste gratuito/Docker.
+2. Revisar historia BMAD `_bmad-output/implementation-artifacts/spec-gh-007-identidad-segura.md` y resolver organización/coste gratuito. Docker disponible, pendiente iniciar entorno G1.
 3. GH-007: configuración y migraciones; luego identidad y matriz RLS de G1 antes de comunidad.
 
 No declarar G0 verified por el solo hecho de compilar; no declarar G1–G6 verified sin backend y pruebas reales. Revisión humana para integrar cambios: pendiente.

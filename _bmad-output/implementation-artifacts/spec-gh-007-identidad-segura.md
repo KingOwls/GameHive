@@ -65,7 +65,7 @@ G0 permite explorar juegos curados, pero no registra personas ni demuestra permi
 
 ## Implementation Notes
 
-Humano eligió proyecto nuevo. Organización, cuota y Docker se resuelven antes de ejecución dependiente. Aún no hay migración ni Auth implementados.
+Humano eligió proyecto nuevo. Organización y cuota se resuelven antes de creación remota. Docker 29.4.0 está disponible para preparar integración local al aprobar esta historia. Aún no hay migración ni Auth implementados.
 
 ## Spec Change Log
 

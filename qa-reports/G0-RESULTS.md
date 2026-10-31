@@ -21,7 +21,7 @@ Fecha de ejecución: 2026-10-31 (America/Bogota). Gate G0: verified con remoto y
 | `gh repo create KingOwls/GameHive --public --source=. --remote=origin --push` | pasó; origin nuevo y main publicado |
 | `npm run dev -- --port 5173 --strictPort` | Vite listo, recorrido navegador sin warn/error |
 | GitHub conector, GET KingOwls/GameHive | 404; nombre libre antes de creación; posteriormente creado mediante gh |
-| `docker info` | permiso denegado; sin SQL/RLS/Auth local |
+| `docker info` | 29.4.0 fuera del sandbox; sin iniciar SQL/RLS/Auth local todavía |
 
 Las pruebas de seguridad locales comprueban escape XSS/ocultación spoiler, errores saneados y rechazo de claves privadas en configuración pública. No se ejecutaron matrices RLS ni E2E multiusuario. El catálogo de prueba usa juegos curados reales y datos aislados de pruebas; no se simula comunidad.
 

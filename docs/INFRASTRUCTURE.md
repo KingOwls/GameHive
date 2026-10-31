@@ -6,7 +6,7 @@ No reutilizar los dos proyectos detectados. La selección de organización está
 
 Secuencia G1: CLI `--help` → configuración local/migración → SQL/RLS local → proyecto nuevo autorizado → migración revisada → Auth email/contraseña y configuración de confirmación → obtener URL/clave publicable → pruebas Data API con cuatro cuentas. El índice único del alias normalizado y la inicialización de roles deben ocurrir transaccionalmente en servidor. Contraseñas y claves privadas no entran al código ni a evidencias.
 
-Docker devolvió permiso denegado al consultar su socket; no se ejecutó `supabase start`, reset ni migración. Resolver acceso a Docker o usar el proyecto nuevo. No cambiar grupos del sistema silenciosamente.
+Docker devolvió permiso denegado dentro del sandbox; una comprobación posterior con acceso autorizado devolvió versión 29.4.0. No se ejecutó `supabase start`, reset ni migración todavía. Se puede preparar el entorno local al continuar G1, sin cambiar grupos del sistema.
 
 ## Vercel
 
