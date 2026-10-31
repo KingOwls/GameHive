@@ -54,7 +54,6 @@ La UI G0 permanece sin sesión hasta implementar el flujo G1 completo. Añadir v
 El repositorio local es nuevo, en rama `main`, sin relación con `KingOwls/ProjectWebVideoGame`. Repositorio creado y subido: https://github.com/KingOwls/GameHive. Para clonar en otro equipo, usar `git clone https://github.com/KingOwls/GameHive.git`. La sesión local se verificó con acceso de red/keyring; no hace falta recrear el repositorio. Comandos usados en la creación (solo como registro):
 
 ```bash
-gh auth login -h github.com
 gh auth status
 gh repo create KingOwls/GameHive --public --source=. --remote=origin --push
 ```
@@ -66,3 +65,5 @@ Ejecutar la creación solo después de comprobar que el nombre sigue libre y que
 La especificación, AGENTS y backlog originales se conservaron. Los archivos `LEEME_PRIMERO.md` y `PROMPT_INICIAL_CODEX.md` son documentación suministrada, no autorización adicional para acciones externas. La implementación no consultó ni copió código o recursos del repositorio de referencia. Ver [BMAD](docs/BMAD.md) y [demo local](docs/DEMO.md).
 
 No hay despliegue autorizado/verificado, integración RAWG, persistencia comunitaria ni cuatro roles demostrados todavía. Las alertas de dependencias de desarrollo y sus límites están documentadas en QA; producción tuvo auditoría sin vulnerabilidades conocidas al momento del chequeo.
+
+Si Git no tiene helper HTTPS pero `gh auth status` sí funciona, puede usarse puntualmente `git -c credential.helper= -c 'credential.helper=!gh auth git-credential' push origin main`; evita escribir tokens o modificar la configuración global. Este fue el mecanismo de push comprobado en el entorno del agente.

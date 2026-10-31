@@ -5,6 +5,7 @@ Fecha de ejecución: 2026-10-31 (America/Bogota). Gate G0: verified con remoto y
 | Comando/check ejecutado | Resultado observado |
 |---|---|
 | CI GitHub Actions 41253679920 | pasó en 1m23s sobre commit 4bb1b37295bf45d96ecd8a8f44a9c66e2eaccb22 |
+| CI actualizada 41253884624 | pasó en 43s sobre d30323ad6a93f42b4f58ebf51be4cf1605789883, sin aviso Node 20 |
 | `git init -b main` | Git nuevo en GameHive; ningún remoto original |
 | `npm run lint` | pasó |
 | `npm run typecheck` | pasó |

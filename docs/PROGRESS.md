@@ -4,7 +4,7 @@ Actualizado: 2026-10-31, America/Bogota. Implementación nueva en `/home/jhonata
 
 | Gate | Estado | Evidencia y brecha |
 |---|---|---|
-| G0 Preparación | verified | Base local funcional y verificada; BMAD instalado, 32 Vitest + 4 E2E, CI real pasó. GitHub remoto/push verificados en https://github.com/KingOwls/GameHive; CI real pasó en [41253679920](https://github.com/KingOwls/GameHive/actions/runs/41253679920), commit `4bb1b37295bf45d96ecd8a8f44a9c66e2eaccb22`. Dev y preview comprobados; ver G0-FLOW. |
+| G0 Preparación | verified | Base local funcional y verificada; BMAD instalado, 32 Vitest + 4 E2E, CI real pasó. GitHub remoto/push verificados en https://github.com/KingOwls/GameHive; CI real pasó en [41253679920](https://github.com/KingOwls/GameHive/actions/runs/41253679920), commit `4bb1b37295bf45d96ecd8a8f44a9c66e2eaccb22`. Dev y preview comprobados; ver G0-FLOW. CI con Actions actualizadas también pasó: [41253884624](https://github.com/KingOwls/GameHive/actions/runs/41253884624), commit `d30323ad6a93f42b4f58ebf51be4cf1605789883`. |
 | G1 Identidad/datos | blocked | Historia concreta preparada para revisión. Sin proyecto Supabase nuevo ni SQL/Auth/RLS ejecutados; organización y Docker pendientes. |
 | G2 Descubrimiento | blocked | Catálogo curado explícito de 8 juegos con filtros/ficha y flujo local probado. Sin RAWG ni viabilidad API certificada; no cierra G2. |
 | G3 Comunidad | pending | Contratos y validación cliente preliminar. Sin reseñas, votos ni comentarios persistentes. |

@@ -20,3 +20,5 @@ Se ejecutó el renderizador `bmad-build`, se leyeron su workflow, pasos de routi
 Contexto: requisitos del paquete → decisiones y mini-plan G0 → código y pruebas → revisión independiente → correcciones/retest → PROGRESS. G1–G6 mantienen dependencias y evidencias, sin saltar controles de seguridad.
 
 Para continuar: abrir Codex en la carpeta GameHive y utilizar la skill real `bmad-build` con la historia concreta. Mantener `AGENTS.md` suministrado; no reemplazarlo con instrucciones genéricas del instalador.
+
+Checkpoint pendiente de G1: la skill instalada `bmad-build/SKILL.md` remite al workflow y al paso `step-02-plan.md`, que exige «HALT and give the user a choice» con «Approve and continue» antes de implementar la especificación. La historia está escrita y revisable. Este checkpoint no invalida la evidencia G0 ni requiere repetir autorización para subir a GitHub.
