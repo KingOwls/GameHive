@@ -124,6 +124,9 @@ export function CatalogPage({ provider }: { provider: CatalogProvider }) {
   }
   return (
     <>
+      <p>
+        <Link to="/manual-games">Consultar catálogo manual independiente</Link>
+      </p>
       <section className="page-heading">
         <p className="eyebrow">ELIGE TU SIGUIENTE AVENTURA</p>
         <h1>

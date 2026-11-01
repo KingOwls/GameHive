@@ -26,3 +26,5 @@ Checkpoint pendiente de G1: la skill instalada `bmad-build/SKILL.md` remite al w
 ## Estado 2026-11-01
 
 El checkpoint G1 fue aprobado y la historia implementada, revisada en tres capas y corregida; backend/frontend reales pasaron también en CI. G1 cerrado tras Auth remoto, cuatro roles/sesiones y limpieza verificadas (G1-REMOTE). G2 tiene historia GH-014–017 aprobada, revisada y verificada localmente con RAWG real; alta manual administrativa será historia posterior. Estas aprobaciones sustituyen los checkpoints descritos antes como pendientes.
+
+GH-018 aprobada, implementada y revisada en tres capas; parches revalidados con141Vitest/178SQL y flujos reales locales. Historia done en alcance local; publicación administrativa remota pendiente. G3 requiere siguiente historia y checkpoint real.

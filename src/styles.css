@@ -500,3 +500,36 @@ button:disabled {
 .detail summary { cursor: pointer; padding: 1rem 0; font-weight: bold; }
 .screenshot-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; }
 .screenshot-grid img { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
+
+.manual-form {
+  max-width: 760px;
+  margin-block: 24px;
+}
+.manual-form > fieldset {
+  display: grid;
+  gap: 16px;
+}
+.manual-form fieldset {
+  border: 1px solid var(--line);
+  padding: 20px;
+}
+.manual-form fieldset fieldset {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+.manual-form input[type="checkbox"] {
+  width: 20px;
+  min-height: 20px;
+}
+.manual-form textarea {
+  width: 100%;
+  min-height: 120px;
+  resize: vertical;
+  padding: 12px;
+  font: inherit;
+  color: var(--text);
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 5px;
+}

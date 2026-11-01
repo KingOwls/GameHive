@@ -33,3 +33,13 @@ El presupuesto de GameHive es deliberadamente inferior a los límites anunciados
 
 
 El coordinador confirmó flujo HTTP real Edge→RAWG→DB, cache hit sin gasto, inválidos400 y E2E real `catalog-live` (buscar→Hollow Knight→requisitos/capturas→recargar+axe), más ocho200 del verificador real. La revisión posterior usa pruebas dirigidas; revalidación global e integración corresponden al coordinador.
+
+## Catálogo manual — GH-018
+
+El catálogo manual es independiente de RAWG y está disponible en `/manual-games`; Explorar enlaza a él y permite volver. Búsqueda por título, páginas de 12 (1–100), total propio; ausencia de resultados nunca demuestra ausencia global. Ficha `/manual-games/manual:UUID` muestra sinopsis propia, plataformas/géneros, fecha opcional y fuente pública; ausencia de portada/rating explícita.
+
+Administradores activos acceden a `/admin/games`. Deben comprobar catálogos existentes, escribir texto propio/plano y proporcionar una fuente oficial HTTPS, su nombre y un motivo privado. La fuente canónica elimina fragmento, normaliza host/puerto HTTPS y conserva path/query significativos; es única. Sin fetch ni scraping de fuentes aportadas. No hay edición, borrado o imágenes manuales en esta historia.
+
+`POST /functions/v1/admin-games` usa JWT de sesión; Auth y DB verifican identidad vigente. Body: `title` (1–160), `synopsis` (20–4000), `platforms` (1–4: PC/PlayStation/Xbox/Nintendo), `genres` (1–8, 1–40 cada uno), `releasedAt` (null o YYYY-MM-DD calendario válido 1900–2099), `sourceUrl` (HTTPS pública, hasta 2048, sin credenciales/IP/localhost), `sourceLabel` (1–100), `reason` (10–500, solo auditoría privada). Responde 201 con fila pública; inválidos400, no autorizado401/403, fuente duplicada409 y fallo saneado503. Sesión/rol de body no son autoridad. Data API solo SELECT; operación privada invoker accesible únicamente por conexión DB del servidor, alta/auditoría atómicas.
+
+`npm run test:manual -- --e2e` ejecuta pruebas locales reales HTTP/DB y navegador con limpieza; necesita el stack propio y functions serve ya disponibles. `npm run check` omite deliberadamente pruebas reales sin su configuración; `npm run test:sql` incluye rollback de fixtures adversariales. Alcance y evidencia: [G2-MANUAL](../qa-reports/G2-MANUAL.md). La migración y `admin-games` permanecen solo locales hasta autorización específica posterior.

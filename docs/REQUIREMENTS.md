@@ -18,10 +18,10 @@ Estado por ticket, actualizado G2 el 2026-11-01. `verified` tiene alcance local 
 | GH-012 | Edge Functions para operaciones administrativas necesarias | verified | SQL/RLS, HTTP/E2E local y CI pasaron; Auth remoto de cuatro roles/sesiones/auditoría y limpieza de cinco cuentas verificados (G1-REMOTE). |
 | GH-013 | Matriz de pruebas RLS y políticas de privacidad/columnas | verified | SQL/RLS, HTTP/E2E local y CI pasaron; Auth remoto de cuatro roles/sesiones/auditoría y limpieza de cinco cuentas verificados (G1-REMOTE). |
 | GH-014 | Probar RAWG: 8 juegos reales, límites, licencia, campos | verified | Viabilidad real de ocho juegos y términos/atribución: G2-RAWG.md. Alcance proveedor, no flujo G2 completo. |
-| GH-015 | Integrar RAWG vía adaptador seguro y normalización | verified | Verificado localmente con RAWG real, revisión BMAD y revalidación final101Vitest/134SQL/E2E real; G2-RAWG. Publicación remota pendiente. Score propio depende deG3. |
-| GH-016 | Vista Home, Explorar, resultados y filtros combinables | verified | Verificado localmente con RAWG real, revisión BMAD y revalidación final101Vitest/134SQL/E2E real; G2-RAWG. Publicación remota pendiente. Score propio depende deG3. |
-| GH-017 | Ficha breve/detallada de juego, imágenes/medios si permitidos, scores separados | verified | Verificado localmente con RAWG real, revisión BMAD y revalidación final101Vitest/134SQL/E2E real; G2-RAWG. Publicación remota pendiente. Score propio depende deG3. |
-| GH-018 | Incorporar juegos manuales reales del administrador con fuente | todo | Pendiente; criterio de aceptación en BACKLOG.md, dependencias sin verificar. |
+| GH-015 | Integrar RAWG vía adaptador seguro y normalización | verified | Verificado localmente con RAWG real, revisión BMAD y revalidación final101Vitest/134SQL/E2E real; G2-RAWG. Publicación RAWG remota verificada (G2-REMOTE). Score propio depende deG3. |
+| GH-016 | Vista Home, Explorar, resultados y filtros combinables | verified | Verificado localmente con RAWG real, revisión BMAD y revalidación final101Vitest/134SQL/E2E real; G2-RAWG. Publicación RAWG remota verificada (G2-REMOTE). Score propio depende deG3. |
+| GH-017 | Ficha breve/detallada de juego, imágenes/medios si permitidos, scores separados | verified | Verificado localmente con RAWG real, revisión BMAD y revalidación final101Vitest/134SQL/E2E real; G2-RAWG. Publicación RAWG remota verificada (G2-REMOTE). Score propio depende deG3. |
+| GH-018 | Incorporar juegos manuales reales del administrador con fuente | verified | Alta/lectura local verificada; revisión BMAD y parches,141 Vitest/178 SQL,3 Deno/DB y HTTP/E2E real pasaron (G2-MANUAL). Publicación manual remota y limpieza verificadas (G2-REMOTE). |
 | GH-019 | Enriquecer Steam/itch.io solo si endpoints oficiales viables | blocked | Condicionado por endpoints/acceso: investigación oficial G2-ENRICHMENT; ninguna integración ni scraping. |
 | GH-020 | Reseña única autor+juego, publicar/editar/ocultar, rating y texto coordinados | todo | Pendiente; criterio de aceptación en BACKLOG.md, dependencias sin verificar. |
 | GH-021 | Vista reseñas con pros/contras, spoiler-free y detalle oculto | todo | Pendiente; criterio de aceptación en BACKLOG.md, dependencias sin verificar. |
@@ -48,3 +48,12 @@ Estado por ticket, actualizado G2 el 2026-11-01. `verified` tiene alcance local 
 | GH-042 | README, manual demo, matriz requisitos, pasos Ubuntu, evidencia y PROGRESS | todo | Pendiente; criterio de aceptación en BACKLOG.md, dependencias sin verificar. |
 
 Cierre de revisión GH-014–017:101Vitest,134SQL y recorrido RAWG real revalidados. Verified se limita a implementación local/proveedor real; no hay catálogo remoto publicado. G1 remoto y limpieza verificados. GH-018 pendiente. GH-019 condicionado documentado en qa-reports/G2-ENRICHMENT.md.
+
+Actualización GH-018: implementación local y pruebas detalladas en [G2-MANUAL](../qa-reports/G2-MANUAL.md). Publicación RAWG remota autorizada y verificada por coordinador en [G2-REMOTE](../qa-reports/G2-REMOTE.md), posterior a las notas históricas de publicación pendiente. El alta manual requiere autorización remota separada.
+
+GH-018 HTTP/E2E locales reales confirmados por coordinador:1HTTP+1navegador PASS, concurrencia/auditoría única, permisos/sesión, documento RAWG idéntico, ficha visitante+recarga+axe y limpieza exacta. Revisión BMAD independiente pendiente.
+
+Cierre GH-018 local: revisión BMAD y revalidación final completas, ver G2-MANUAL. Verified describe código y backend local real, no despliegue manual remoto. RAWG sí está publicado y probado en GameHive Next (G2-REMOTE). G2 permanece in_progress hasta publicar/verificar el alta manual; G3–G6 pendientes.
+
+
+Actualización remota GH-018: migración/admin-games publicados con permiso explícito, HTTP real de roles/concurrencia/privilegios/sesiones y ficha pública en navegador con recarga/axe pasaron; limpieza comprobada. G2-REMOTE sustituye pendientes históricos de publicación. Scores/filtro propio siguen dependiendo de G3.

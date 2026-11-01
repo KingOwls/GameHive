@@ -9,6 +9,9 @@ import { AuthProvider } from "../features/auth/AuthContext";
 import { AuthPage } from "../features/auth/AuthPage";
 import { AccountControl } from "../features/auth/AccountControl";
 import { OnboardingPage } from "../features/onboarding/OnboardingPage";
+import { AdminGamesPage } from "../features/admin/AdminGamesPage";
+import { ManualCatalogPage } from "../features/catalog/ManualCatalogPage";
+import { ManualGameDetailPage } from "../features/catalog/ManualGameDetailPage";
 const provider = createCatalogProvider(import.meta.env);
 function Showcase() {
   return (
@@ -57,7 +60,7 @@ export function App() {
         Saltar al contenido
       </a>
       <header className="site-header">
-        <Link className="brand" to="/" aria-label="GameHive, inicio">
+        <Link className="brand" to="/" title="Ir al inicio">
           <img src="/hive.svg" alt="" width="36" height="36" />
           GAME<span>HIVE</span>
           <small>ALPHA</small>
@@ -82,6 +85,9 @@ export function App() {
             path="/games/:id"
             element={<GameDetailPage provider={provider} />}
           />
+          <Route path="/admin/games" element={<AdminGamesPage />} />
+          <Route path="/manual-games" element={<ManualCatalogPage />} />
+          <Route path="/manual-games/:id" element={<ManualGameDetailPage />} />
           <Route path="/design-system" element={<Showcase />} />
           <Route path="/setup" element={<Setup />} />
           <Route path="/login" element={<AuthPage />} />

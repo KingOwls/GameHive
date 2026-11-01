@@ -14,6 +14,6 @@ Se detectó `gamehive-beta`, cuya relación con el trabajo previo no se ha confi
 
 ## RAWG
 
-La documentación consultada exige clave por petición y atribución/backlinks; el plan gratuito se limita a proyectos no comerciales y hasta 20000 peticiones/mes al consultar el 2026-10-31. Clave configurada el 2026-11-01 en .env.server.local ignorado; ocho fichas reales y flujo React→Edge→RAWG→DB comprobados localmente; catálogo remoto pendiente de autorización de publicación. No depender de vídeos, enlaces de tienda, similares ni precios como parte gratuita garantizada. Crear adaptador seguro, timeout/cache/rate limit y prueba de campos antes de habilitar integración.
+La documentación consultada exige clave por petición y atribución/backlinks; el plan gratuito se limita a proyectos no comerciales y hasta 20000 peticiones/mes al consultar el 2026-10-31. Clave configurada el 2026-11-01 en .env.server.local ignorado; ocho fichas reales y flujo React→Edge→RAWG→DB comprobados localmente; catálogo RAWG remoto publicado y probado tras autorización; alta manual remota pendiente de autorización separada. No depender de vídeos, enlaces de tienda, similares ni precios como parte gratuita garantizada. Crear adaptador seguro, timeout/cache/rate limit y prueba de campos antes de habilitar integración.
 
 Fuentes: https://rawg.io/apidocs, https://supabase.com/docs/guides/database/postgres/row-level-security, https://supabase.com/docs/guides/getting-started/api-keys, https://vercel.com/docs/frameworks/frontend/vite.

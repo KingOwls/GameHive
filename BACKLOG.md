@@ -33,7 +33,7 @@
 | GH-015 | Integrar RAWG vía adaptador seguro y normalización | GH-014 | errores 429/5xx controlados y no claves privadas en bundle | verified |
 | GH-016 | Vista Home, Explorar, resultados y filtros combinables | GH-005,GH-015 | búsqueda y filtros reales + empty/loading/error | verified |
 | GH-017 | Ficha breve/detallada de juego, imágenes/medios si permitidos, scores separados | GH-015 | ficha con proveedor y sin inventar ratings | verified |
-| GH-018 | Incorporar juegos manuales reales del administrador con fuente | GH-011,GH-015 | alta válida y no sobreescribe proveedor | todo |
+| GH-018 | Incorporar juegos manuales reales del administrador con fuente | GH-011,GH-015 | alta válida y no sobreescribe proveedor | verified |
 | GH-019 | Enriquecer Steam/itch.io solo si endpoints oficiales viables | GH-017 | campo de origen y contratos, no scraping | blocked |
 
 ## Gate G3 — Reseñas, críticos, votos y comentarios [P0]
@@ -119,3 +119,11 @@ Estados con alcance y evidencia en `docs/PROGRESS.md` y `docs/REQUIREMENTS.md`. 
 GH-014 `verified` corresponde únicamente a viabilidad real medida de ocho juegos, campos y condiciones, con atribución enlazada: [G2-RAWG](qa-reports/G2-RAWG.md). No certifica todo G2. GH-015–017 implementados localmente; 89 Vitest + 134 SQL/RLS + concurrencia global/caché pasaron, 5 E2E offline y Auth HTTP G1 conservados. HTTP real Edge→RAWG→DB, cache hit cero gasto e inválidos400 pasaron; E2E real catalog-live pasó búsqueda→Hollow Knight→requisitos/capturas→recarga+axe. Script ocho200 pasó. Correcciones revalidadas: GH-015–017 verified en alcance local; remoto pendiente. Score GameHive depende de G3. Sin publicación de catálogo remoto. [Contrato y operación local](docs/CATALOG.md), [evidencia aislada](qa-reports/G2-IMPLEMENTATION.md).
 
 Cierre de revisión GH-014–017:101Vitest,134SQL y recorrido RAWG real revalidados. Verified se limita a implementación local/proveedor real; no hay catálogo remoto publicado. G1 remoto y limpieza verificados. GH-018 pendiente. GH-019 condicionado documentado en qa-reports/G2-ENRICHMENT.md.
+
+## GH-018 — implementación local 2026-11-01
+
+Alta manual independiente implementada, migración local aplicada, 132 Vitest +178 SQL/RLS y Deno frozen4handlers PASS. HTTP/E2E real y revisión independiente se registran en [G2-MANUAL](qa-reports/G2-MANUAL.md); conservar in_progress hasta cerrar esas evidencias. Catálogo RAWG remoto ya publicado/verificado según [G2-REMOTE](qa-reports/G2-REMOTE.md); esto no autoriza publicar `admin-games` ni migración manual. Próximo flujo P0: GH-020 tras cierre GH-018.
+
+GH-018: coordinador confirmó HTTP/E2E locales reales1+1PASS y limpieza; solo falta revisión BMAD independiente de tres capas para marcar verified. Alta manual sigue sin autorización de publicación remota.
+
+Cierre GH-018 local: revisión BMAD y revalidación final completas, ver G2-MANUAL. Verified describe código y backend local real, no despliegue manual remoto. RAWG sí está publicado y probado en GameHive Next (G2-REMOTE). G2 permanece in_progress hasta publicar/verificar el alta manual; G3–G6 pendientes.
