@@ -43,3 +43,5 @@ Después del reset limpio: 43 SQL, HTTP real y 5 E2E reales pasaron, incluidos f
 ## Revalidación del orquestador tras revisión
 
 40 pruebas Vitest pasaron con lint/tipos/build (`npm run check`); backend separado pasó HTTP real y 1 E2E Auth ampliado. pgTAP 43 assertions, db lint y advisors de seguridad locales pasaron. Build sin variables + E2E: 5 pasaron; los casos excluidos por entorno se comprobaron en su suite correspondiente, sin contar omisiones como éxito. Deno check --frozen pasó en ambos entrypoints. Ver [correcciones de revisión](G1-REVIEW-FIXES.md) y [evidencia remota separada](G1-REMOTE.md). G1 sigue in_progress por configuración/verificación autenticada remota pendiente.
+
+CI ampliada pasó en GitHub para `9388ce198bcb93c312df03c4c1f6d9d70894f5d7`: [41256220707](https://github.com/KingOwls/GameHive/actions/runs/41256220707). Jobs foundation e identity-backend exitosos, incluido teardown. PR borrador: https://github.com/KingOwls/GameHive/pull/1.

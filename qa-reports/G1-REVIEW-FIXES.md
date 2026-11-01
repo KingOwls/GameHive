@@ -17,5 +17,5 @@
 - HTTP G1 (`npm run test:backend` dentro de ejecución dirigida): **pasó** la suite real ampliada.
 - Playwright `tests/e2e/auth.spec.ts` con backend local: **1 pasó**, caso sin-config omitido por entorno configurado. Incluye cuenta suspendida real, tema segundo navegador, red fallida y ACK perdido.
 - `deno check --frozen supabase/functions/identity/index.ts supabase/functions/admin-identity/index.ts`: **ambos pasaron**.
-- ESLint solo archivos TS/TSX editados: **pasó**. YAML CI parseado; ambos jobs identificados. CI remota nueva aún no ejecutada.
+- ESLint solo archivos TS/TSX editados: **pasó**. YAML CI parseado; ambos jobs identificados. CI remota ampliada pasó para `9388ce198bcb93c312df03c4c1f6d9d70894f5d7`, run [41256220707](https://github.com/KingOwls/GameHive/actions/runs/41256220707), incluidos ambos jobs.
 - Se generó build para ejecutar el E2E dirigido. No se ejecutó suite completa; verificación completa a cargo del orquestador.
