@@ -45,7 +45,8 @@ function Setup() {
         {provider.mode === "live"
           ? "El catálogo consulta RAWG mediante el servidor configurado."
           : "El catálogo curado funciona sin conexión."}{" "}
-        Biblioteca y moderación siguen pendientes de sus próximas historias.
+        Reseñas propias disponibles en fichas reales. Biblioteca y moderación
+        siguen pendientes de sus próximas historias.
       </p>
       <Link className="button" to="/explore">
         Explorar juegos

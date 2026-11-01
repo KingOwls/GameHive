@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import type { CatalogProvider, Game, Resource } from "../../domain/models";
 import { StatePanel } from "../../components/StatePanel";
+import { ReviewsSection } from "../reviews/ReviewsSection";
 import { GameMedia } from "./GameMedia";
 import { publicError } from "../../services/errors";
 export function GameDetailPage({ provider }: { provider: CatalogProvider }) {
@@ -142,7 +143,9 @@ export function GameDetailPage({ provider }: { provider: CatalogProvider }) {
       <section className="score-grid" aria-label="Puntuaciones">
         <div>
           <h2>Comunidad</h2>
-          <p>Sin evaluaciones</p>
+          <p>
+            Consulta las reseñas publicadas. Cálculo de puntuación pendiente.
+          </p>
         </div>
         <div>
           <h2>Críticos</h2>
@@ -159,13 +162,7 @@ export function GameDetailPage({ provider }: { provider: CatalogProvider }) {
           </p>
         </div>
       </section>
-      <div className="notice">
-        <strong>Comunidad pendiente de integración</strong>
-        <span>
-          Las reseñas y la biblioteca requieren Supabase y políticas RLS
-          verificadas. Aún no están habilitadas.
-        </span>
-      </div>
+      <ReviewsSection gameId={game.id} />
     </article>
   );
 }

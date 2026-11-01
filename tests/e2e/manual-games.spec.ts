@@ -92,7 +92,7 @@ test("admin real → alta Celeste → visitante → recarga y fuente", async ({
     ).toHaveAttribute("href", sourceUrl);
     await expect(
       publicPage.getByText(
-        "Sin portada · Sin rating externo · Sin evaluaciones GameHive",
+        "Sin portada · Sin rating externo",
       ),
     ).toBeVisible();
     expect(

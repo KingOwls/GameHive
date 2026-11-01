@@ -12,4 +12,4 @@ Actualizado: 2026-11-01, America/Bogota.
 
 Red npm y localhost inicialmente restringidos: resueltos mediante ejecución con permisos revisados. No son fallos del producto. Alertas de dependencias de desarrollo: ver QA-003.
 
-Advertencia Auth remota: protección contra contraseñas filtradas desactivada; evaluar disponibilidad en Free sin generar cargos. No bloquea las pruebas verificadas, queda pendiente para G6.
+Advertencia Auth remota: protección contra contraseñas filtradas desactivada; disponible desde Pro según [documentación oficial](https://supabase.com/docs/guides/auth/password-security#password-strength-and-leaked-password-protection) consultada2026-11-01. Presupuesto cero: se conserva Free con mínimo12 y advertencia explícita; no bloquea las pruebas verificadas.

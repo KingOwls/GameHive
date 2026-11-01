@@ -9,9 +9,21 @@ test("buscar → ficha → refrescar sin perder ruta", async ({ page }) => {
   ).toBeVisible();
   await page.reload();
   await expect(page.getByRole("link", { name: /Sitio oficial/ })).toBeVisible();
-  await expect(page.getByText("Sin evaluaciones", { exact: true })).toHaveCount(
-    2,
-  );
+  await expect(
+    page
+      .getByRole("heading", { name: "Críticos", exact: true })
+      .locator("..")
+      .getByText("Sin evaluaciones", { exact: true }),
+  ).toBeVisible();
+  await expect(
+    page.getByText(
+      "Consulta las reseñas publicadas. Cálculo de puntuación pendiente.",
+      { exact: true },
+    ),
+  ).toBeVisible();
+  await expect(
+    page.getByText(/Las reseñas persistentes requieren una ficha real/),
+  ).toBeVisible();
 });
 test("temas, preferencia de sistema, persistencia y movimiento reducido", async ({
   page,

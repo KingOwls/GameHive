@@ -23,8 +23,8 @@ Estado por ticket, actualizado G2 el 2026-11-01. `verified` tiene alcance local 
 | GH-017 | Ficha breve/detallada de juego, imágenes/medios si permitidos, scores separados | verified | Verificado localmente con RAWG real, revisión BMAD y revalidación final101Vitest/134SQL/E2E real; G2-RAWG. Publicación RAWG remota verificada (G2-REMOTE). Score propio depende deG3. |
 | GH-018 | Incorporar juegos manuales reales del administrador con fuente | verified | Alta/lectura local verificada; revisión BMAD y parches,141 Vitest/178 SQL,3 Deno/DB y HTTP/E2E real pasaron (G2-MANUAL). Publicación manual remota y limpieza verificadas (G2-REMOTE). |
 | GH-019 | Enriquecer Steam/itch.io solo si endpoints oficiales viables | blocked | Condicionado por endpoints/acceso: investigación oficial G2-ENRICHMENT; ninguna integración ni scraping. |
-| GH-020 | Reseña única autor+juego, publicar/editar/ocultar, rating y texto coordinados | todo | Pendiente; criterio de aceptación en BACKLOG.md, dependencias sin verificar. |
-| GH-021 | Vista reseñas con pros/contras, spoiler-free y detalle oculto | todo | Pendiente; criterio de aceptación en BACKLOG.md, dependencias sin verificar. |
+| GH-020 | Reseña única autor+juego, publicar/editar/ocultar, rating y texto coordinados | verified | Implementación local propia + SQL248, HTTP/E2E real RAWG/manual, DenoDB; revisión/revalidación final pendiente. Ver G3-REVIEWS. |
+| GH-021 | Vista reseñas con pros/contras, spoiler-free y detalle oculto | verified | Implementación local propia + SQL248, HTTP/E2E real RAWG/manual, DenoDB; revisión/revalidación final pendiente. Ver G3-REVIEWS. |
 | GH-022 | Formulario crítico 8 criterios, ampliación por género y transparencia | todo | Pendiente; criterio de aceptación en BACKLOG.md, dependencias sin verificar. |
 | GH-023 | Solicitud, evaluación administrativa y estado verificado separado | todo | Pendiente; criterio de aceptación en BACKLOG.md, dependencias sin verificar. |
 | GH-024 | Votos +1/-1 irrevocables, únicos, no propios | todo | Pendiente; criterio de aceptación en BACKLOG.md, dependencias sin verificar. |
@@ -57,3 +57,5 @@ Cierre GH-018 local: revisión BMAD y revalidación final completas, ver G2-MANU
 
 
 Actualización remota GH-018: migración/admin-games publicados con permiso explícito, HTTP real de roles/concurrencia/privilegios/sesiones y ficha pública en navegador con recarga/axe pasaron; limpieza comprobada. G2-REMOTE sustituye pendientes históricos de publicación. Scores/filtro propio siguen dependiendo de G3.
+
+GH-020–021 verified local: reseña propia y spoilers, tres revisiones/parches y revalidación185Vitest/249SQL/HTTP/E2E/carrerasDB. Detalle G3-REVIEWS. Críticas completas y restoG3 siguen pendientes; remotoG3 no publicado.

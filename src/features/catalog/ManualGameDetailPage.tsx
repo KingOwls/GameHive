@@ -1,3 +1,4 @@
+import { ReviewsSection } from "../reviews/ReviewsSection";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import type { ManualGame, Resource } from "../../domain/models";
@@ -67,7 +68,7 @@ function ManualDetail({
           <article>
             <p className="eyebrow">REGISTRO MANUAL</p>
             <h1>{state.data.title}</h1>
-            <p>Sin portada · Sin rating externo · Sin evaluaciones GameHive</p>
+            <p>Sin portada · Sin rating externo</p>
             <dl>
               <dt>Plataformas</dt>
               <dd>{state.data.platforms.join(" · ")}</dd>
@@ -88,6 +89,7 @@ function ManualDetail({
                 {state.data.source_label}
               </a>
             </p>
+            <ReviewsSection gameId={`manual:${state.data.id}`} />
           </article>
         ) : (
           <StatePanel kind="empty" title="Este juego manual no existe" />

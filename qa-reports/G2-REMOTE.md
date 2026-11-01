@@ -48,3 +48,7 @@ Axe ampliado encontró label-content-name-mismatch en el logo porque aria-label 
 Advisors actual:0ERROR,1WARN por protección de contraseñas filtradas desactivada,4INFO de tablas privadas RLS sin políticas intencionalmente denegadas. No se declara cero advertencias ni se cambia el plan gratuito. [Protección de contraseñas](https://supabase.com/docs/guides/auth/password-security#password-strength-and-leaked-password-protection). Pendiente evaluar disponibilidad/configuración sin cargos antes de entrega.
 
 GH-018 verificado localmente y remoto. GH-019 sigue condicionado a endpoints oficiales viables; scores/filtro GameHive dependen de G3. G3–G6 y alojamiento Vercel permanecen incompletos.
+
+Disponibilidad verificada en documentación oficial2026-11-01: la protección de contraseñas filtradas requiere Pro o superior ([fuente](https://supabase.com/docs/guides/auth/password-security#password-strength-and-leaked-password-protection)). Se conserva Free y la advertencia documentada por presupuesto cero; longitud mínima12 ya configurada, sin afirmar equivalencia a detección de filtraciones.
+
+CI del cierre451389e29d6bece3ec085e96b2657a993ed42fc4: [41332820059](https://github.com/KingOwls/GameHive/actions/runs/41332820059) SUCCESS, foundation e identity-backend, incluidos SQL, concurrencia y HTTP/E2E manual/Auth.

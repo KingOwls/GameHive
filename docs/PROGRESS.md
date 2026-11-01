@@ -7,10 +7,10 @@ Actualizado: 2026-11-01, America/Bogota. Implementación nueva en `/home/jhonata
 | G0 Preparación | verified | Base local funcional y verificada; BMAD instalado, 32 Vitest + 4 E2E, CI real pasó. GitHub remoto/push verificados en https://github.com/KingOwls/GameHive; CI real pasó en [41253679920](https://github.com/KingOwls/GameHive/actions/runs/41253679920), commit `4bb1b37295bf45d96ecd8a8f44a9c66e2eaccb22`. Dev y preview comprobados; ver G0-FLOW. CI con Actions actualizadas también pasó: [41253884624](https://github.com/KingOwls/GameHive/actions/runs/41253884624), commit `d30323ad6a93f42b4f58ebf51be4cf1605789883`. |
 | G1 Identidad/datos | verified | SQL/RLS, HTTP/E2E y CI pasaron; Auth remoto configurado. Registro, cuatro roles, privacidad, refresh, revocación, suspensión y dos auditorías comprobados en GameHive Next. Cinco cuentas temporales autorizadas y eliminadas; cero filas residuales. Ver [G1-REMOTE](../qa-reports/G1-REMOTE.md). |
 | G2 Descubrimiento | verified | GH-014–017 revisados y revalidados localmente con RAWG real:101 Vitest,134 SQL/RLS, adaptador real/DB, concurrencia y E2E búsqueda→ficha→capturas→recarga+axe. G1 regresión HTTP/E2E pasa. GH-018 revisado y verificado localmente (141 Vitest,178 SQL,3 Deno/DB,HTTP/E2E real); RAWG y alta manual publicados/verificados con limpieza remota (G2-REMOTE); GH-019 condicionado; score/filtro GameHive depende de G3. |
-| G3 Comunidad | in_progress | GH-020–021 aprobado y en implementación; reseñas todavía sin verificar. Críticas, votos, comentarios y agregados pendientes. |
+| G3 Comunidad | in_progress | GH-020–021 verified local tras tres revisiones/parches:185Vitest/249SQL, HTTP/E2E real e aislado, carrerasDB y regresionesG1/G2PASS (G3-REVIEWS). Críticas, votos, comentarios y agregados pendientes. |
 | G4 Biblioteca/perfiles | pending | Onboarding persistente implementado en G1; biblioteca y seguimiento pendientes. |
 | G5 Moderación | pending | Auditoría de autoridad implementada en G1; reportes y moderación de contenido pendientes. |
-| G6 Entrega | pending | Tema/teclado/axe verificados solo sobre G0. Sin evaluación de cuatro roles ni despliegue. |
+| G6 Entrega | pending | Tema/teclado/axe verificados en recorridosG0–G3 implementados. Evaluación final integral y despliegue pendientes. |
 
 ## Trabajo comprobado
 
@@ -81,3 +81,14 @@ Publicación autorizada y verificada en GameHive Next: HTTP cuatro roles, unicid
 ## Cierre Gate G2 conforme a especificación maestra
 
 G2 verified: RAWG encapsulado/conectado, búsqueda/filtros, ficha real normalizada/atribuida y E2E búsqueda→ficha verificados localmente y remoto. GH-018 adicional publicado/verificado con limpieza. GH-019 sigue condicionado y documentado; no se simula enriquecimiento. Puntuaciones y filtro GameHive se implementarán con datos elegibles de G3; no bloquean los criterios expresos de descubrimiento del gate maestro. No implica G3–G6 ni despliegue Vercel.
+
+## GH-020–021 — reseñas propias locales
+
+Implementadas identidad permanente autor+juego, versión/fecha del servidor, edición coordinada de nota+opinión, retirada/republicación y auditoría privada atómica. RLS pública solo para publicaciones de autores activos, sin escritura Data API ni herencia de autoría para admin/moderador. Formulario y lectura pública en ambas fichas, spoilers cerrados y borrador por usuario+juego conservado ante409/refresh.
+
+Evidencia inicial y brechas: [G3-REVIEWS](../qa-reports/G3-REVIEWS.md); contrato/plan: [G3](plans/G3.md). SQL248PASS, HTTP/E2E real1+1PASS, DenoDBPASS. RutaCI aislada implementada sin secretos RAWG; HTTP pasó y navegador requiere repetición secuencial tras colisión de preview/build. Revisión BMAD de tres capas y verificación global final pendientes del coordinador. G3 permanece in_progress; G2 verificado se preserva. Ningún commit, cambio remoto o despliegue del implementador.
+
+
+## GH-020–021 verificado localmente
+
+Tres revisiones BMAD, correcciones y revalidación final completas; ver G3-REVIEWS.185Vitest/249SQL, Deno/carrerasDB, reseñas HTTP/E2E real y CIaislado, Auth/manual/RAWG regresiónPASS. Limpieza sin residuos ni clave privada en bundle. G3 in_progress; GH-022 siguiente. Decisiones humanas para críticas: nota final media simple de ocho criterios; conservar tipo histórico al cambiar rol, conversión explícita sin duplicar reseña. No publicaciónG3/Vercel.

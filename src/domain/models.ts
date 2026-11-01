@@ -73,6 +73,8 @@ export interface ReviewInput {
   title: string;
   bodyPublic: string;
   bodySpoiler: string;
+  pros?: string[];
+  cons?: string[];
 }
 export interface PublicProfile {
   id: string;
@@ -113,3 +115,24 @@ export interface ManualGameInput {
   sourceLabel: string;
   reason: string;
 }
+
+export interface Review {
+  id: string;
+  author_id: string;
+  game_id: string | null;
+  manual_game_id: string | null;
+  rating: number;
+  title: string;
+  body_public: string;
+  body_spoiler: string;
+  pros: string[];
+  cons: string[];
+  status: "published" | "withdrawn" | "hidden";
+  version: number;
+  created_at: string;
+  updated_at: string;
+}
+export interface PublicReview extends Review {
+  profiles: Pick<PublicProfile, "username" | "avatar_key">;
+}
+export type ReviewAction = "create" | "update" | "withdraw" | "republish";
