@@ -533,3 +533,10 @@ button:disabled {
   border: 1px solid var(--line);
   border-radius: 5px;
 }
+
+.reviews-section { margin-top: 2rem; }
+.review-card { border: 1px solid var(--line); padding: 1.25rem; margin-block: 1rem; }
+.review-form { display: grid; gap: 1rem; max-width: 52rem; }
+.review-form label { display: grid; gap: .4rem; }
+.review-form textarea { min-height: 6rem; }
+.review-card p, .review-form textarea { overflow-wrap: anywhere; white-space: pre-wrap; }

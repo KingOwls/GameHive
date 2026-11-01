@@ -25,6 +25,7 @@ export type ManualDeadline = ReturnType<typeof manualDeadline>;
 export async function readManualBody(
   request: Request,
   deadline: ManualDeadline,
+  maxBytes = 20000,
 ) {
   const reader = request.body?.getReader();
   if (!reader) throw new Error("Missing body");
@@ -39,7 +40,7 @@ export async function readManualBody(
         break;
       }
       size += value.length;
-      if (size > 20000) throw new Error("Body too large");
+      if (size > maxBytes) throw new Error("Body too large");
       chunks.push(value);
     }
     const bytes = new Uint8Array(size);

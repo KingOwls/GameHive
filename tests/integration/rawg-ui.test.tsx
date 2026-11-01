@@ -5,6 +5,9 @@ import { it, expect, vi } from "vitest";
 import type { CatalogProvider, Game } from "../../src/domain/models";
 import { CatalogPage } from "../../src/features/catalog/CatalogPage";
 import { GameDetailPage } from "../../src/features/catalog/GameDetailPage";
+vi.mock("../../src/features/reviews/ReviewsSection", () => ({
+  ReviewsSection: () => null,
+}));
 // Explicitly isolated provider fixtures, never a connection certification.
 const fixture: Game = {
   id: "rawg:42",
@@ -98,7 +101,7 @@ it("detail retries errors, keeps external ratings separate and renders descripti
   await user.click(screen.getByRole("button", { name: "Reintentar" }));
   await screen.findByRole("heading", { name: "Test fixture game" });
   expect(screen.getByText("RAWG: 4.2 / 5 · muestra: 12")).toBeVisible();
-  expect(screen.getAllByText("Sin evaluaciones")).toHaveLength(2);
+  expect(screen.getAllByText("Sin evaluaciones")).toHaveLength(1);
   expect(screen.getByText("Sin fecha confirmada")).toBeVisible();
   await user.click(screen.getByText("Ficha completa"));
   expect(screen.getByText("<script>unsafe()</script>")).toBeVisible();

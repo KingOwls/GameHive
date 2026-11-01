@@ -40,8 +40,8 @@
 
 | ID | Tarea | Depende | Comprobación mínima | Estado actual |
 |---|---|---|---|---|
-| GH-020 | Reseña única autor+juego, publicar/editar/ocultar, rating y texto coordinados | GH-011,GH-017 | DB UNIQUE, edición válida, RLS adversarial | todo |
-| GH-021 | Vista reseñas con pros/contras, spoiler-free y detalle oculto | GH-020 | lector no ve spoiler sin acción explícita | todo |
+| GH-020 | Reseña única autor+juego, publicar/editar/ocultar, rating y texto coordinados | GH-011,GH-017 | DB UNIQUE, edición válida, RLS adversarial | verified |
+| GH-021 | Vista reseñas con pros/contras, spoiler-free y detalle oculto | GH-020 | lector no ve spoiler sin acción explícita | verified |
 | GH-022 | Formulario crítico 8 criterios, ampliación por género y transparencia | GH-020 | cálculo y justificaciones coherentes | todo |
 | GH-023 | Solicitud, evaluación administrativa y estado verificado separado | GH-012 | usuario no puede autoverificarse | todo |
 | GH-024 | Votos +1/-1 irrevocables, únicos, no propios | GH-020 | duplicado, UPDATE, DELETE y auto-voto rechazados | todo |
@@ -127,3 +127,9 @@ Alta manual independiente implementada, migración local aplicada, 132 Vitest +1
 GH-018: coordinador confirmó HTTP/E2E locales reales1+1PASS y limpieza; solo falta revisión BMAD independiente de tres capas para marcar verified. Alta manual sigue sin autorización de publicación remota.
 
 Cierre GH-018 local: revisión BMAD y revalidación final completas, ver G2-MANUAL. Verified describe código y backend local real, no despliegue manual remoto. RAWG sí está publicado y probado en GameHive Next (G2-REMOTE). G2 permanece in_progress hasta publicar/verificar el alta manual; G3–G6 pendientes.
+
+## GH-020–021 — implementación local 2026-11-01
+
+Reseñas propias implementadas en fichas RAWG/manuales con persistencia protegida, versión/409, retiro/republicación de la misma identidad, spoilers, cuenta real y borradores conservados. SQL248PASS, HTTP/E2E real y DenoDBPASS; evidencia/limitaciones en [G3-REVIEWS](qa-reports/G3-REVIEWS.md) y [planG3](docs/plans/G3.md). Mantener in_progress hasta revisión BMAD de tres capas y revalidación global del coordinador. GH-022–026 siguen pendientes; G3 abierto, sin publicación remota autorizada.
+
+Cierre GH-020–021 local: tres revisiones y parches revalidados;185Vitest/249SQL, carrerasDB, HTTP/E2E real e aislado y regresionesG1/G2 pasaron. Ver G3-REVIEWS. Verified no implica publicación remota ni cerrar G3.

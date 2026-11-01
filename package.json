@@ -24,7 +24,9 @@
     "test:sql": "supabase test db --local",
     "test:catalog:db": "node scripts/test-catalog-db.mjs",
     "test:manual": "node scripts/local-manual-tests.mjs",
-    "test:manual:db": "node scripts/test-manual-db.mjs"
+    "test:manual:db": "node scripts/test-manual-db.mjs",
+    "test:reviews": "node scripts/local-reviews-tests.mjs",
+    "test:reviews:db": "node scripts/test-reviews-db.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "2.118.0",

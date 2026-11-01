@@ -6,6 +6,9 @@ import { ManualCatalogPage } from "../../src/features/catalog/ManualCatalogPage"
 import { ManualGameDetailPage } from "../../src/features/catalog/ManualGameDetailPage";
 import { AdminGamesPage } from "../../src/features/admin/AdminGamesPage";
 import type { ManualGamesService } from "../../src/services/manual-games";
+vi.mock("../../src/features/reviews/ReviewsSection", () => ({
+  ReviewsSection: () => null,
+}));
 const auth = vi.hoisted(() => ({
   value: {
     service: { identity: vi.fn() },
