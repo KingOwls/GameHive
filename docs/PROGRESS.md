@@ -1,12 +1,12 @@
 # Progreso GameHive
 
-Actualizado: 2026-10-31, America/Bogota. Implementación nueva en `/home/jhonatan-crow/Documentos/ChatGPT/Universidad/GameHive`. Producto final P0 **incompleto**. No se modificó ni copió código de `KingOwls/ProjectWebVideoGame`.
+Actualizado: 2026-11-01, America/Bogota. Implementación nueva en `/home/jhonatan-crow/Documentos/ChatGPT/Universidad/GameHive`. Producto final P0 **incompleto**. No se modificó ni copió código de `KingOwls/ProjectWebVideoGame`.
 
 | Gate | Estado | Evidencia y brecha |
 |---|---|---|
 | G0 Preparación | verified | Base local funcional y verificada; BMAD instalado, 32 Vitest + 4 E2E, CI real pasó. GitHub remoto/push verificados en https://github.com/KingOwls/GameHive; CI real pasó en [41253679920](https://github.com/KingOwls/GameHive/actions/runs/41253679920), commit `4bb1b37295bf45d96ecd8a8f44a9c66e2eaccb22`. Dev y preview comprobados; ver G0-FLOW. CI con Actions actualizadas también pasó: [41253884624](https://github.com/KingOwls/GameHive/actions/runs/41253884624), commit `d30323ad6a93f42b4f58ebf51be4cf1605789883`. |
-| G1 Identidad/datos | in_progress | Revisión BMAD y correcciones verificadas: 40 Vitest, 43 SQL, HTTP real y E2E Auth de dos sesiones; ver [G1-REVIEW-FIXES](../qa-reports/G1-REVIEW-FIXES.md). Migración y dos funciones ya aplicadas al nuevo GameHive Next; negativos remotos 401 comprobados. Falta login CLI/configuración Auth y flujo autenticado remoto; [evidencia remota](../qa-reports/G1-REMOTE.md). |
-| G2 Descubrimiento | blocked | Catálogo curado explícito de 8 juegos con filtros/ficha y flujo local probado. Sin RAWG ni viabilidad API certificada; no cierra G2. |
+| G1 Identidad/datos | verified | SQL/RLS, HTTP/E2E y CI pasaron; Auth remoto configurado. Registro, cuatro roles, privacidad, refresh, revocación, suspensión y dos auditorías comprobados en GameHive Next. Cinco cuentas temporales autorizadas y eliminadas; cero filas residuales. Ver [G1-REMOTE](../qa-reports/G1-REMOTE.md). |
+| G2 Descubrimiento | in_progress | GH-014–017 revisados y revalidados localmente con RAWG real:101 Vitest,134 SQL/RLS, adaptador real/DB, concurrencia y E2E búsqueda→ficha→capturas→recarga+axe. G1 regresión HTTP/E2E pasa. Falta GH-018 y autorización de publicación del catálogo; GH-019 condicionado documentado. |
 | G3 Comunidad | pending | Contratos y validación cliente preliminar. Sin reseñas, votos ni comentarios persistentes. |
 | G4 Biblioteca/perfiles | pending | Onboarding persistente implementado en G1; biblioteca y seguimiento pendientes. |
 | G5 Moderación | pending | Auditoría de autoridad implementada en G1; reportes y moderación de contenido pendientes. |
@@ -30,8 +30,8 @@ Actualizado: 2026-10-31, America/Bogota. Implementación nueva en `/home/jhonata
 ## Siguiente trabajo
 
 1. B-01 resuelto; remoto nuevo y push verificados. CI pasó: https://github.com/KingOwls/GameHive/actions/runs/41253679920.
-2. Completar login CLI solicitado al humano, configurar Auth de la demo y verificar el flujo autenticado remoto. Las dos funciones autorizadas ya están ACTIVE y rechazan falta de sesión/token inválido.
-3. Cerrar brechas G1 antes de habilitar comunidad. Mantener catálogo curado hasta resolver RAWG.
+2. Login CLI, Auth de demo y flujo autenticado remoto completados; cinco cuentas de prueba autorizadas y eliminadas. Las dos funciones G1 autorizadas están ACTIVE; catálogo permanece solo local.
+3. RAWG local y revisión G2 revalidados; preparar GH-018 y autorización de publicación del catálogo. catálogo curado sigue siendo modo explícito predeterminado.
 
 No declarar G0 verified por el solo hecho de compilar; no declarar G1–G6 verified sin backend y pruebas reales. Revisión humana para integrar cambios: pendiente.
 
@@ -42,3 +42,18 @@ Registro → perfil/avatar/preferencias → login/refresco → logout reales; se
 ## Verificación final de revisión G1
 
 `npm run check`: 40 pruebas pasaron (suite real omitida allí y ejecutada aparte). `npm run test:sql`: 43 pasaron. `npm run test:backend -- --e2e`: HTTP real y 1 E2E Auth pasaron; escenario sin configuración omitido solo en ese entorno. Build sin variables + `npm run test:e2e`: 5 pasaron, Auth real omitido deliberadamente. Deno check de ambos handlers, db lint y advisors locales sin errores/avisos. Tres revisiones BMAD realizadas; hallazgos individuales y resolución registrados en la historia y QA. CI ampliada pasó para el commit de código `9388ce198bcb93c312df03c4c1f6d9d70894f5d7`: [run 41256220707](https://github.com/KingOwls/GameHive/actions/runs/41256220707), jobs foundation e identity-backend. Avance subido al [PR borrador #1](https://github.com/KingOwls/GameHive/pull/1); no integrado a main.
+
+
+## Implementación local G2 — GH-014–017
+
+Historia aprobada 2026-11-01. Lectura de contexto y skills Supabase/React; código independiente, sin despliegue de catálogo remoto. [Contrato/operación](CATALOG.md), [viabilidad real y términos](../qa-reports/G2-RAWG.md), [implementación y regresiones](../qa-reports/G2-IMPLEMENTATION.md).
+
+`npm run check` inicial pasó; versión final de metadatos/capturas pasó lint, typecheck y 89 Vitest (1 Auth real omitida en entorno aislado). Deno `check --frozen` de tres handlers pasó. E2E offline 5 pasaron y 1 Auth real omitida. Coordinador confirmó 134 SQL (91 catálogo + 43 identidad), regresión Auth HTTP G1, db lint/advisors locales sin avisos y concurrencia: 40 reservas → 20 admitidas; 999 intentos mensuales previos → solo 1 de 10 concurrentes; 600 escrituras → 500 entradas de caché. Se usó esquema de test aislado, sin alterar presupuesto real ni gastar RAWG.
+
+El coordinador verificó HTTP real Edge→RAWG→DB, cache hit con cero gasto adicional y parámetros inválidos400; E2E real `catalog-live` pasó búsqueda→Hollow Knight→requisitos/capturas→recarga y axe. El script real también recibió ocho200 con campos/ausencias observados. Son evidencias reales separadas de fixtures; correcciones revalidadas globalmente (ver cierre siguiente). Score GameHive depende de G3; altas manuales GH-018/enriquecimiento GH-019 son historias posteriores. Ninguna función G2 remota desplegada.
+
+## Cierre de verificación — 2026-11-01
+
+G1 remoto PASS y limpieza comprobada en G1-REMOTE. Correcciones G2 revalidadas: `npm run check`101pasadas/1omitida; `npm run test:sql`134pasadas; `npm run test:catalog:db`PASS con upstream controlado; Deno check frozen3handlers PASS. `npm run test:backend -- --e2e`:1HTTP+1E2EAuth PASS/1caso sin configuración omitido. Build aislado E2E5PASS/2omitidas; buildRAWG+catalog-live1PASS real; HTTP Edge→RAWG→DB PASS. El primer intento de regresión Auth coincidió con reinicio de runtime y falló por DNS; al esperar runtime listo y repetir sin cambio de código pasó. Aviso build506KiB sin minificar gzip147KiB queda para rendimientoG6, no impide build.
+
+GH-015–017 verificados en alcance local/proveedor real; publicación remota pendiente. GH-018 sigue todo, score propio depende deG3. Ningún despliegue Vercel ni modificación al repositorio de referencia.

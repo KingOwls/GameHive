@@ -491,3 +491,12 @@ button:disabled {
   opacity: 0.65;
   cursor: wait;
 }
+
+.game-art { position: relative; overflow: hidden; }
+.game-art img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.game-art:has(img) > span, .game-art:has(img) > strong { position: relative; background: #071727e8; padding: .2rem .4rem; }
+.detail-cover { width: min(100%, 640px); max-height: 360px; object-fit: cover; border-radius: var(--radius); }
+.game-description { white-space: pre-wrap; max-width: 80ch; }
+.detail summary { cursor: pointer; padding: 1rem 0; font-weight: bold; }
+.screenshot-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; }
+.screenshot-grid img { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; }

@@ -1,6 +1,6 @@
 # Matriz de trazabilidad
 
-Estado por ticket, 2026-10-31. `verified` tiene alcance local explícito. Todos los módulos de G1–G6 requieren evidencia de backend/servicios antes de cerrar.
+Estado por ticket, actualizado G2 el 2026-11-01. `verified` tiene alcance local explícito. Todos los módulos de G1–G6 requieren evidencia de backend/servicios antes de cerrar.
 
 | Ticket | Requisito | Estado | Evidencia / brecha |
 |---|---|---|---|
@@ -10,19 +10,19 @@ Estado por ticket, 2026-10-31. `verified` tiene alcance local explícito. Todos 
 | GH-004 | Configurar BMAD estable y AGENTS.md, contexto y registros de decisiones | verified | BMAD status 6.12.4, 29 skills, renderer/config resolver ejecutados; docs/BMAD.md. |
 | GH-005 | Definir diseño original, tokens, componentes principales, 2 temas y movimiento reducido | verified | src/styles.css y /design-system; axe ambos temas, teclado, reduce-motion E2E. |
 | GH-006 | Configurar service interfaces, tipos de dominio, errores y mocks SOLO de tests | verified | src/domain, src/services; contrato catálogo y errores probados en tests. |
-| GH-007 | Configurar Supabase CLI/proyecto Free y migraciones PostgreSQL | in_progress | Implementado, revisado y revalidado localmente; G1-RESULTS/G1-REVIEW-FIXES. Esquema remoto aplicado; falta flujo autenticado remoto (G1-REMOTE). |
-| GH-008 | Diseñar tablas, FKs, índices, checks, constraints y seeds de test | in_progress | Implementado, revisado y revalidado localmente; G1-RESULTS/G1-REVIEW-FIXES. Esquema remoto aplicado; falta flujo autenticado remoto (G1-REMOTE). |
-| GH-009 | Configurar Supabase Auth email+password sin verificación obligatoria en demo | in_progress | Implementado, revisado y revalidado localmente; G1-RESULTS/G1-REVIEW-FIXES. Esquema remoto aplicado; falta flujo autenticado remoto (G1-REMOTE). |
-| GH-010 | Perfil, alias único case-insensitive, avatar default y onboarding | in_progress | Implementado, revisado y revalidado localmente; G1-RESULTS/G1-REVIEW-FIXES. Esquema remoto aplicado; falta flujo autenticado remoto (G1-REMOTE). |
-| GH-011 | Cuatro roles y estado verificado independiente; protección RLS | in_progress | Implementado, revisado y revalidado localmente; G1-RESULTS/G1-REVIEW-FIXES. Esquema remoto aplicado; falta flujo autenticado remoto (G1-REMOTE). |
-| GH-012 | Edge Functions para operaciones administrativas necesarias | in_progress | Implementado, revisado y revalidado localmente; G1-RESULTS/G1-REVIEW-FIXES. Esquema remoto aplicado; falta flujo autenticado remoto (G1-REMOTE). |
-| GH-013 | Matriz de pruebas RLS y políticas de privacidad/columnas | in_progress | Implementado, revisado y revalidado localmente; G1-RESULTS/G1-REVIEW-FIXES. Esquema remoto aplicado; falta flujo autenticado remoto (G1-REMOTE). |
-| GH-014 | Probar RAWG: 8 juegos reales, límites, licencia, campos | blocked | Términos consultados; sin clave ni prueba de 8 respuestas API (B-04). |
-| GH-015 | Integrar RAWG vía adaptador seguro y normalización | todo | Pendiente; criterio de aceptación en BACKLOG.md, dependencias sin verificar. |
-| GH-016 | Vista Home, Explorar, resultados y filtros combinables | in_progress | Búsqueda y filtros de catálogo curado; faltan RAWG/tag/score y G1. |
-| GH-017 | Ficha breve/detallada de juego, imágenes/medios si permitidos, scores separados | in_progress | Ficha curada con fuente; faltan metadatos/medios de proveedor. |
+| GH-007 | Configurar Supabase CLI/proyecto Free y migraciones PostgreSQL | verified | SQL/RLS, HTTP/E2E local y CI pasaron; Auth remoto de cuatro roles/sesiones/auditoría y limpieza de cinco cuentas verificados (G1-REMOTE). |
+| GH-008 | Diseñar tablas, FKs, índices, checks, constraints y seeds de test | verified | SQL/RLS, HTTP/E2E local y CI pasaron; Auth remoto de cuatro roles/sesiones/auditoría y limpieza de cinco cuentas verificados (G1-REMOTE). |
+| GH-009 | Configurar Supabase Auth email+password sin verificación obligatoria en demo | verified | SQL/RLS, HTTP/E2E local y CI pasaron; Auth remoto de cuatro roles/sesiones/auditoría y limpieza de cinco cuentas verificados (G1-REMOTE). |
+| GH-010 | Perfil, alias único case-insensitive, avatar default y onboarding | verified | SQL/RLS, HTTP/E2E local y CI pasaron; Auth remoto de cuatro roles/sesiones/auditoría y limpieza de cinco cuentas verificados (G1-REMOTE). |
+| GH-011 | Cuatro roles y estado verificado independiente; protección RLS | verified | SQL/RLS, HTTP/E2E local y CI pasaron; Auth remoto de cuatro roles/sesiones/auditoría y limpieza de cinco cuentas verificados (G1-REMOTE). |
+| GH-012 | Edge Functions para operaciones administrativas necesarias | verified | SQL/RLS, HTTP/E2E local y CI pasaron; Auth remoto de cuatro roles/sesiones/auditoría y limpieza de cinco cuentas verificados (G1-REMOTE). |
+| GH-013 | Matriz de pruebas RLS y políticas de privacidad/columnas | verified | SQL/RLS, HTTP/E2E local y CI pasaron; Auth remoto de cuatro roles/sesiones/auditoría y limpieza de cinco cuentas verificados (G1-REMOTE). |
+| GH-014 | Probar RAWG: 8 juegos reales, límites, licencia, campos | verified | Viabilidad real de ocho juegos y términos/atribución: G2-RAWG.md. Alcance proveedor, no flujo G2 completo. |
+| GH-015 | Integrar RAWG vía adaptador seguro y normalización | verified | Verificado localmente con RAWG real, revisión BMAD y revalidación final101Vitest/134SQL/E2E real; G2-RAWG. Publicación remota pendiente. Score propio depende deG3. |
+| GH-016 | Vista Home, Explorar, resultados y filtros combinables | verified | Verificado localmente con RAWG real, revisión BMAD y revalidación final101Vitest/134SQL/E2E real; G2-RAWG. Publicación remota pendiente. Score propio depende deG3. |
+| GH-017 | Ficha breve/detallada de juego, imágenes/medios si permitidos, scores separados | verified | Verificado localmente con RAWG real, revisión BMAD y revalidación final101Vitest/134SQL/E2E real; G2-RAWG. Publicación remota pendiente. Score propio depende deG3. |
 | GH-018 | Incorporar juegos manuales reales del administrador con fuente | todo | Pendiente; criterio de aceptación en BACKLOG.md, dependencias sin verificar. |
-| GH-019 | Enriquecer Steam/itch.io solo si endpoints oficiales viables | todo | Pendiente; criterio de aceptación en BACKLOG.md, dependencias sin verificar. |
+| GH-019 | Enriquecer Steam/itch.io solo si endpoints oficiales viables | blocked | Condicionado por endpoints/acceso: investigación oficial G2-ENRICHMENT; ninguna integración ni scraping. |
 | GH-020 | Reseña única autor+juego, publicar/editar/ocultar, rating y texto coordinados | todo | Pendiente; criterio de aceptación en BACKLOG.md, dependencias sin verificar. |
 | GH-021 | Vista reseñas con pros/contras, spoiler-free y detalle oculto | todo | Pendiente; criterio de aceptación en BACKLOG.md, dependencias sin verificar. |
 | GH-022 | Formulario crítico 8 criterios, ampliación por género y transparencia | todo | Pendiente; criterio de aceptación en BACKLOG.md, dependencias sin verificar. |
@@ -46,3 +46,5 @@ Estado por ticket, 2026-10-31. `verified` tiene alcance local explícito. Todos 
 | GH-040 | Calidad: teclado, contraste, rendimiento desktop y seguridad | todo | Pendiente; criterio de aceptación en BACKLOG.md, dependencias sin verificar. |
 | GH-041 | Publicar en Vercel si propietario lo autoriza | todo | Pendiente; criterio de aceptación en BACKLOG.md, dependencias sin verificar. |
 | GH-042 | README, manual demo, matriz requisitos, pasos Ubuntu, evidencia y PROGRESS | todo | Pendiente; criterio de aceptación en BACKLOG.md, dependencias sin verificar. |
+
+Cierre de revisión GH-014–017:101Vitest,134SQL y recorrido RAWG real revalidados. Verified se limita a implementación local/proveedor real; no hay catálogo remoto publicado. G1 remoto y limpieza verificados. GH-018 pendiente. GH-019 condicionado documentado en qa-reports/G2-ENRICHMENT.md.
