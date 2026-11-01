@@ -1,0 +1,8 @@
+# GH-019 — viabilidad de enriquecimiento condicionado
+
+Consulta 2026-11-01. No se integra enriquecimiento Steam/itch.io en esta entrega. RAWG conserva el catálogo principal; no se presuponen precios, vídeos ni tiendas. Esta decisión documenta una limitación, no una integración verificada.
+
+- **Steam:** la [documentación oficial ISteamApps](https://partner.steamgames.com/doc/webapi/ISteamApps#GetAppList) declara GetAppList/v2 deprecado y remite a IStoreService. GET público al endpoint antiguo devolvió404 en esta comprobación (se canceló el cuerpo; sin descarga masiva). [IStoreService/GetAppList](https://partner.steamgames.com/doc/webapi/IStoreService#GetAppList) exige una Web API key y ofrece listado/indicadores de cambio, sin acreditar una API universal de ficha/precio actual. No hay clave Steam configurada. No se utilizó appdetails no documentado como atajo ni scraping de tiendas.
+- **itch.io:** la [API oficial de servidor](https://itch.io/docs/api/serverside) requiere autenticación. profile/games se limita a juegos que la cuenta subió o puede editar; tampoco constituye un catálogo público universal. No se solicitaron permisos de compras/propiedad ni se consultaron datos de usuarios. No hay integración/credencial configurada.
+
+GH-019 permanece condicionado/bloqueado por acceso y compatibilidad de endpoints con la función solicitada. Los enlaces de fuente reales de fichas/manuales son admisibles como referencias; no representan precios ni metadatos obtenidos de estas APIs. Reabrir solo con un caso autorizado, documentado y compatible con presupuesto cero. No es motivo para falsificar campos ni bloquear la búsqueda RAWG ya comprobada.

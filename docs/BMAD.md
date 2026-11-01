@@ -22,3 +22,7 @@ Contexto: requisitos del paquete → decisiones y mini-plan G0 → código y pru
 Para continuar: abrir Codex en la carpeta GameHive y utilizar la skill real `bmad-build` con la historia concreta. Mantener `AGENTS.md` suministrado; no reemplazarlo con instrucciones genéricas del instalador.
 
 Checkpoint pendiente de G1: la skill instalada `bmad-build/SKILL.md` remite al workflow y al paso `step-02-plan.md`, que exige «HALT and give the user a choice» con «Approve and continue» antes de implementar la especificación. La historia está escrita y revisable. Este checkpoint no invalida la evidencia G0 ni requiere repetir autorización para subir a GitHub.
+
+## Estado 2026-11-01
+
+El checkpoint G1 fue aprobado y la historia implementada, revisada en tres capas y corregida; backend/frontend reales pasaron también en CI. G1 cerrado tras Auth remoto, cuatro roles/sesiones y limpieza verificadas (G1-REMOTE). G2 tiene historia GH-014–017 aprobada, revisada y verificada localmente con RAWG real; alta manual administrativa será historia posterior. Estas aprobaciones sustituyen los checkpoints descritos antes como pendientes.

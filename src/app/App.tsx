@@ -1,6 +1,6 @@
 import { Link, NavLink, Route, Routes } from "react-router-dom";
 import { ThemeControl } from "./ThemeControl";
-import { CuratedCatalogProvider } from "../features/catalog/curated";
+import { createCatalogProvider } from "../services/catalog";
 import { CatalogPage } from "../features/catalog/CatalogPage";
 import { GameDetailPage } from "../features/catalog/GameDetailPage";
 import { StatePanel } from "../components/StatePanel";
@@ -9,7 +9,7 @@ import { AuthProvider } from "../features/auth/AuthContext";
 import { AuthPage } from "../features/auth/AuthPage";
 import { AccountControl } from "../features/auth/AccountControl";
 import { OnboardingPage } from "../features/onboarding/OnboardingPage";
-const provider = new CuratedCatalogProvider();
+const provider = createCatalogProvider(import.meta.env);
 function Showcase() {
   return (
     <>
@@ -39,8 +39,10 @@ function Setup() {
         </span>
       </div>
       <p>
-        El catálogo curado funciona sin conexión. Biblioteca y moderación siguen
-        pendientes de sus próximas historias.
+        {provider.mode === "live"
+          ? "El catálogo consulta RAWG mediante el servidor configurado."
+          : "El catálogo curado funciona sin conexión."}{" "}
+        Biblioteca y moderación siguen pendientes de sus próximas historias.
       </p>
       <Link className="button" to="/explore">
         Explorar juegos
@@ -101,8 +103,21 @@ export function App() {
           GAMEHIVE <span> / PLAY WITH PERSPECTIVE</span>
         </p>
         <p>
-          Proyecto académico · Implementación independiente · Catálogo curado
-          sin conexión
+          Proyecto académico · Implementación independiente ·{" "}
+          {provider.mode === "live" ? (
+            <>
+              Catálogo con datos de{" "}
+              <a
+                href="https://rawg.io"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                RAWG
+              </a>
+            </>
+          ) : (
+            "Catálogo curado sin conexión"
+          )}
         </p>
         <Link to="/setup">Consultar el estado de integración ↗</Link>
       </footer>

@@ -120,7 +120,7 @@ export class CuratedCatalogProvider implements CatalogProvider {
       )
       .sort((a, b) =>
         query.order === "year"
-          ? b.releasedYear - a.releasedYear
+          ? (b.releasedYear ?? 0) - (a.releasedYear ?? 0)
           : a.title.localeCompare(b.title),
       );
     const page = normalizePage(query.page),
