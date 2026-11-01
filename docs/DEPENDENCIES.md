@@ -30,3 +30,11 @@ Versiones instaladas exactas en package.json y package-lock.json; metadatos leí
 | typescript-eslint | 8.72.1 | MIT |
 | vite | 8.3.5 | MIT |
 | vitest | 5.0.5 | MIT |
+
+## Driver directo de Edge Functions (G1)
+
+`https://deno.land/x/postgresjs@v3.4.5/mod.js` — Postgres.js 3.4.5, licencia **Unlicense**, [repositorio oficial](https://github.com/porsager/postgres). Dependencia fijada en URL, fuera de package.json porque se ejecuta en Deno Edge. Usada para conexión privada parametrizada y transacción de autoridad/auditoría. Licencia/version comprobadas con package.json oficial del tag v3.4.5. El adaptador nativo Deno evitó ENOTFOUND reproducible del driver npm en Edge local. Referencia de conexión oficial: https://supabase.com/docs/guides/functions/connect-to-postgres. No cambia la licencia del proyecto.
+
+## Comprobación estática de Edge
+
+Deno **2.9.8**, release oficial https://github.com/denoland/deno/releases/tag/v2.9.8; binario Linux x64 verificado con SHA-256 publicado `e890975bc2549807bbcc0b584ffafda72cc7c93349dd99c80483dd784f6c4609`. CI comprueba ambos entrypoints con `deno check` sin secretos. Deno 2.9.8 satisface el mínimo `>=2.7.10` declarado por el SDK Supabase instalado. No se instala globalmente ni se depende de latest en CI.

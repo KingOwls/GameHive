@@ -17,13 +17,13 @@
 
 | ID | Tarea | Depende | Comprobación mínima | Estado actual |
 |---|---|---|---|---|
-| GH-007 | Configurar Supabase CLI/proyecto Free y migraciones PostgreSQL | GH-002 | migración reproducible; sin secrets en repo | todo |
-| GH-008 | Diseñar tablas, FKs, índices, checks, constraints y seeds de test | GH-007 | SQL tests FK/UNIQUE/limitaciones | todo |
-| GH-009 | Configurar Supabase Auth email+password sin verificación obligatoria en demo | GH-007 | registro/login/logout reales; errores saneados | todo |
-| GH-010 | Perfil, alias único case-insensitive, avatar default y onboarding | GH-008,GH-009 | dos cuentas no registran mismo alias; preferencias persisten | todo |
-| GH-011 | Cuatro roles y estado verificado independiente; protección RLS | GH-008,GH-009 | escalada de rol denegada en Data API, rutas y servidor | todo |
-| GH-012 | Edge Functions para operaciones administrativas necesarias | GH-011 | JWT, estado, rol y auditoría validados | todo |
-| GH-013 | Matriz de pruebas RLS y políticas de privacidad/columnas | GH-011 | anon/owner/third/mod/admin combinados | todo |
+| GH-007 | Configurar Supabase CLI/proyecto Free y migraciones PostgreSQL | GH-002 | migración reproducible; sin secrets en repo | in_progress |
+| GH-008 | Diseñar tablas, FKs, índices, checks, constraints y seeds de test | GH-007 | SQL tests FK/UNIQUE/limitaciones | in_progress |
+| GH-009 | Configurar Supabase Auth email+password sin verificación obligatoria en demo | GH-007 | registro/login/logout reales; errores saneados | in_progress |
+| GH-010 | Perfil, alias único case-insensitive, avatar default y onboarding | GH-008,GH-009 | dos cuentas no registran mismo alias; preferencias persisten | in_progress |
+| GH-011 | Cuatro roles y estado verificado independiente; protección RLS | GH-008,GH-009 | escalada de rol denegada en Data API, rutas y servidor | in_progress |
+| GH-012 | Edge Functions para operaciones administrativas necesarias | GH-011 | JWT, estado, rol y auditoría validados | in_progress |
+| GH-013 | Matriz de pruebas RLS y políticas de privacidad/columnas | GH-011 | anon/owner/third/mod/admin combinados | in_progress |
 
 ## Gate G2 — Juegos reales y descubrimiento [P0]
 
