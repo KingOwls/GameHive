@@ -57,3 +57,8 @@ La primera verificación global posterior a los parches detectó TS2322 en el ma
 GH-018 verificado localmente; migración/función administrativa remotas todavía requieren publicación autorizada. No se declara el producto completo ni G3–G6 verificados.
 
 Regresión final RAWG real contra GameHive Next:1E2E pasó sobre el build final de GH-018. db lint local: sin errores/avisos.
+
+
+## Publicación posterior
+
+Alta manual publicada y pruebas remotas/limpieza verificadas; ver [G2-REMOTE](G2-REMOTE.md), incluyendo incidencias de fixtures, corrección accesible del logo y advertencia Auth pendiente. No implica completar G3–G6.

@@ -27,3 +27,24 @@ GH-014–017 verificados localmente y en destino remoto. G2 no se cierra todaví
 Un intento posterior de consulta/build no se ejecutó porque la revisión automática agotó uso de cuenta; se informó y se retomó tras la nueva instrucción del humano. La consulta y E2E que constan aquí sí terminaron posteriormente con éxito.
 
 Para usar este entorno sin alterar el modo aislado de tests: `npm run dev -- --mode remote` carga `.env.remote` ignorado con URL/clave publicable y VITE_CATALOG_MODE=rawg. La clave RAWG permanece exclusivamente en servidor; nunca copiarla a ese archivo público.
+
+
+## GH-018 — publicación y verificación remota, 2026-11-01
+
+Autorización humana explícita para aplicar migración, publicar admin-games y probar cinco cuentas temporales con limpieza. Solo GameHive Next `krfodhagjzovsebghekm`; sin Vercel ni cargos.
+
+Migración manual_games aplicada; MD5 fuente `7e77875ce1245323fd2a02afa884f433` idéntico al archivo versionado. El conector generó versión20261101172902; tras comprobar nombre, hash y ausencia de colisión, se alineó solo el historial a20261101164026, sin repetir DDL. admin-games ACTIVEv1, verify_jwt=false autorizado; Auth online, sesión PostgreSQL y admin activo se validan dentro del servidor. SHA256 de despliegue `9c5c9c8938062ff64d73c67a109fbd035e32816f415b43713052a7488e0d9c40`.
+
+HTTP real remoto PASS: registro no hereda admin de metadata; anónimo401, user/critic/moderator403; fuentes HTTP/localhost/IP/javascript y HTML400. Dos altas concurrentes con fuente oficial Celeste canónicamente equivalente dieron201/409, una fila y una auditoría. Lectura pública200 con procedencia, sin actor/motivo. INSERT/UPDATE/DELETE Data API rechazados para anónimo y los cuatro roles, incluido admin. Administrador suspendido403; restaurado y después logout, token revocado401. Contraseñas/tokens permanecieron solo en memoria; sin envío de correos.
+
+Navegador real sobre build remoto: ficha manual→metadatos/fuente→recarga, respuesta Data API remota200 observada y auditoría axe completa sin infracciones. El alta autenticada se comprobó por HTTP remoto; el formulario completo ya se verificó E2E local, no se presenta como alta remota en navegador.
+
+Limpieza confirmada: usuarios Auth0, profiles0, authz0, private_user_settings0, manual_games0. Conservada una auditoría mínima manual con actor anonimizado por FK. Catálogo RAWG idéntico antes/después: fingerprint136afd8e8710563cea6bfe094f8bcf7f. RLS manual activo; permisos INSERT/UPDATE/DELETE=false para anon/authenticated/service_role. Sin residuos de las tandas interrumpidas.
+
+Incidencias de la preparación de pruebas: una ejecución sin TTY salió13 esperando entrada; se eliminaron sus cuentas sin crear juegos. Otra preparación de roles falló42804 por tipo enum; la prueba se detuvo con403 y se limpió. Repetición con conversión explícita y comprobación previa de los cuatro roles pasó. Nunca más de cinco cuentas de prueba coexistieron. Intento de recuperación mediante consulta de clave service_role rechazado por revisión automática: no se ejecutó; se descartó y repitió el registro público tras limpiar las cuentas.
+
+Axe ampliado encontró label-content-name-mismatch en el logo porque aria-label omitía texto visible. Se eliminó la sobrescritura y se usa el contenido visible como nombre, con title orientativo. Rebuild remoto y recorrido/axe completo pasaron; lint/typecheck pasaron. Las comprobaciones anteriores usaban etiquetas WCAG2A/AA/2.1AA y no detectaban esta regla adicional.
+
+Advisors actual:0ERROR,1WARN por protección de contraseñas filtradas desactivada,4INFO de tablas privadas RLS sin políticas intencionalmente denegadas. No se declara cero advertencias ni se cambia el plan gratuito. [Protección de contraseñas](https://supabase.com/docs/guides/auth/password-security#password-strength-and-leaked-password-protection). Pendiente evaluar disponibilidad/configuración sin cargos antes de entrega.
+
+GH-018 verificado localmente y remoto. GH-019 sigue condicionado a endpoints oficiales viables; scores/filtro GameHive dependen de G3. G3–G6 y alojamiento Vercel permanecen incompletos.

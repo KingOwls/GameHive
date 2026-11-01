@@ -60,7 +60,7 @@ export function App() {
         Saltar al contenido
       </a>
       <header className="site-header">
-        <Link className="brand" to="/" aria-label="GameHive, inicio">
+        <Link className="brand" to="/" title="Ir al inicio">
           <img src="/hive.svg" alt="" width="36" height="36" />
           GAME<span>HIVE</span>
           <small>ALPHA</small>

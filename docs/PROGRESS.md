@@ -6,7 +6,7 @@ Actualizado: 2026-11-01, America/Bogota. Implementación nueva en `/home/jhonata
 |---|---|---|
 | G0 Preparación | verified | Base local funcional y verificada; BMAD instalado, 32 Vitest + 4 E2E, CI real pasó. GitHub remoto/push verificados en https://github.com/KingOwls/GameHive; CI real pasó en [41253679920](https://github.com/KingOwls/GameHive/actions/runs/41253679920), commit `4bb1b37295bf45d96ecd8a8f44a9c66e2eaccb22`. Dev y preview comprobados; ver G0-FLOW. CI con Actions actualizadas también pasó: [41253884624](https://github.com/KingOwls/GameHive/actions/runs/41253884624), commit `d30323ad6a93f42b4f58ebf51be4cf1605789883`. |
 | G1 Identidad/datos | verified | SQL/RLS, HTTP/E2E y CI pasaron; Auth remoto configurado. Registro, cuatro roles, privacidad, refresh, revocación, suspensión y dos auditorías comprobados en GameHive Next. Cinco cuentas temporales autorizadas y eliminadas; cero filas residuales. Ver [G1-REMOTE](../qa-reports/G1-REMOTE.md). |
-| G2 Descubrimiento | in_progress | GH-014–017 revisados y revalidados localmente con RAWG real:101 Vitest,134 SQL/RLS, adaptador real/DB, concurrencia y E2E búsqueda→ficha→capturas→recarga+axe. G1 regresión HTTP/E2E pasa. GH-018 revisado y verificado localmente (141 Vitest,178 SQL,3 Deno/DB,HTTP/E2E real); publicación manual pendiente; RAWG remoto publicado/verificado (G2-REMOTE); GH-019 condicionado documentado. |
+| G2 Descubrimiento | in_progress | GH-014–017 revisados y revalidados localmente con RAWG real:101 Vitest,134 SQL/RLS, adaptador real/DB, concurrencia y E2E búsqueda→ficha→capturas→recarga+axe. G1 regresión HTTP/E2E pasa. GH-018 revisado y verificado localmente (141 Vitest,178 SQL,3 Deno/DB,HTTP/E2E real); RAWG y alta manual publicados/verificados con limpieza remota (G2-REMOTE); GH-019 condicionado; score/filtro GameHive depende de G3. |
 | G3 Comunidad | pending | Contratos y validación cliente preliminar. Sin reseñas, votos ni comentarios persistentes. |
 | G4 Biblioteca/perfiles | pending | Onboarding persistente implementado en G1; biblioteca y seguimiento pendientes. |
 | G5 Moderación | pending | Auditoría de autoridad implementada en G1; reportes y moderación de contenido pendientes. |
@@ -71,3 +71,8 @@ Coordinador confirmó GH-018 HTTP real1PASS+E2E real1PASS mediante helper `test:
 Revisión BMAD de tres capas completada y parches revalidados; ver G2-MANUAL. Check141/2omitidas, SQL178, Deno4handlers+test,3pruebas runtime/DB,5E2Eaislados/3omitidos, HTTP/E2Emanual1+1 y regresión G1HTTP/E2E1+1 pasaron. Limpieza local sin residuos. RAWG remoto publicado y verificado; falta autorización/publicación manual. No se declara G2 remoto completo ni G3–G6.
 
 Regresión final RAWG: E2E real contra GameHive Next pasó sobre el build final de GH-018. db lint local terminó sin errores/avisos.
+
+
+## Cierre remoto de GH-018
+
+Publicación autorizada y verificada en GameHive Next: HTTP cuatro roles, unicidad concurrente, RLS/privilegios, suspensión/revocación, ficha pública real con recarga y axe. Limpieza confirmada sin usuarios/juegos temporales; RAWG idéntico. Ver G2-REMOTE para resultados, errores corregidos y advertencia Auth de contraseñas filtradas. G2 conserva dependencia de scores/filtro G3; G3–G6 incompletos. Historia GH-020–021 aprobada por el humano para implementar reseña propia; todavía sin código/verificación.
