@@ -91,3 +91,25 @@ export interface UserSettings {
   interests: string;
   onboarding_complete: boolean;
 }
+
+export interface ManualGame {
+  id: string;
+  title: string;
+  synopsis: string;
+  platforms: string[];
+  genres: string[];
+  released_at: string | null;
+  source_url: string;
+  source_label: string;
+  created_at: string;
+}
+export interface ManualGameInput {
+  title: string;
+  synopsis: string;
+  platforms: string[];
+  genres: string[];
+  releasedAt: string | null;
+  sourceUrl: string;
+  sourceLabel: string;
+  reason: string;
+}

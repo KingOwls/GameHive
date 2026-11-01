@@ -22,7 +22,9 @@
     "format:check": "prettier --check src tests *.{ts,js,json,html}",
     "test:backend": "node scripts/local-backend-tests.mjs",
     "test:sql": "supabase test db --local",
-    "test:catalog:db": "node scripts/test-catalog-db.mjs"
+    "test:catalog:db": "node scripts/test-catalog-db.mjs",
+    "test:manual": "node scripts/local-manual-tests.mjs",
+    "test:manual:db": "node scripts/test-manual-db.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "2.118.0",

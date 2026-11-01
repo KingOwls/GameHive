@@ -39,7 +39,7 @@ jobs:
           echo "e890975bc2549807bbcc0b584ffafda72cc7c93349dd99c80483dd784f6c4609  $RUNNER_TEMP/deno.zip" | sha256sum --check
           unzip -q "$RUNNER_TEMP/deno.zip" -d "$RUNNER_TEMP/deno"
       - name: Check all Edge entrypoints
-        run: '"$RUNNER_TEMP/deno/deno" check --frozen supabase/functions/identity/index.ts supabase/functions/admin-identity/index.ts supabase/functions/catalog/index.ts'
+        run: '"$RUNNER_TEMP/deno/deno" check --frozen supabase/functions/identity/index.ts supabase/functions/admin-identity/index.ts supabase/functions/catalog/index.ts supabase/functions/admin-games/index.ts'
       - name: Start temporary local Supabase
         run: |
           # CLI emits credentials: keep its output private, including on failure.
@@ -52,6 +52,10 @@ jobs:
       - run: npx playwright install --with-deps chromium
       - name: Real Auth, Data API and browser sessions
         run: npm run test:backend -- --e2e
+      - name: Manual deadline, pool cancellation and concurrent authority/session changes
+        run: GH_DENO_BIN="$RUNNER_TEMP/deno/deno" npm run test:manual:db
+      - name: Real manual catalog, authorization, concurrency and public browser flow
+        run: npm run test:manual -- --e2e
       - name: Always stop temporary stack and remove private output
         if: always()
         run: |

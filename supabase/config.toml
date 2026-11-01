@@ -424,3 +424,6 @@ verify_jwt = false
 # Public catalog. Every upstream request is bounded by the private persistent budget.
 [functions.catalog]
 verify_jwt = false
+
+[functions.admin-games]
+verify_jwt = false

@@ -37,4 +37,4 @@ Las30peticiones iniciales fueron un checkpoint, no un contador global: después 
 
 ## Brecha restante
 
-Catálogo verificado con Supabase local y RAWG real. No hay migración/función catalog ni secreto RAWG publicados en GameHive Next; requiere autorización específica. GH-018 alta manual pendiente; GH-019 condicionado, ver G2-ENRICHMENT. Filtro score GameHive depende de G3. G2 completo todavía no verificado.
+Catálogo verificado con Supabase local y RAWG real. Migraciones, función catalog ACTIVEv1 y secreto RAWG publicados en GameHive Next tras autorización; HTTP y E2E remoto pasaron (G2-REMOTE). GH-018 verificado localmente; publicación manual remota pendiente; GH-019 condicionado, ver G2-ENRICHMENT. Filtro score GameHive depende de G3. G2 completo todavía no verificado.
