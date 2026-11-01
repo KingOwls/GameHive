@@ -53,3 +53,20 @@ export interface ReviewInput {
   bodyPublic: string;
   bodySpoiler: string;
 }
+export interface PublicProfile {
+  id: string;
+  username: string;
+  bio: string;
+  avatar_key: "hive" | "orbit" | "spark";
+  reputation_score: number;
+  created_at: string;
+}
+export interface UserSettings {
+  user_id: string;
+  theme_mode: ThemeMode;
+  library_visibility: "private" | "public";
+  platforms: string[];
+  genres: string[];
+  interests: string;
+  onboarding_complete: boolean;
+}

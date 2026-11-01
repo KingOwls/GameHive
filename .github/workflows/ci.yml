@@ -22,3 +22,37 @@ jobs:
           name: playwright-report
           path: playwright-report/
           retention-days: 7
+  identity-backend:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      # Official Deno release, fixed version/checksum; no ambient secrets needed.
+      - name: Install verified Deno 2.9.8
+        run: |
+          curl --fail --silent --show-error --location --retry 3 https://github.com/denoland/deno/releases/download/v2.9.8/deno-x86_64-unknown-linux-gnu.zip -o "$RUNNER_TEMP/deno.zip"
+          echo "e890975bc2549807bbcc0b584ffafda72cc7c93349dd99c80483dd784f6c4609  $RUNNER_TEMP/deno.zip" | sha256sum --check
+          unzip -q "$RUNNER_TEMP/deno.zip" -d "$RUNNER_TEMP/deno"
+      - name: Check both Edge entrypoints
+        run: '"$RUNNER_TEMP/deno/deno" check --frozen supabase/functions/identity/index.ts supabase/functions/admin-identity/index.ts'
+      - name: Start temporary local Supabase
+        run: |
+          # CLI emits credentials: keep its output private, including on failure.
+          umask 077
+          npx supabase start --exclude studio,storage-api,imgproxy,realtime,logflare,vector,supavisor > "$RUNNER_TEMP/gamehive-start.log" 2>&1
+      - run: npm run test:sql
+      - run: npx playwright install --with-deps chromium
+      - name: Real Auth, Data API and browser sessions
+        run: npm run test:backend -- --e2e
+      - name: Always stop temporary stack and remove private output
+        if: always()
+        run: |
+          npx supabase stop > /dev/null 2>&1 || true
+          rm -f "$RUNNER_TEMP/gamehive-start.log"
+          rm -rf playwright-report test-results
+      # No backend artifacts: Auth traces and credentials must never be uploaded.

@@ -5,6 +5,10 @@ import { CatalogPage } from "../features/catalog/CatalogPage";
 import { GameDetailPage } from "../features/catalog/GameDetailPage";
 import { StatePanel } from "../components/StatePanel";
 import { SpoilerReveal } from "../components/SpoilerReveal";
+import { AuthProvider } from "../features/auth/AuthContext";
+import { AuthPage } from "../features/auth/AuthPage";
+import { AccountControl } from "../features/auth/AccountControl";
+import { OnboardingPage } from "../features/onboarding/OnboardingPage";
 const provider = new CuratedCatalogProvider();
 function Showcase() {
   return (
@@ -28,15 +32,15 @@ function Setup() {
       <p className="eyebrow">ESTADO DE IMPLEMENTACIÓN</p>
       <h1>Una comunidad necesita una base segura.</h1>
       <div className="notice">
-        <strong>Autenticación todavía no habilitada</strong>
+        <strong>Identidad real disponible al configurar Supabase</strong>
         <span>
-          Este entorno no está conectado a Supabase. No solicita ni guarda
-          contraseñas.
+          El registro, perfil y sesión usan Supabase Auth y políticas RLS. La
+          conexión depende de la configuración pública de este entorno.
         </span>
       </div>
       <p>
-        El catálogo curado funciona sin conexión. Registro, sesiones, biblioteca
-        y moderación se habilitarán después de verificar Auth y RLS.
+        El catálogo curado funciona sin conexión. Biblioteca y moderación siguen
+        pendientes de sus próximas historias.
       </p>
       <Link className="button" to="/explore">
         Explorar juegos
@@ -46,7 +50,7 @@ function Setup() {
 }
 export function App() {
   return (
-    <>
+    <AuthProvider>
       <a className="skip-link" href="#main">
         Saltar al contenido
       </a>
@@ -61,6 +65,7 @@ export function App() {
           <NavLink to="/design-system">Vitrina UI</NavLink>
           <NavLink to="/setup">Estado del proyecto</NavLink>
         </nav>
+        <AccountControl />
         <ThemeControl />
       </header>
       <main id="main">
@@ -77,6 +82,10 @@ export function App() {
           />
           <Route path="/design-system" element={<Showcase />} />
           <Route path="/setup" element={<Setup />} />
+          <Route path="/login" element={<AuthPage />} />
+          <Route path="/register" element={<AuthPage register />} />
+          <Route path="/onboarding" element={<OnboardingPage />} />
+          <Route path="/settings" element={<OnboardingPage />} />
           <Route
             path="*"
             element={
@@ -97,6 +106,6 @@ export function App() {
         </p>
         <Link to="/setup">Consultar el estado de integración ↗</Link>
       </footer>
-    </>
+    </AuthProvider>
   );
 }

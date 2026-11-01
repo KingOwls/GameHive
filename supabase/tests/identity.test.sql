@@ -1,0 +1,83 @@
+begin;
+create extension if not exists pgtap with schema extensions;
+set search_path = public, extensions;
+select no_plan();
+insert into auth.users(id,email,raw_user_meta_data) values
+('10000000-0000-0000-0000-000000000001','g1-owner@example.invalid','{"username":"G1Owner","role":"admin","critic_verified":true}'),
+('10000000-0000-0000-0000-000000000002','g1-third@example.invalid','{"username":"G1Third"}'),
+('10000000-0000-0000-0000-000000000003','g1-critic@example.invalid','{"username":"G1Critic"}'),
+('10000000-0000-0000-0000-000000000004','g1-mod@example.invalid','{"username":"G1Moderator"}'),
+('10000000-0000-0000-0000-000000000005','g1-admin@example.invalid','{"username":"G1Admin"}');
+insert into auth.sessions(id,user_id) select id,id from public.profiles where id::text like '10000000-%';
+select is((select role::text from private.authz where user_id='10000000-0000-0000-0000-000000000001'),'user','metadata cannot grant admin');
+select is((select critic_verified from private.authz where user_id='10000000-0000-0000-0000-000000000001'),false,'verification independent of metadata');
+select is((select count(*)::int from public.private_user_settings where user_id::text like '10000000-%'),5,'settings created with all identities');
+select throws_ok($$insert into auth.users(id,email,raw_user_meta_data) values('10000000-0000-0000-0000-000000000006','duplicate@example.invalid','{"username":"g1owner"}')$$,'23505',null,'case insensitive alias constraint');
+select is((select count(*)::int from auth.users where id='10000000-0000-0000-0000-000000000006'),0,'failed signup leaves no Auth orphan');
+select throws_ok($$insert into auth.users(id,email,raw_user_meta_data) values('10000000-0000-0000-0000-000000000006','invalid@example.invalid','{"username":"<bad>"}')$$,'23514',null,'invalid alias rejected on server');
+update private.authz set role='critic' where user_id='10000000-0000-0000-0000-000000000003';
+update private.authz set role='moderator' where user_id='10000000-0000-0000-0000-000000000004';
+update private.authz set role='admin' where user_id='10000000-0000-0000-0000-000000000005';
+set local role anon;
+select is((select count(*)::int from public.profiles where id::text like '10000000-%'),5,'anon reads public profiles');
+select throws_ok($$select * from public.private_user_settings$$,'42501',null,'anon cannot read settings');
+select throws_ok($$insert into public.profiles(id,username) values(gen_random_uuid(),'forged')$$,'42501',null,'anon cannot insert profile');
+select throws_ok($$update public.profiles set bio='forged'$$,'42501',null,'anon cannot update profile');
+select throws_ok($$delete from public.profiles$$,'42501',null,'anon cannot delete profiles');
+reset role;
+select set_config('request.jwt.claims','{"sub":"10000000-0000-0000-0000-000000000001","session_id":"10000000-0000-0000-0000-000000000001"}',true);
+set local role authenticated;
+select is((select count(*)::int from public.private_user_settings),1,'owner reads only own settings');
+select lives_ok($$update public.profiles set bio='owned' where id='10000000-0000-0000-0000-000000000001'$$,'owner edits public fields');
+select lives_ok($$update public.private_user_settings set interests='private preferences' where user_id='10000000-0000-0000-0000-000000000001'$$,'owner edits preferences');
+select throws_ok($$update public.profiles set id='10000000-0000-0000-0000-000000000002'$$,'42501',null,'profile ownership cannot be changed');
+select throws_ok($$update public.private_user_settings set user_id='10000000-0000-0000-0000-000000000002'$$,'42501',null,'settings ownership cannot be changed');
+select throws_ok($$update public.profiles set reputation_score=100$$,'42501',null,'reputation cannot be edited');
+select throws_ok($$insert into public.private_user_settings(user_id) values('10000000-0000-0000-0000-000000000001')$$,'42501',null,'client settings insert denied');
+select throws_ok($$delete from public.private_user_settings$$,'42501',null,'client settings delete denied');
+select throws_ok($$delete from public.profiles$$,'42501',null,'client profile delete denied');
+select throws_ok($$select * from private.authz$$,'42501',null,'authority not readable');
+select throws_ok($$update private.authz set role='admin'$$,'42501',null,'authority not writable');
+select throws_ok($$select private.current_identity('10000000-0000-0000-0000-000000000001','10000000-0000-0000-0000-000000000001')$$,'42501',null,'private identity function not callable by client');
+select throws_ok($$select * from private.audit_logs$$,'42501',null,'audit not readable');
+select throws_ok($$update private.audit_logs set action='forged'$$,'42501',null,'audit not mutable');
+select throws_ok($$delete from private.audit_logs$$,'42501',null,'audit not deletable');
+-- An attempted cross-owner UPDATE has zero affected rows under RLS.
+update public.profiles set bio='attacker' where id='10000000-0000-0000-0000-000000000002';
+reset role;
+select is((select bio from public.profiles where id='10000000-0000-0000-0000-000000000002'),'','third-party profile update hidden');
+-- Each real stored role has only its own settings, never an admin privacy bypass.
+select set_config('request.jwt.claims','{"sub":"10000000-0000-0000-0000-000000000002","session_id":"10000000-0000-0000-0000-000000000002"}',true);
+set local role authenticated;
+select is((select count(*)::int from public.private_user_settings where user_id='10000000-0000-0000-0000-000000000001'),0,'third cannot read owner preferences');
+reset role;
+select set_config('request.jwt.claims','{"sub":"10000000-0000-0000-0000-000000000003","session_id":"10000000-0000-0000-0000-000000000003"}',true);
+set local role authenticated;
+select is((select count(*)::int from public.private_user_settings),1,'critic reads own preferences only');
+reset role;
+select set_config('request.jwt.claims','{"sub":"10000000-0000-0000-0000-000000000004","session_id":"10000000-0000-0000-0000-000000000004"}',true);
+set local role authenticated;
+select is((select count(*)::int from public.private_user_settings),1,'moderator reads own preferences only');
+reset role;
+select set_config('request.jwt.claims','{"sub":"10000000-0000-0000-0000-000000000005","session_id":"10000000-0000-0000-0000-000000000005"}',true);
+set local role authenticated;
+select is((select count(*)::int from public.private_user_settings),1,'admin reads own preferences only');
+reset role;
+select throws_ok($$select private.admin_update_identity('10000000-0000-0000-0000-000000000004','10000000-0000-0000-0000-000000000004','10000000-0000-0000-0000-000000000001','admin','active',true,'Intento de escalada')$$,'42501',null,'moderator cannot assign role');
+select lives_ok($$select private.admin_update_identity('10000000-0000-0000-0000-000000000005','10000000-0000-0000-0000-000000000005','10000000-0000-0000-0000-000000000001','critic','suspended',false,'Suspensión de prueba')$$,'admin operation checks and commits');
+select is((select count(*)::int from private.audit_logs where target_id='10000000-0000-0000-0000-000000000001'),1,'administration creates audit');
+select set_config('request.jwt.claims','{"sub":"10000000-0000-0000-0000-000000000001","session_id":"10000000-0000-0000-0000-000000000001"}',true);
+set local role authenticated;
+select is((select count(*)::int from public.private_user_settings),0,'suspension takes effect for old JWT claims');
+update public.profiles set bio='suspended bypass' where id='10000000-0000-0000-0000-000000000001';
+reset role;
+select is((select bio from public.profiles where id='10000000-0000-0000-0000-000000000001'),'owned','suspended old JWT cannot edit profile');
+select throws_ok($$select private.admin_update_identity('10000000-0000-0000-0000-000000000005','10000000-0000-0000-0000-000000000005','10000000-0000-0000-0000-000000000002','critic','active',false,'short')$$,'22023',null,'audit reason validated');
+select is((select role::text from private.authz where user_id='10000000-0000-0000-0000-000000000002'),'user','failed admin update rolls back');
+select throws_ok($$insert into public.profiles(id,username) values('10000000-0000-0000-0000-000000000099','MissingAuth')$$,'23503',null,'profile requires existing Auth identity');
+select throws_ok($$update public.profiles set avatar_key='external-upload' where id='10000000-0000-0000-0000-000000000002'$$,'23514',null,'avatar restricted to owned resources');
+select throws_ok($$update public.private_user_settings set theme_mode='invalid' where user_id='10000000-0000-0000-0000-000000000002'$$,'23514',null,'theme constraint');
+select throws_ok($$update public.private_user_settings set platforms=array['unknown'] where user_id='10000000-0000-0000-0000-000000000002'$$,'23514',null,'platform whitelist');
+select throws_ok($$update public.profiles set bio=repeat('x',501) where id='10000000-0000-0000-0000-000000000002'$$,'23514',null,'bio size server bound');
+select * from finish();
+rollback;

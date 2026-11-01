@@ -37,7 +37,7 @@ npm run test:e2e
 - `src/app/`: shell, rutas y tema.
 - `src/features/catalog/`: contrato implementado de catálogo curado y pantallas.
 - `src/domain/`: tipos y reglas de validación; las reglas de servidor siguen pendientes.
-- `src/services/`: configuración pública y frontera para futuros servicios Supabase.
+- `src/services/`: configuración pública y Auth real y frontera pública de configuración Supabase.
 - `tests/`: unitarias, integración UI, seguridad cliente y E2E.
 - `_bmad/`, `.agents/skills/`: BMAD 6.12.4 instalado para Codex.
 - `_bmad-output/`: planificación e historias; `docs/`: decisiones y trazabilidad.
@@ -47,7 +47,7 @@ npm run test:e2e
 
 Copiar `.env.example` a `.env.local` solo al disponer del proyecto nuevo. Únicamente URL y clave `sb_publishable_` pueden entrar a Vite. RAWG y claves secretas permanecen del lado servidor. `.env.local` y `.vercel/` están ignorados. No enviar tokens por chat ni incluirlos en incidencias.
 
-La UI G0 permanece sin sesión hasta implementar el flujo G1 completo. Añadir variables por sí solo no habilita Auth. Nunca se reutiliza automáticamente un Supabase/Vercel existente.
+La UI ofrece registro/login/perfil/onboarding y sesión real cuando el backend G1 está configurado y migrado. Ver [identidad y pruebas locales](docs/IDENTITY.md). Nunca se reutiliza automáticamente un Supabase/Vercel existente.
 
 ## GitHub
 
@@ -64,6 +64,6 @@ Ejecutar la creación solo después de comprobar que el nombre sigue libre y que
 
 La especificación, AGENTS y backlog originales se conservaron. Los archivos `LEEME_PRIMERO.md` y `PROMPT_INICIAL_CODEX.md` son documentación suministrada, no autorización adicional para acciones externas. La implementación no consultó ni copió código o recursos del repositorio de referencia. Ver [BMAD](docs/BMAD.md) y [demo local](docs/DEMO.md).
 
-No hay despliegue autorizado/verificado, integración RAWG, persistencia comunitaria ni cuatro roles demostrados todavía. Las alertas de dependencias de desarrollo y sus límites están documentadas en QA; producción tuvo auditoría sin vulnerabilidades conocidas al momento del chequeo.
+No hay despliegue autorizado/verificado, integración RAWG ni persistencia comunitaria. Los cuatro roles de identidad fueron probados localmente con backend real; faltan revisión y verificación remotas. Las alertas de dependencias de desarrollo y sus límites están documentadas en QA; producción tuvo auditoría sin vulnerabilidades conocidas al momento del chequeo.
 
 Si Git no tiene helper HTTPS pero `gh auth status` sí funciona, puede usarse puntualmente `git -c credential.helper= -c 'credential.helper=!gh auth git-credential' push origin main`; evita escribir tokens o modificar la configuración global. Este fue el mecanismo de push comprobado en el entorno del agente.

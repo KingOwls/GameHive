@@ -11,6 +11,14 @@ function readMode(): ThemeMode {
 export function ThemeControl() {
   const [mode, setMode] = useState<ThemeMode>(readMode);
   useEffect(() => {
+    const sync = (event: StorageEvent) => {
+      if (event.key === "gamehive-theme" || event.key === null)
+        setMode(readMode());
+    };
+    window.addEventListener("storage", sync);
+    return () => window.removeEventListener("storage", sync);
+  }, []);
+  useEffect(() => {
     const preference = window.matchMedia?.("(prefers-color-scheme: light)");
     const apply = () => {
       document.documentElement.dataset.theme =
