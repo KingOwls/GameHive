@@ -17,11 +17,16 @@ test("RAWG real: buscar → ficha → capturas → refrescar", async ({ page }) 
   await expect(
     page.getByRole("heading", { name: "Hollow Knight", exact: true, level: 1 }),
   ).toBeVisible();
-  await expect(page.getByText("Sin evaluaciones", { exact: true })).toHaveCount(
-    1,
-  );
   await expect(
-    page.getByRole("region", { name: "Reseñas de la comunidad" }).getByText("Sin evaluaciones GameHive", { exact: true }),
+    page.getByText(
+      "Consulta los análisis publicados. Cálculo de puntuación crítica pendiente.",
+      { exact: true },
+    ),
+  ).toBeVisible();
+  await expect(
+    page
+      .getByRole("region", { name: "Reseñas de la comunidad" })
+      .getByText("Sin evaluaciones GameHive", { exact: true }),
   ).toBeVisible();
   await expect(page.getByText(/RAWG: .* \/ 5 · muestra:/)).toBeVisible();
   await expect(

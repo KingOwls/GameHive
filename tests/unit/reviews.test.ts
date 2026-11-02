@@ -96,7 +96,7 @@ it("public service paginates and selects only public author fields", async () =>
     "eq.00000000-0000-0000-0000-000000000001",
   );
   expect(url.searchParams.get("select")).toBe(
-    "*,profiles!author_id(username,avatar_key)",
+    "*,profiles!author_id(username,avatar_key),review_critic_details(*,review_critic_answers(*,critic_questions(*)))",
   );
   expect(fetch.mock.calls[0][1].headers).not.toHaveProperty("Authorization");
 });

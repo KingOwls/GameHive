@@ -13,7 +13,10 @@ test("buscar → ficha → refrescar sin perder ruta", async ({ page }) => {
     page
       .getByRole("heading", { name: "Críticos", exact: true })
       .locator("..")
-      .getByText("Sin evaluaciones", { exact: true }),
+      .getByText(
+        "Consulta los análisis publicados. Cálculo de puntuación crítica pendiente.",
+        { exact: true },
+      ),
   ).toBeVisible();
   await expect(
     page.getByText(

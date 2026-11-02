@@ -1,4 +1,4 @@
-import type { Role, ReviewInput } from "./models";
+import type { Role, ReviewInput, CriticalInput } from "./models";
 export function commentWaitMs(
   createdAt: string,
   role: Role,
@@ -57,4 +57,16 @@ export function validateReview(
       "Escribe hasta 5 pros y 5 contras de 1–200 caracteres cada uno.",
     );
   return errors;
+}
+
+// Criteria use at most two decimals. Sum integer hundredths before rounding the mean.
+export function criticalMean(criteria: CriticalInput["criteria"]): number {
+  const values = Object.values(criteria);
+  if (values.length !== 8 || values.some((c) => !Number.isFinite(c.score)))
+    return NaN;
+  return (
+    Math.round(
+      values.reduce((sum, c) => sum + Math.round(c.score * 100), 0) / 8,
+    ) / 100
+  );
 }

@@ -11,7 +11,7 @@ describe.skipIf(process.env.GH_RUN_REVIEWS !== "1")(
   () => {
     it(`${process.env.GH_REVIEWS_ISOLATED === "1" ? "isolated catalog contract" : "real persisted RAWG/manual"}: concurrency, current session/role, version, withdrawal, audit rollback and clean Data API`, async () => {
       const f = await reviewFixtures();
-      const [owner, other, critic, moderator, admin] = f.accounts;
+      const [owner, other, , moderator, admin] = f.accounts;
       const write = (
         action: string,
         gameId = f.manualId,
@@ -50,7 +50,7 @@ describe.skipIf(process.env.GH_RUN_REVIEWS !== "1")(
           ).status,
         ).toBe(401);
         expect((await own()).data).toBeNull();
-        for (const account of [critic, moderator, admin])
+        for (const account of [moderator, admin])
           expect(
             (
               await write(

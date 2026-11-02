@@ -47,3 +47,12 @@ Blind Hunter10, Edge Hunter3, Verification Gap2 y dos comprobaciones del coordin
 Revalidación final del coordinador: `npm run check`185PASS/3omitidas; `test:sql`249PASS; Deno frozen5handlersPASS; reviewsDB2PASS y manualDB3PASS. E2E aislados5PASS/4omitidos; reseñas reales HTTP1+E2E1PASS, CIaislado HTTP1+E2E1PASS; regresionesAuth y manual HTTP1+E2E1cadaunaPASS; RAWGreal búsqueda→ficha→capturas→recarga1PASS. db lint sin errores sobre esquema final. Pruebas de navegador/build ejecutadas secuencialmente.
 
 Limpieza final:0usuarios,0reseñas,0manuales,0fixturesRAWG,0triggers de fallo. Clave privada RAWG ausente de archivos versionados y dist; bloque de intención aprobado idéntico. GH-020–021 verified **localmente**. G3 sigue abierto por críticas, solicitudes, votos, comentarios y agregados; ninguna función de esta historia publicada en remoto. Bundle~530KB/~154KB gzip: optimizaciónG6 pendiente.
+
+
+## CI y demo funcional de GH-020–021
+
+Commitb763cb0894b4d93d470ffd9f89a9c97c9160a6fb publicado en PR#4. CI [41361924943](https://github.com/KingOwls/GameHive/actions/runs/41361924943) SUCCESS en foundation e identity-backend, incluidas reseñas HTTP/E2E locales con contrato de catálogo aislado explícito.
+
+Demo local de esta sesión en http://127.0.0.1:5173/, build verificado conservado en /tmp/gamehive-demo-b763cb0 para aislarlo de la implementación siguiente. Backend local; el registro crea cuentas locales. Esta dirección no es un despliegue público Vercel.
+
+Historia comprobada: búsqueda Hollow Knight→catalog Edge→ficha RAWG persistida y Data API de reseñas→renderizado. Servidor informó VITE8.3.5 ready149ms; APIs catalog/reviews200 observadas en navegador, título/fuente correctos,0pageerror y axe completo0. Captura visual pública temporal revisada; ficha y estados sin desbordamiento. Flujo autenticado de publicación/otra sesión/edición/retiro ya comprobado por E2E real, no inferido de captura. Reinicio de servidor sobre copia estable conserva el recorrido. No se añadieron secretos ni se publicaron funcionesG3.

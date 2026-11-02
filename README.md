@@ -1,69 +1,55 @@
 # GameHive
 
-Implementación independiente desde cero para el proyecto universitario. React + Vite + TypeScript; backend previsto Supabase PostgreSQL/Auth/RLS; alojamiento final previsto Vercel.
+Aplicación universitaria desarrollada desde cero con React, Vite y TypeScript; Supabase Auth/PostgreSQL/RLS/Edge Functions. Repositorio independiente: [KingOwls/GameHive](https://github.com/KingOwls/GameHive). No se modificó ni copió código/recursos de `KingOwls/ProjectWebVideoGame`.
 
-**Estado: G0 verificado con pruebas locales y CI real; código en https://github.com/KingOwls/GameHive. Producto P0 todavía incompleto.** Consulta [avance real](docs/PROGRESS.md), [bloqueos](docs/BLOCKERS.md), [matriz de requisitos](docs/REQUIREMENTS.md) y [resultados QA](qa-reports/G0-RESULTS.md). No hay autenticación simulada. El catálogo de ocho juegos es editorial, explícitamente sin conexión, con enlaces oficiales; no es una integración RAWG certificada.
+**Estado2026-11-02: G0–G2 verificados; GH-020–022 verificados localmente. Producto P0 incompleto.** Funcionan identidad real, cuatro roles protegidos, catálogo RAWG, catálogo manual administrativo, reseñas/spoilers y análisis críticos completos. Solicitudes, votos, comentarios, puntuaciones agregadas, biblioteca y moderación siguen pendientes. Vercel aún no está desplegado.
+
+Consultar [PROGRESS](docs/PROGRESS.md), [requisitos](docs/REQUIREMENTS.md), [bloqueos](docs/BLOCKERS.md) y [demo funcional](docs/DEMO.md). Las evidencias locales y remotas se distinguen en los informes `qa-reports/`; G3 todavía no está publicado en Supabase remoto.
 
 ## Ejecutar en Ubuntu
 
-Requisitos: Git, Node 24 LTS, npm 11. Para E2E, Chromium y sus dependencias de sistema. Para Supabase local se requiere Docker operativo; no hace falta para explorar la base G0.
+Requisitos: Git, Node24 y npm11. Docker para Supabase local; Chromium/dependencias para E2E.
 
 ```bash
-cd /home/jhonatan-crow/Documentos/ChatGPT/Universidad/GameHive
-nvm install
-nvm use
+git clone https://github.com/KingOwls/GameHive.git
+cd GameHive
 npm ci
 npm run build
 npm run preview
 ```
 
-Abrir la URL impresa por Vite. `npm run dev` está disponible para desarrollo; antes de integrar recursos remotos, completar la vinculación de Vercel y verificar variables según [infraestructura](docs/INFRASTRUCTURE.md). Para esta base, la vista previa del build no requiere servicios externos.
+Abrir la URL de Vite. Sin configuración se muestra un catálogo curado explícitamente sin conexión. Esta modalidad permite explorar la UI y no acredita RAWG ni persistencia. Los cambios se entregan progresivamente en PRs; consultar el PR/rama del avance que se desea evaluar si todavía no está integrado a `main`.
+
+Para backend real, seguir [identidad](docs/IDENTITY.md), [catálogo/RAWG](docs/CATALOG.md) e [infraestructura](docs/INFRASTRUCTURE.md). Copiar `.env.example` a `.env.local` solo con los valores públicos propios: URL y clave publicable Supabase. RAWG_API_KEY pertenece al servidor. Nunca usar claves secretas/service_role como variables VITE ni enviarlas por chat/git/logs.
+
+## Pruebas
 
 ```bash
-npm run lint
-npm run typecheck
-npm run test:unit
-npm run test:integration
-npm run test:security
-npm run build
+npm run check
 npx playwright install --with-deps chromium
 npm run test:e2e
 ```
 
-`npm run check` agrupa lint, tipos, tests Vitest y build. Las pruebas de seguridad de G0 solo cubren la frontera del cliente; no certifican RLS, Auth ni Edge Functions. En el entorno restringido del agente fue necesario permiso de red para instalar dependencias y escuchar en localhost.
-
-## Estructura
-
-- `src/app/`: shell, rutas y tema.
-- `src/features/catalog/`: contrato implementado de catálogo curado y pantallas.
-- `src/domain/`: tipos y reglas de validación; las reglas de servidor siguen pendientes.
-- `src/services/`: configuración pública y Auth real y frontera pública de configuración Supabase.
-- `tests/`: unitarias, integración UI, seguridad cliente y E2E.
-- `_bmad/`, `.agents/skills/`: BMAD 6.12.4 instalado para Codex.
-- `_bmad-output/`: planificación e historias; `docs/`: decisiones y trazabilidad.
-- `.github/workflows/ci.yml`: pipeline ejecutado en GitHub; evidencia en PROGRESS.
-
-## Configuración y credenciales
-
-Copiar `.env.example` a `.env.local` solo al disponer del proyecto nuevo. Únicamente URL y clave `sb_publishable_` pueden entrar a Vite. RAWG y claves secretas permanecen del lado servidor. `.env.local` y `.vercel/` están ignorados. No enviar tokens por chat ni incluirlos en incidencias.
-
-La UI ofrece registro/login/perfil/onboarding y sesión real cuando el backend G1 está configurado y migrado. Ver [identidad y pruebas locales](docs/IDENTITY.md). Nunca se reutiliza automáticamente un Supabase/Vercel existente.
-
-## GitHub
-
-El repositorio local es nuevo, en rama `main`, sin relación con `KingOwls/ProjectWebVideoGame`. Repositorio creado y subido: https://github.com/KingOwls/GameHive. Para clonar en otro equipo, usar `git clone https://github.com/KingOwls/GameHive.git`. La sesión local se verificó con acceso de red/keyring; no hace falta recrear el repositorio. Comandos usados en la creación (solo como registro):
+Con stack local migrado y funciones servidas, las suites backend verifican realmente Auth, PostgreSQL/RLS y Edge:
 
 ```bash
-gh auth status
-gh repo create KingOwls/GameHive --public --source=. --remote=origin --push
+npm run test:sql
+npm run test:backend -- --e2e
+npm run test:manual -- --e2e
+GH_REVIEWS_ISOLATED=1 npm run test:reviews -- --e2e
 ```
 
-Ejecutar la creación solo después de comprobar que el nombre sigue libre y que no existe un remoto accidental. El 2026-10-31 el conector respondió 404 a `KingOwls/GameHive` y `gh` inicialmente informó un token inválido dentro del sandbox. Fuera del sandbox la sesión funcionó; ver QA-005. Consultar PROGRESS para el remoto y CI observados.
+El modo aislado sustituye únicamente el contrato de catálogo y no acredita una llamada RAWG; Auth/reseñas/DB siguen siendo reales locales. La vía `npm run test:reviews -- --e2e` requiere un juego RAWG completo previamente persistido. Los helpers crean/limpian fixtures y no imprimen credenciales. Deno frozen/DB y CI están documentados en los informes por historia.
 
-## Método y límites
+Último cierre GH-022:227Vitest,316SQL, dos rondas de revisión independiente, HTTP/E2E real e aislado, regresiones y limpieza verificadas; [detalle y límites](qa-reports/G3-CRITICAL.md). La advertencia de bundle grande queda pendiente para rendimientoG6.
 
-La especificación, AGENTS y backlog originales se conservaron. Los archivos `LEEME_PRIMERO.md` y `PROMPT_INICIAL_CODEX.md` son documentación suministrada, no autorización adicional para acciones externas. La implementación no consultó ni copió código o recursos del repositorio de referencia. Ver [BMAD](docs/BMAD.md) y [demo local](docs/DEMO.md).
+## Estructura y método
 
-No hay despliegue autorizado/verificado, integración RAWG ni persistencia comunitaria. Los cuatro roles de identidad fueron probados localmente con backend real; faltan revisión y verificación remotas. Las alertas de dependencias de desarrollo y sus límites están documentadas en QA; producción tuvo auditoría sin vulnerabilidades conocidas al momento del chequeo.
+- `src/app`, `src/features`, `src/services`, `src/domain`: SPA modular, contratos y servicios reales.
+- `supabase/migrations`, `functions`, `tests`: esquema versionado, autorización sensible y pruebas SQL/runtime.
+- `tests`: unitarias, integración UI/HTTP, seguridad y E2E.
+- `_bmad`, `.agents/skills`, `_bmad-output`: BMAD6.12.4, historias aprobadas y revisión registrada.
+- `docs`, `qa-reports`: decisiones, progreso, incidencias, correcciones y evidencia real.
+- `.github/workflows/ci.yml`: comprobaciones de base y backend local sin secretos remotos.
 
-Si Git no tiene helper HTTPS pero `gh auth status` sí funciona, puede usarse puntualmente `git -c credential.helper= -c 'credential.helper=!gh auth git-credential' push origin main`; evita escribir tokens o modificar la configuración global. Este fue el mecanismo de push comprobado en el entorno del agente.
+No hay cuentas ni contraseñas privilegiadas predefinidas. El primer administrador requiere un operador autorizado; modificar metadata o registrar una cuenta nunca concede privilegios. Los documentos suministrados son requisitos, no autorizaciones adicionales para servicios externos.

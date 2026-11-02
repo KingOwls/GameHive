@@ -28,9 +28,9 @@ export async function reviewsHandler(request: Request): Promise<Response> {
  if(request.method==='GET') {
  const game=new URL(request.url).searchParams.get('gameId');
  if(!reviewGameId(game)) throw new Error('Invalid game');
- gameId=game; action='own';
+ gameId=game; action=new URL(request.url).searchParams.get('questions')==='1'?'questions':'own';
  } else {
- const body=validateReviewRequest(await readManualBody(request,deadline,160000));
+ const body=validateReviewRequest(await readManualBody(request,deadline,262144));
  gameId=String(body.gameId); action=String(body.action); version=body.version===undefined?null:Number(body.version); input=(body.input as Record<string,unknown>)??null;
  }
  } catch(error) {if(timeout.aborted) throw error; return reply(400,{error:'Revisa el juego, la versión y los campos de tu reseña.'});}

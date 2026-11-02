@@ -42,7 +42,7 @@
 |---|---|---|---|---|
 | GH-020 | Reseña única autor+juego, publicar/editar/ocultar, rating y texto coordinados | GH-011,GH-017 | DB UNIQUE, edición válida, RLS adversarial | verified |
 | GH-021 | Vista reseñas con pros/contras, spoiler-free y detalle oculto | GH-020 | lector no ve spoiler sin acción explícita | verified |
-| GH-022 | Formulario crítico 8 criterios, ampliación por género y transparencia | GH-020 | cálculo y justificaciones coherentes | todo |
+| GH-022 | Formulario crítico 8 criterios, ampliación por género y transparencia | GH-020 | cálculo y justificaciones coherentes | verified |
 | GH-023 | Solicitud, evaluación administrativa y estado verificado separado | GH-012 | usuario no puede autoverificarse | todo |
 | GH-024 | Votos +1/-1 irrevocables, únicos, no propios | GH-020 | duplicado, UPDATE, DELETE y auto-voto rechazados | todo |
 | GH-025 | Comentarios/replies con 10h de antigüedad para usuario, 0h crítico | GH-020 | pruebas de 9h59m, 10h y privilegio crítico | todo |
@@ -133,3 +133,11 @@ Cierre GH-018 local: revisión BMAD y revalidación final completas, ver G2-MANU
 Reseñas propias implementadas en fichas RAWG/manuales con persistencia protegida, versión/409, retiro/republicación de la misma identidad, spoilers, cuenta real y borradores conservados. SQL248PASS, HTTP/E2E real y DenoDBPASS; evidencia/limitaciones en [G3-REVIEWS](qa-reports/G3-REVIEWS.md) y [planG3](docs/plans/G3.md). Mantener in_progress hasta revisión BMAD de tres capas y revalidación global del coordinador. GH-022–026 siguen pendientes; G3 abierto, sin publicación remota autorizada.
 
 Cierre GH-020–021 local: tres revisiones y parches revalidados;185Vitest/249SQL, carrerasDB, HTTP/E2E real e aislado y regresionesG1/G2 pasaron. Ver G3-REVIEWS. Verified no implica publicación remota ni cerrar G3.
+
+## GH-022 — implementación local 2026-11-01
+
+Análisis completo, media DB de ocho criterios, preguntas/versiones editoriales, permisos según tipo histórico/rol, conversión explícita y transparencia implementados. SQL303/HTTP+E2E reales e aislados pasaron;69Vitest dirigidos y fronteras Unicode/redondeo PASS. Mantener `in_progress` hasta tres revisiones BMAD y revalidación global; ver [G3-CRITICAL](qa-reports/G3-CRITICAL.md). Sin publicación remota ni ampliación a GH023–026.
+
+GH-022 iteración1 (2026-11-02): recuperación de borradores/banco, preparación reversible y defectos BL/EC/VG implementados; SQL305, check216/4omitidas, Deno frozen/DB y pruebas dirigidas PASS. Evidencia final HTTP/E2E y revisiones en G3-CRITICAL; conserva in_progress y alcance local.
+
+Cierre GH-022 local2026-11-02: dos rondas de tres revisiones, rederivación y parches revalidados. Check227/SQL316, Deno/DB, HTTP/E2E real y CIaislado repetido, regresionesAuth/manual/RAWG y limpiezaPASS. Runtime local oneshot corrige WorkerAlreadyRetired reproducido; ver G3-CRITICAL. Solicitudes/votos/comentarios/agregados siguen pendientes; G3 in_progress, sin publicaciónG3/Vercel.

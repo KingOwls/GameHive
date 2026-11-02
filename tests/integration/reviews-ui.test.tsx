@@ -189,17 +189,14 @@ it("offline identities never request persisted data", () => {
   expect(s.list).not.toHaveBeenCalled();
   expect(s.own).not.toHaveBeenCalled();
 });
-it.each(["admin", "moderator", "critic"])(
-  "blocks write form for %s",
-  async (role) => {
-    auth.service.identity.mockResolvedValue({ role, status: "active" });
-    render(view(service()));
-    expect(
-      await screen.findByText(/Solo las cuentas de jugador activas/),
-    ).toBeVisible();
-    expect(screen.queryByLabelText("Título de la reseña")).toBeNull();
-  },
-);
+it.each(["admin", "moderator"])("blocks write form for %s", async (role) => {
+  auth.service.identity.mockResolvedValue({ role, status: "active" });
+  render(view(service()));
+  expect(
+    await screen.findByText(/Solo las cuentas de jugador o crítico activas/),
+  ).toBeVisible();
+  expect(screen.queryByLabelText("Título de la reseña")).toBeNull();
+});
 it("moderated owner cannot restore or edit", async () => {
   const s = service();
   vi.mocked(s.own).mockResolvedValue({ ...review, status: "hidden" });
@@ -421,7 +418,7 @@ it("saved-state checking refreshes current identity and public visibility while 
   );
   expect(await screen.findByText("Sin evaluaciones GameHive")).toBeVisible();
   expect(
-    await screen.findByText(/Solo las cuentas de jugador activas/),
+    await screen.findByText(/Solo las cuentas de jugador o crítico activas/),
   ).toBeVisible();
   expect(screen.queryByLabelText("Opinión sin spoilers")).toBeNull();
   expect(
@@ -547,3 +544,544 @@ it.each([
     );
   },
 );
+it("critic explicitly prepares a new critical draft while keeping ordinary authorship available", async () => {
+  auth.service.identity.mockResolvedValue({ role: "critic", status: "active" });
+  const s = service();
+  vi.mocked(s.own).mockResolvedValue(null);
+  s.questions = vi.fn().mockResolvedValue({ questions: [], platforms: ["PC"] });
+  render(view(s));
+  await userEvent.click(
+    await screen.findByRole("button", {
+      name: "Preparar análisis crítico completo",
+    }),
+  );
+  expect(await screen.findByLabelText("Nota de Jugabilidad")).toBeEnabled();
+  expect(
+    screen.getByRole("button", { name: /^Publicar reseña$/ }),
+  ).toBeEnabled();
+});
+
+it("critical preparation cancels reversibly and keeps an empty ordinary rating", async () => {
+  auth.service.identity.mockResolvedValue({ role: "critic", status: "active" });
+  const s = service();
+  vi.mocked(s.own).mockResolvedValue(null);
+  s.questions = vi.fn().mockResolvedValue({ questions: [], platforms: ["PC"] });
+  render(view(s));
+  await screen.findByLabelText("Título de la reseña");
+  fireEvent.change(screen.getByLabelText("Nota (0–10)"), {
+    target: { value: "" },
+  });
+  fireEvent.change(screen.getByLabelText("Título de la reseña"), {
+    target: { value: "Texto ordinario conservado" },
+  });
+  const prepare = await screen.findByRole("button", {
+    name: "Preparar análisis crítico completo",
+  });
+  await waitFor(() => expect(prepare).toBeEnabled());
+  await userEvent.click(prepare);
+  expect(screen.getByLabelText("Nota (0–10)")).toHaveValue(5);
+  fireEvent.change(screen.getByLabelText("Nota de Jugabilidad"), {
+    target: { value: "9" },
+  });
+  expect(screen.getByLabelText("Nota (0–10)")).toHaveValue(5.5);
+  await userEvent.click(
+    screen.getByRole("button", { name: "Cancelar preparación crítica" }),
+  );
+  expect(screen.getByLabelText("Nota (0–10)")).toHaveValue(null);
+  expect(screen.getByLabelText("Título de la reseña")).toHaveValue(
+    "Texto ordinario conservado",
+  );
+  expect(screen.queryByLabelText("Nota de Jugabilidad")).toBeNull();
+});
+it("explains missing catalog platforms and blocks preparing a new analysis", async () => {
+  auth.service.identity.mockResolvedValue({ role: "critic", status: "active" });
+  const s = service();
+  vi.mocked(s.own).mockResolvedValue(null);
+  s.questions = vi.fn().mockResolvedValue({ questions: [], platforms: [] });
+  render(view(s));
+  expect(
+    await screen.findByText(/El catálogo no dispone de plataformas/),
+  ).toBeVisible();
+  expect(
+    screen.getByRole("button", { name: "Preparar análisis crítico completo" }),
+  ).toBeDisabled();
+});
+it("restores prompt snapshots through questions errors and reconciles by key on retry", async () => {
+  const { criticalFixture } = await import("../helpers/critical");
+  const q = {
+    id: "00000000-0000-0000-0000-000000000001",
+    question_key: "experience",
+    version: 1,
+    genre: "*",
+    prompt: "Pregunta original del borrador",
+    provenance: "Contenido editorial propio",
+  };
+  const critical = criticalFixture({ questions: [q], platforms: ["PC"] });
+  critical.answers[0].answer = "Mi respuesta conservada";
+  critical.criteria.art = {
+    score: NaN,
+    explanation: "Mi explicación inacabada",
+  };
+  sessionStorage.setItem(
+    "gamehive:review-draft:owner:rawg:42",
+    JSON.stringify({
+      input: {
+        rating: NaN,
+        title: "Borrador crítico propio",
+        bodyPublic: "Opinión que debe sobrevivir",
+        bodySpoiler: "",
+        critical,
+      },
+      version: null,
+      questions: [q],
+    }),
+  );
+  auth.service.identity.mockResolvedValue({ role: "critic", status: "active" });
+  const s = service();
+  vi.mocked(s.own).mockResolvedValue(null);
+  s.questions = vi.fn().mockRejectedValueOnce(new Error("Temporal"));
+  render(view(s));
+  expect(
+    await screen.findByText(/No pudimos cargar las preguntas/),
+  ).toBeVisible();
+  expect(
+    screen.getByLabelText("Pregunta original del borrador (versión 1)"),
+  ).toHaveValue("Mi respuesta conservada");
+  expect(screen.getByLabelText("Nota de Arte")).toHaveValue(null);
+  const nextQ = {
+    ...q,
+    id: "00000000-0000-0000-0000-000000000002",
+    version: 2,
+    prompt: "Pregunta actual del banco",
+  };
+  vi.mocked(s.questions).mockResolvedValue({
+    platforms: ["PC"],
+    questions: [
+      nextQ,
+      {
+        ...q,
+        id: "00000000-0000-0000-0000-000000000003",
+        question_key: "audience",
+        prompt: "Pregunta adicional del banco",
+      },
+    ],
+  });
+  await userEvent.click(
+    screen.getByRole("button", { name: "Reintentar preguntas críticas" }),
+  );
+  await screen.findByText(/El banco de preguntas cambió/);
+  expect(
+    screen.getByLabelText("Pregunta original del borrador (versión 1)"),
+  ).toHaveValue("Mi respuesta conservada");
+  await userEvent.click(
+    screen.getByRole("button", {
+      name: "Actualizar preguntas conservando respuestas",
+    }),
+  );
+  expect(
+    screen.getByLabelText("Pregunta actual del banco (versión 2)"),
+  ).toHaveValue("Mi respuesta conservada");
+  expect(
+    screen.getByLabelText("Pregunta adicional del banco (versión 1)"),
+  ).toHaveValue("");
+  expect(screen.getByLabelText("Explicación de Arte")).toHaveValue(
+    "Mi explicación inacabada",
+  );
+  const stored = JSON.parse(
+    sessionStorage.getItem("gamehive:review-draft:owner:rawg:42")!,
+  );
+  expect(stored.questions[0]).toEqual(nextQ);
+});
+it("sends calculated critical rating even if ordinary rating was unfinished", async () => {
+  const { criticalFixture } = await import("../helpers/critical");
+  const critical = criticalFixture({ questions: [], platforms: ["PC"] });
+  sessionStorage.setItem(
+    "gamehive:review-draft:owner:rawg:42",
+    JSON.stringify({
+      input: {
+        rating: NaN,
+        title: "Crítica completa",
+        bodyPublic: "Opinión pública completa de esta experiencia.",
+        bodySpoiler: "",
+        critical,
+      },
+      version: null,
+      questions: [],
+    }),
+  );
+  auth.service.identity.mockResolvedValue({ role: "critic", status: "active" });
+  const s = service();
+  vi.mocked(s.own).mockResolvedValue(null);
+  s.questions = vi.fn().mockResolvedValue({ platforms: ["PC"], questions: [] });
+  render(view(s));
+  await screen.findByLabelText("Nota de Jugabilidad");
+  await userEvent.click(
+    screen.getByRole("button", { name: /^Publicar reseña$/ }),
+  );
+  expect(s.mutate).toHaveBeenCalledWith(
+    "create",
+    "rawg:42",
+    null,
+    expect.objectContaining({ rating: 5.5, critical }),
+  );
+});
+it("lets a demoted author cancel an unpersisted critical extension without losing ordinary text", async () => {
+  const { criticalFixture } = await import("../helpers/critical");
+  sessionStorage.setItem(
+    "gamehive:review-draft:owner:rawg:42",
+    JSON.stringify({
+      input: {
+        rating: 7,
+        title: "Mi título ordinario",
+        bodyPublic: "Mi opinión ordinaria debe conservarse.",
+        bodySpoiler: "",
+        critical: criticalFixture({ platforms: ["PC"], questions: [] }),
+      },
+      version: null,
+      questions: [],
+    }),
+  );
+  const s = service();
+  vi.mocked(s.own).mockResolvedValue(null);
+  render(view(s));
+  await screen.findByText(/Tu rol actual no permite publicar este análisis/);
+  await userEvent.click(
+    screen.getByRole("button", { name: "Cancelar preparación crítica" }),
+  );
+  expect(screen.getByLabelText("Nota (0–10)")).toHaveValue(7);
+  expect(screen.getByLabelText("Título de la reseña")).toHaveValue(
+    "Mi título ordinario",
+  );
+  expect(screen.getByLabelText("Opinión sin spoilers")).toHaveValue(
+    "Mi opinión ordinaria debe conservarse.",
+  );
+});
+
+it.each([null, 1])(
+  "blocks demoted critical submit until explicit cancellation (version %s)",
+  async (version) => {
+    const { criticalFixture } = await import("../helpers/critical");
+    const critical = criticalFixture({ platforms: ["PC"], questions: [] });
+    const input = {
+      rating: 7,
+      title: "Preparación crítica",
+      bodyPublic: "Una opinión pública distinta que debe conservarse.",
+      bodySpoiler: "",
+      critical,
+    };
+    sessionStorage.setItem(
+      "gamehive:review-draft:owner:rawg:42",
+      JSON.stringify({ input, version, questions: [] }),
+    );
+    const s = service();
+    vi.mocked(s.own).mockResolvedValue(version ? review : null);
+    render(view(s));
+    const title = await screen.findByLabelText("Título de la reseña");
+    expect(
+      screen.getByRole("button", {
+        name: version ? "Guardar cambios de reseña" : "Publicar reseña",
+      }),
+    ).toBeDisabled();
+    fireEvent.submit(title.closest("form")!);
+    expect(s.mutate).not.toHaveBeenCalled();
+    expect(screen.getByLabelText("Opinión sin spoilers")).toHaveValue(
+      input.bodyPublic,
+    );
+    await userEvent.click(
+      screen.getByRole("button", { name: "Cancelar preparación crítica" }),
+    );
+    fireEvent.submit(title.closest("form")!);
+    await waitFor(() =>
+      expect(s.mutate).toHaveBeenCalledWith(
+        version ? "update" : "create",
+        "rawg:42",
+        version,
+        expect.objectContaining({ rating: 7, bodyPublic: input.bodyPublic }),
+      ),
+    );
+    expect(vi.mocked(s.mutate).mock.calls[0][3]).not.toHaveProperty("critical");
+  },
+);
+it("preserves basic historical critical editing after demotion", async () => {
+  const { criticalFixture } = await import("../helpers/critical");
+  const c = criticalFixture({ platforms: ["PC"], questions: [] });
+  const s = service();
+  vi.mocked(s.own).mockResolvedValue({
+    ...review,
+    kind: "critic",
+    rating: 5.5,
+    critical: {
+      criteria: c.criteria,
+      platform: "PC",
+      hours_played: 25.5,
+      completed: true,
+      copy_provided: false,
+      score_reason: c.scoreReason,
+      answers: [],
+    },
+  });
+  render(view(s));
+  const body = await screen.findByLabelText("Opinión sin spoilers");
+  fireEvent.change(body, {
+    target: { value: "Opinión básica nueva de una crítica histórica intacta." },
+  });
+  fireEvent.submit(body.closest("form")!);
+  await waitFor(() =>
+    expect(s.mutate).toHaveBeenCalledWith(
+      "update",
+      "rawg:42",
+      1,
+      expect.objectContaining({ rating: 5.5 }),
+    ),
+  );
+  expect(vi.mocked(s.mutate).mock.calls[0][3]).not.toHaveProperty("critical");
+});
+it("blocks removed answers reconciliation without changing the draft until the author explicitly empties them", async () => {
+  const { criticalFixture } = await import("../helpers/critical");
+  const q = {
+    id: "00000000-0000-0000-0000-000000000001",
+    question_key: "keep",
+    version: 1,
+    genre: "*",
+    prompt: "Pregunta que permanece",
+    provenance: "Contenido editorial propio",
+  };
+  const removed = {
+    ...q,
+    id: "00000000-0000-0000-0000-000000000002",
+    question_key: "removed",
+    prompt: "Pregunta retirada del banco",
+  };
+  const c = criticalFixture({ platforms: ["PC"], questions: [q, removed] });
+  const draft = {
+    input: {
+      rating: 7,
+      title: "Borrador crítico",
+      bodyPublic: "Opinión pública completa que se conserva intacta.",
+      bodySpoiler: "",
+      critical: c,
+    },
+    version: null,
+    questions: [q, removed],
+  };
+  const key = "gamehive:review-draft:owner:rawg:42";
+  sessionStorage.setItem(key, JSON.stringify(draft));
+  auth.service.identity.mockResolvedValue({ role: "critic", status: "active" });
+  const s = service();
+  vi.mocked(s.own).mockResolvedValue(null);
+  s.questions = vi
+    .fn()
+    .mockResolvedValue({ platforms: ["PC"], questions: [q] });
+  render(view(s));
+  await screen.findByText(/El banco de preguntas cambió/);
+  const button = screen.getByRole("button", {
+    name: "Actualizar preguntas conservando respuestas",
+  });
+  await userEvent.click(button);
+  expect(
+    await screen.findByText(/Copia su contenido y vacía explícitamente/),
+  ).toBeVisible();
+  expect(JSON.parse(sessionStorage.getItem(key)!)).toEqual(draft);
+  fireEvent.change(
+    screen.getByLabelText("Pregunta retirada del banco (versión 1)"),
+    { target: { value: "" } },
+  );
+  await userEvent.click(button);
+  expect(
+    screen.queryByLabelText("Pregunta retirada del banco (versión 1)"),
+  ).toBeNull();
+  expect(
+    screen.getByLabelText("Pregunta que permanece (versión 1)"),
+  ).toHaveValue(c.answers[0].answer);
+  expect(
+    JSON.parse(sessionStorage.getItem(key)!).input.critical.criteria,
+  ).toEqual(c.criteria);
+});
+it.each([null, 1])(
+  "prevents known stale question IDs from being submitted for create/convert (version %s)",
+  async (version) => {
+    const { criticalFixture } = await import("../helpers/critical");
+    const q = {
+      id: "00000000-0000-0000-0000-000000000001",
+      question_key: "experience",
+      version: 1,
+      genre: "*",
+      prompt: "Pregunta antigua del banco",
+      provenance: "Contenido editorial propio",
+    };
+    const c = criticalFixture({ platforms: ["PC"], questions: [q] });
+    sessionStorage.setItem(
+      "gamehive:review-draft:owner:rawg:42",
+      JSON.stringify({
+        input: {
+          rating: 7,
+          title: "Mi crítica pendiente",
+          bodyPublic: "Una opinión pública crítica distinta y completa.",
+          bodySpoiler: "",
+          critical: c,
+        },
+        version,
+        questions: [q],
+      }),
+    );
+    auth.service.identity.mockResolvedValue({
+      role: "critic",
+      status: "active",
+    });
+    const s = service();
+    vi.mocked(s.own).mockResolvedValue(version ? review : null);
+    s.questions = vi.fn().mockResolvedValue({
+      platforms: ["PC"],
+      questions: [
+        { ...q, id: "00000000-0000-0000-0000-000000000002", version: 2 },
+      ],
+    });
+    render(view(s));
+    await screen.findByText(/El banco de preguntas cambió/);
+    const title = screen.getByLabelText("Título de la reseña");
+    fireEvent.submit(title.closest("form")!);
+    expect(s.mutate).not.toHaveBeenCalled();
+    expect(
+      screen.getByRole("button", {
+        name: version ? "Guardar cambios de reseña" : "Publicar reseña",
+      }),
+    ).toBeDisabled();
+    await userEvent.click(
+      screen.getByRole("button", {
+        name: "Actualizar preguntas conservando respuestas",
+      }),
+    );
+    fireEvent.submit(title.closest("form")!);
+    await waitFor(() =>
+      expect(s.mutate).toHaveBeenCalledWith(
+        version ? "convert" : "create",
+        "rawg:42",
+        version,
+        expect.objectContaining({
+          critical: expect.objectContaining({
+            answers: [
+              {
+                questionId: "00000000-0000-0000-0000-000000000002",
+                answer: c.answers[0].answer,
+              },
+            ],
+          }),
+        }),
+      ),
+    );
+  },
+);
+it.each([null, 1])(
+  "blocks a disappeared platform in a new draft/conversion and recovers (version %s)",
+  async (version) => {
+    const { criticalFixture } = await import("../helpers/critical");
+    const c = criticalFixture({ platforms: ["PC"], questions: [] });
+    sessionStorage.setItem(
+      "gamehive:review-draft:owner:rawg:42",
+      JSON.stringify({
+        input: {
+          rating: 7,
+          title: "Crítica pendiente",
+          bodyPublic: "Una opinión crítica completa que debe conservarse.",
+          bodySpoiler: "",
+          critical: c,
+        },
+        version,
+        questions: [],
+      }),
+    );
+    auth.service.identity.mockResolvedValue({
+      role: "critic",
+      status: "active",
+    });
+    const s = service();
+    vi.mocked(s.own).mockResolvedValue(version ? review : null);
+    s.questions = vi
+      .fn()
+      .mockResolvedValue({ platforms: ["Nintendo"], questions: [] });
+    render(view(s));
+    await screen.findByText(
+      /La plataforma seleccionada ya no está en el catálogo/,
+    );
+    const platform = screen.getByLabelText(
+      "Plataforma analizada",
+    ) as HTMLSelectElement;
+    expect(platform.checkValidity()).toBe(false);
+    expect(screen.getByRole("option", { name: "PC" })).toBeDisabled();
+    fireEvent.submit(platform.closest("form")!);
+    expect(s.mutate).not.toHaveBeenCalled();
+    fireEvent.change(platform, { target: { value: "Nintendo" } });
+    expect(platform.checkValidity()).toBe(true);
+    fireEvent.submit(platform.closest("form")!);
+    await waitFor(() =>
+      expect(s.mutate).toHaveBeenCalledWith(
+        version ? "convert" : "create",
+        "rawg:42",
+        version,
+        expect.objectContaining({
+          critical: expect.objectContaining({ platform: "Nintendo" }),
+        }),
+      ),
+    );
+  },
+);
+it("does not block persisted historical questions or unchanged platform after catalog changes", async () => {
+  const { criticalFixture } = await import("../helpers/critical");
+  const q = {
+    id: "00000000-0000-0000-0000-000000000001",
+    question_key: "experience",
+    version: 1,
+    genre: "*",
+    prompt: "Pregunta histórica estable",
+    provenance: "Contenido editorial propio",
+  };
+  const c = criticalFixture({ platforms: ["PC"], questions: [q] });
+  auth.service.identity.mockResolvedValue({ role: "critic", status: "active" });
+  const s = service();
+  vi.mocked(s.own).mockResolvedValue({
+    ...review,
+    rating: 5.5,
+    kind: "critic",
+    critical: {
+      criteria: c.criteria,
+      platform: "PC",
+      hours_played: 25.5,
+      completed: true,
+      copy_provided: false,
+      score_reason: c.scoreReason,
+      answers: [
+        { question_id: q.id, answer: c.answers[0].answer, question: q },
+      ],
+    },
+  });
+  s.questions = vi.fn().mockResolvedValue({
+    platforms: ["Nintendo"],
+    questions: [
+      { ...q, id: "00000000-0000-0000-0000-000000000002", version: 2 },
+    ],
+  });
+  render(view(s));
+  await waitFor(() =>
+    expect(
+      screen.getByRole("button", { name: "Reintentar preguntas críticas" }),
+    ).toBeEnabled(),
+  );
+  const platform = (await screen.findByLabelText(
+    "Plataforma analizada",
+  )) as HTMLSelectElement;
+  expect(platform.checkValidity()).toBe(true);
+  fireEvent.submit(platform.closest("form")!);
+  await waitFor(() =>
+    expect(s.mutate).toHaveBeenCalledWith(
+      "update",
+      "rawg:42",
+      1,
+      expect.objectContaining({
+        critical: expect.objectContaining({
+          platform: "PC",
+          answers: [{ questionId: q.id, answer: c.answers[0].answer }],
+        }),
+      }),
+    ),
+  );
+});

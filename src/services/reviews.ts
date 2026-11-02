@@ -1,4 +1,6 @@
 import type {
+  CriticalOptions,
+  CriticalDetails,
   Page,
   PublicReview,
   Review,
@@ -9,6 +11,7 @@ import { parsePublicConfig } from "./config";
 import { getAuthService } from "./auth";
 import { ServiceError } from "./errors";
 export interface ReviewsService {
+  questions?(gameId: string, signal?: AbortSignal): Promise<CriticalOptions>;
   list(
     gameId: string,
     page: number,
@@ -36,8 +39,23 @@ export const persistedReviewGame = (id: string) =>
   /^manual:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(
     id,
   );
+function criticalInput(d: CriticalDetails) {
+  return {
+    criteria: d.criteria,
+    platform: d.platform,
+    hoursPlayed: Number(d.hours_played),
+    completed: d.completed,
+    copyProvided: d.copy_provided,
+    scoreReason: d.score_reason,
+    answers: d.answers.map((a) => ({
+      questionId: a.question_id,
+      answer: a.answer,
+    })),
+  };
+}
 export function reviewInput(review: Review): ReviewInput {
   return {
+    ...(review.critical ? { critical: criticalInput(review.critical) } : {}),
     rating: Number(review.rating),
     title: review.title,
     bodyPublic: review.body_public,
@@ -108,6 +126,15 @@ export function createReviewsService(
       );
   };
   return {
+    async questions(gameId, signal) {
+      game(gameId);
+      const response = await request(
+        `/functions/v1/reviews?${new URLSearchParams({ gameId, questions: "1" })}`,
+        true,
+        { signal },
+      );
+      return (await response.json()) as CriticalOptions;
+    },
     async list(gameId, page, signal) {
       game(gameId);
       if (
@@ -117,7 +144,8 @@ export function createReviewsService(
       )
         throw new ServiceError("validation", "Página inválida.");
       const params = new URLSearchParams({
-        select: "*,profiles!author_id(username,avatar_key)",
+        select:
+          "*,profiles!author_id(username,avatar_key),review_critic_details(*,review_critic_answers(*,critic_questions(*)))",
         order: "created_at.desc,id.asc",
         limit: "10",
         offset: String((page - 1) * 10),
@@ -130,7 +158,28 @@ export function createReviewsService(
         signal,
         headers: { Prefer: "count=exact" },
       });
-      const items = (await response.json()) as PublicReview[];
+      const rows = (await response.json()) as (PublicReview & {
+        review_critic_details?:
+          | (CriticalDetails & {
+              review_critic_answers: {
+                question_id: string;
+                answer: string;
+                critic_questions: CriticalDetails["answers"][number]["question"];
+              }[];
+            })
+          | null;
+      })[];
+      const items = rows.map((row) => ({
+        ...row,
+        critical: row.review_critic_details
+          ? {
+              ...row.review_critic_details,
+              answers: row.review_critic_details.review_critic_answers.map(
+                (a) => ({ ...a, question: a.critic_questions }),
+              ),
+            }
+          : row.critical,
+      }));
       return {
         items,
         total: Number(
