@@ -149,7 +149,10 @@ export function GameDetailPage({ provider }: { provider: CatalogProvider }) {
         </div>
         <div>
           <h2>Críticos</h2>
-          <p>Sin evaluaciones</p>
+          <p>
+            Consulta los análisis publicados. Cálculo de puntuación crítica
+            pendiente.
+          </p>
         </div>
         <div>
           <h2>Proveedor</h2>

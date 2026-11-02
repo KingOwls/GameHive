@@ -45,12 +45,15 @@ const run = (command, args) => {
 run("node_modules/.bin/vitest", [
   "run",
   "tests/integration/reviews-live.test.ts",
+  "tests/integration/critical-live.test.ts",
 ]);
 if (process.argv.includes("--e2e")) {
   run("npm", ["run", "build"]);
   run("node_modules/.bin/playwright", [
     "test",
     "tests/e2e/reviews.spec.ts",
+    "tests/e2e/critical.spec.ts",
     "--reporter=list",
+    "--workers=1",
   ]);
 }

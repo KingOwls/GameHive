@@ -1,13 +1,13 @@
 # Progreso GameHive
 
-Actualizado: 2026-11-01, America/Bogota. Implementación nueva en `/home/jhonatan-crow/Documentos/ChatGPT/Universidad/GameHive`. Producto final P0 **incompleto**. No se modificó ni copió código de `KingOwls/ProjectWebVideoGame`.
+Actualizado: 2026-11-02, America/Bogota. Implementación nueva en `/home/jhonatan-crow/Documentos/ChatGPT/Universidad/GameHive`. Producto final P0 **incompleto**. No se modificó ni copió código de `KingOwls/ProjectWebVideoGame`.
 
 | Gate | Estado | Evidencia y brecha |
 |---|---|---|
 | G0 Preparación | verified | Base local funcional y verificada; BMAD instalado, 32 Vitest + 4 E2E, CI real pasó. GitHub remoto/push verificados en https://github.com/KingOwls/GameHive; CI real pasó en [41253679920](https://github.com/KingOwls/GameHive/actions/runs/41253679920), commit `4bb1b37295bf45d96ecd8a8f44a9c66e2eaccb22`. Dev y preview comprobados; ver G0-FLOW. CI con Actions actualizadas también pasó: [41253884624](https://github.com/KingOwls/GameHive/actions/runs/41253884624), commit `d30323ad6a93f42b4f58ebf51be4cf1605789883`. |
 | G1 Identidad/datos | verified | SQL/RLS, HTTP/E2E y CI pasaron; Auth remoto configurado. Registro, cuatro roles, privacidad, refresh, revocación, suspensión y dos auditorías comprobados en GameHive Next. Cinco cuentas temporales autorizadas y eliminadas; cero filas residuales. Ver [G1-REMOTE](../qa-reports/G1-REMOTE.md). |
 | G2 Descubrimiento | verified | GH-014–017 revisados y revalidados localmente con RAWG real:101 Vitest,134 SQL/RLS, adaptador real/DB, concurrencia y E2E búsqueda→ficha→capturas→recarga+axe. G1 regresión HTTP/E2E pasa. GH-018 revisado y verificado localmente (141 Vitest,178 SQL,3 Deno/DB,HTTP/E2E real); RAWG y alta manual publicados/verificados con limpieza remota (G2-REMOTE); GH-019 condicionado; score/filtro GameHive depende de G3. |
-| G3 Comunidad | in_progress | GH-020–021 verified local tras tres revisiones/parches:185Vitest/249SQL, HTTP/E2E real e aislado, carrerasDB y regresionesG1/G2PASS (G3-REVIEWS). Críticas, votos, comentarios y agregados pendientes. |
+| G3 Comunidad | in_progress | GH-020–022 verified local: reseñas, spoilers y críticas completas con tipo histórico/conversión. Check227Vitest/316SQL, Deno/DB, HTTP/E2E real e aislado repetido y regresionesG1/G2PASS. Dos rondas de revisión crítica y limpieza; ver G3-CRITICAL. Solicitudes, votos, comentarios y agregados pendientes; G3 remoto no publicado. |
 | G4 Biblioteca/perfiles | pending | Onboarding persistente implementado en G1; biblioteca y seguimiento pendientes. |
 | G5 Moderación | pending | Auditoría de autoridad implementada en G1; reportes y moderación de contenido pendientes. |
 | G6 Entrega | pending | Tema/teclado/axe verificados en recorridosG0–G3 implementados. Evaluación final integral y despliegue pendientes. |
@@ -17,7 +17,7 @@ Actualizado: 2026-11-01, America/Bogota. Implementación nueva en `/home/jhonata
 - Lectura de especificación, AGENTS y backlog. Los otros documentos del paquete se preservan como referencia, no como autorización externa adicional.
 - Carpeta y Git independientes; stack con versiones exactas/lockfile, scripts, pipeline CI ejecutada y configuración Vercel SPA preparada.
 - BMAD 6.12.4 estable instalado para Codex; renderer, status y configuración verificados. Plan/historia y decisiones registradas. La historia G1 recibió aprobación humana y organización explícita antes de implementar.
-- Interfaz original con catálogo curado, estados de servicio, temas persistidos, movimiento reducido y vitrina. Sin comunidad ni puntuaciones simuladas; Auth real disponible al configurar Supabase.
+- Interfaz original con catálogo curado, estados de servicio, temas persistidos, movimiento reducido y vitrina. Auth real y comunidad local con reseñas/críticas verificadas; sin puntuaciones ni opiniones simuladas.
 - Pruebas y defectos: [resultados](../qa-reports/G0-RESULTS.md); [matriz por ticket](REQUIREMENTS.md); [bloqueos](BLOCKERS.md).
 
 ## Decisiones humanas
@@ -25,13 +25,13 @@ Actualizado: 2026-11-01, America/Bogota. Implementación nueva en `/home/jhonata
 - Crear desde cero; no copiar/modificar referencia.
 - Preparar un **proyecto Supabase nuevo**; no reactivar/reutilizar los anteriores.
 - Crear/subir a GitHub solicitado; sesión KingOwls válida comprobada fuera del sandbox.
-- Autorizadas únicamente las funciones identity/admin-identity en GameHive Next; no hay autorización de Vercel ni de costes distintos de cero.
+- Publicaciones remotas G1/G2 autorizadas exclusivamente en GameHive Next; G3 y Vercel todavía sin publicar. No hay autorización de costes distintos de cero.
 
 ## Siguiente trabajo
 
-1. B-01 resuelto; remoto nuevo y push verificados. CI pasó: https://github.com/KingOwls/GameHive/actions/runs/41253679920.
-2. Login CLI, Auth de demo y flujo autenticado remoto completados; cinco cuentas de prueba autorizadas y eliminadas. Las dos funciones G1 autorizadas están ACTIVE; catálogo permanece solo local.
-3. RAWG local/remoto y GH-018 local revalidados; publicar alta manual después de autorización específica y preparar historia GH-020. catálogo curado sigue siendo modo explícito predeterminado.
+1. Preparar/aprobar las historias GH-023–026 y completar comunidad: solicitudes, votos, comentarios y scores propios.
+2. Continuar G4 biblioteca/perfiles y G5 moderación con sus pruebas de privacidad y permisos.
+3. Cerrar G6 con UX/rendimiento, evaluación integral de cinco flujos P0 y publicación Vercel cuando exista autorización concreta.
 
 No declarar G0 verified por el solo hecho de compilar; no declarar G1–G6 verified sin backend y pruebas reales. Revisión humana para integrar cambios: pendiente.
 
@@ -92,3 +92,15 @@ Evidencia inicial y brechas: [G3-REVIEWS](../qa-reports/G3-REVIEWS.md); contrato
 ## GH-020–021 verificado localmente
 
 Tres revisiones BMAD, correcciones y revalidación final completas; ver G3-REVIEWS.185Vitest/249SQL, Deno/carrerasDB, reseñas HTTP/E2E real y CIaislado, Auth/manual/RAWG regresiónPASS. Limpieza sin residuos ni clave privada en bundle. G3 in_progress; GH-022 siguiente. Decisiones humanas para críticas: nota final media simple de ocho criterios; conservar tipo histórico al cambiar rol, conversión explícita sin duplicar reseña. No publicaciónG3/Vercel.
+
+## GH-022 — implementación local 2026-11-01
+
+Análisis crítico completo implementado según spec aprobada: media simple DB de ocho criterios, banco editorial por género/versiones, datos/contexto/transparencia y conversión explícita bajo identidad existente. Tipo conservado al cambiar rol; detalles críticos protegidos, verificación separada real. SQL303 y HTTP2+E2E2 reales e aislados PASS;69Vitest dirigidos/lint/typecheck/build/Deno frozen PASS. Límites Unicode/redondeo verificados. Pendientes revisiones y revalidación global antes de verified local. Ver [G3-CRITICAL](../qa-reports/G3-CRITICAL.md) y [plan](plans/G3.md). G3 conserva in_progress; GH023–026 y remoto fuera de esta historia.
+
+## GH-022 — recuperación de iteración 1, 2026-11-02
+
+Rederivadas las correcciones BL/EC/VG de la spec: estructura de borrador y números vacíos, instantáneas/reconciliación del banco, loading/error/reintento sin pérdida, cancelación reversible, nota mostrada/enviada coherente, plataforma histórica y guía pública sin spoilers. SQL305PASS, check216PASS/4omitidas + build, Deno frozen/DB PASS; navegador ampliado ejercita textos/versiones/copia facilitada y recuperación. Los resultados finales real/aislado y revisiones se detallan en [G3-CRITICAL](../qa-reports/G3-CRITICAL.md). GH022/G3 permanecen in_progress hasta cierre del coordinador.
+
+## GH-022 verificado localmente — 2026-11-02
+
+Dos rondas de tres revisiones independientes, rederivación y correcciones revalidadas; intención aprobada idéntica. Check227/4omitidas, SQL316, Deno frozen5handlers/DBPASS; real2HTTP+2E2E y víaCIaislada dos veces2HTTP+2E2EPASS cada una. Regresiones Auth/manual/RAWG/offline, db lint y limpiezaPASS. Runtime local oneshot corrigió WorkerAlreadyRetired demostrado; no se ocultó el500 con expectativas permisivas. Ver [G3-CRITICAL](../qa-reports/G3-CRITICAL.md) y [demo](DEMO.md). G3 sigue abierto, G4–G6 pendientes; sin publicación remotaG3/Vercel.

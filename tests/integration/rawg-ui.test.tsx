@@ -101,7 +101,7 @@ it("detail retries errors, keeps external ratings separate and renders descripti
   await user.click(screen.getByRole("button", { name: "Reintentar" }));
   await screen.findByRole("heading", { name: "Test fixture game" });
   expect(screen.getByText("RAWG: 4.2 / 5 · muestra: 12")).toBeVisible();
-  expect(screen.getAllByText("Sin evaluaciones")).toHaveLength(1);
+  expect(screen.getByText("Consulta los análisis publicados. Cálculo de puntuación crítica pendiente.")).toBeVisible();
   expect(screen.getByText("Sin fecha confirmada")).toBeVisible();
   await user.click(screen.getByText("Ficha completa"));
   expect(screen.getByText("<script>unsafe()</script>")).toBeVisible();

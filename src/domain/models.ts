@@ -68,7 +68,53 @@ export interface CatalogProvider {
   search(query: CatalogQuery, signal?: AbortSignal): Promise<Page<Game>>;
   get(id: string, signal?: AbortSignal): Promise<Game | null>;
 }
+export const criterionLabels = {
+  gameplay: "Jugabilidad",
+  narrative: "Narrativa",
+  art: "Arte",
+  sound: "Sonido",
+  performance: "Rendimiento",
+  accessibility: "Accesibilidad",
+  content: "Contenido",
+  value: "Valor",
+} as const;
+export type CriterionKey = keyof typeof criterionLabels;
+export interface CriticalQuestion {
+  id: string;
+  question_key: string;
+  version: number;
+  genre: string;
+  prompt: string;
+  provenance: string;
+}
+export interface CriticalInput {
+  criteria: Record<CriterionKey, { score: number; explanation: string }>;
+  platform: string;
+  hoursPlayed: number;
+  completed: boolean;
+  copyProvided: boolean;
+  scoreReason: string;
+  answers: { questionId: string; answer: string }[];
+}
+export interface CriticalDetails {
+  criteria: CriticalInput["criteria"];
+  platform: string;
+  hours_played: number;
+  completed: boolean;
+  copy_provided: boolean;
+  score_reason: string;
+  answers: {
+    question_id: string;
+    answer: string;
+    question: CriticalQuestion;
+  }[];
+}
+export interface CriticalOptions {
+  questions: CriticalQuestion[];
+  platforms: string[];
+}
 export interface ReviewInput {
+  critical?: CriticalInput;
   rating: number;
   title: string;
   bodyPublic: string;
@@ -117,6 +163,9 @@ export interface ManualGameInput {
 }
 
 export interface Review {
+  kind?: "user" | "critic";
+  critic_verified?: boolean;
+  critical?: CriticalDetails | null;
   id: string;
   author_id: string;
   game_id: string | null;
@@ -135,4 +184,5 @@ export interface Review {
 export interface PublicReview extends Review {
   profiles: Pick<PublicProfile, "username" | "avatar_key">;
 }
-export type ReviewAction = "create" | "update" | "withdraw" | "republish";
+export type ReviewAction =
+  "create" | "update" | "convert" | "withdraw" | "republish";
