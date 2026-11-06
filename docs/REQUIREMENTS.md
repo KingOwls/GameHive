@@ -27,7 +27,7 @@ Estado por ticket, actualizado G2 el 2026-11-01. `verified` tiene alcance local 
 | GH-021 | Vista reseñas con pros/contras, spoiler-free y detalle oculto | verified | Implementación local propia + SQL249, HTTP/E2E real RAWG/manual, DenoDB; tres revisiones y revalidación final completas. Ver G3-REVIEWS. |
 | GH-022 | Formulario crítico 8 criterios, ampliación por género y transparencia | verified | Local tras dos rondas de tres revisiones y parches:227Vitest/316SQL, Deno/DB, HTTP/E2E real e aislado repetido, regresiones/limpiezaPASS. Sin publicación remota; G3-CRITICAL. |
 | GH-023 | Solicitud, evaluación administrativa y estado verificado separado | todo | Pendiente; criterio de aceptación en BACKLOG.md, dependencias sin verificar. |
-| GH-024 | Votos +1/-1 irrevocables, únicos, no propios | todo | Pendiente; criterio de aceptación en BACKLOG.md, dependencias sin verificar. |
+| GH-024 | Votos +1/-1 irrevocables, únicos, no propios | in_progress | Migración/Edge/UI local; check240/SQL371/HTTP/DenoDB PASS. E2E aislado/manual real PASS; RAWG real bloqueado por proveedor. Revisiones/regresiones en G3-VOTES. |
 | GH-025 | Comentarios/replies con 10h de antigüedad para usuario, 0h crítico | todo | Pendiente; criterio de aceptación en BACKLOG.md, dependencias sin verificar. |
 | GH-026 | Agregados separados User/Critic/External con muestras reales | todo | Pendiente; criterio de aceptación en BACKLOG.md, dependencias sin verificar. |
 | GH-027 | Biblioteca persistente estados/favorito/"Me interesa" | todo | Pendiente; criterio de aceptación en BACKLOG.md, dependencias sin verificar. |
@@ -59,3 +59,7 @@ Cierre GH-018 local: revisión BMAD y revalidación final completas, ver G2-MANU
 Actualización remota GH-018: migración/admin-games publicados con permiso explícito, HTTP real de roles/concurrencia/privilegios/sesiones y ficha pública en navegador con recarga/axe pasaron; limpieza comprobada. G2-REMOTE sustituye pendientes históricos de publicación. Scores/filtro propio siguen dependiendo de G3.
 
 GH-020–021 verified local: reseña propia y spoilers, tres revisiones/parches y revalidación185Vitest/249SQL/HTTP/E2E/carrerasDB. Detalle G3-REVIEWS. Críticas completas y restoG3 siguen pendientes; remotoG3 no publicado.
+
+## GH-024 — votos irreversibles,2026-11-06
+
+Implementación local `in_progress`: voto único±1, no propio, autoridad/sesión vigentes, cuotas atómicas, identidad privada y contadores públicos; migración/Edge/UI y pruebas en [G3-VOTES](../qa-reports/G3-VOTES.md). Check240/SQL371/HTTP/DenoDB y E2E aislado ejecutados; fase manual real pasó, RAWG actual bloqueado por conectividad. Limpieza HTTP final PASS por IDs exactos. Cierre requiere regresiones y revisión. No concede reputación/rol ni cierraG3.

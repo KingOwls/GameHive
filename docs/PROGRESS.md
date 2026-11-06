@@ -1,13 +1,13 @@
 # Progreso GameHive
 
-Actualizado: 2026-11-02, America/Bogota. Implementación nueva en `/home/jhonatan-crow/Documentos/ChatGPT/Universidad/GameHive`. Producto final P0 **incompleto**. No se modificó ni copió código de `KingOwls/ProjectWebVideoGame`.
+Actualizado: 2026-11-06, America/Bogota. Implementación nueva en `/home/jhonatan-crow/Documentos/ChatGPT/Universidad/GameHive`. Producto final P0 **incompleto**. No se modificó ni copió código de `KingOwls/ProjectWebVideoGame`.
 
 | Gate | Estado | Evidencia y brecha |
 |---|---|---|
 | G0 Preparación | verified | Base local funcional y verificada; BMAD instalado, 32 Vitest + 4 E2E, CI real pasó. GitHub remoto/push verificados en https://github.com/KingOwls/GameHive; CI real pasó en [41253679920](https://github.com/KingOwls/GameHive/actions/runs/41253679920), commit `4bb1b37295bf45d96ecd8a8f44a9c66e2eaccb22`. Dev y preview comprobados; ver G0-FLOW. CI con Actions actualizadas también pasó: [41253884624](https://github.com/KingOwls/GameHive/actions/runs/41253884624), commit `d30323ad6a93f42b4f58ebf51be4cf1605789883`. |
 | G1 Identidad/datos | verified | SQL/RLS, HTTP/E2E y CI pasaron; Auth remoto configurado. Registro, cuatro roles, privacidad, refresh, revocación, suspensión y dos auditorías comprobados en GameHive Next. Cinco cuentas temporales autorizadas y eliminadas; cero filas residuales. Ver [G1-REMOTE](../qa-reports/G1-REMOTE.md). |
 | G2 Descubrimiento | verified | GH-014–017 revisados y revalidados localmente con RAWG real:101 Vitest,134 SQL/RLS, adaptador real/DB, concurrencia y E2E búsqueda→ficha→capturas→recarga+axe. G1 regresión HTTP/E2E pasa. GH-018 revisado y verificado localmente (141 Vitest,178 SQL,3 Deno/DB,HTTP/E2E real); RAWG y alta manual publicados/verificados con limpieza remota (G2-REMOTE); GH-019 condicionado; score/filtro GameHive depende de G3. |
-| G3 Comunidad | in_progress | GH-020–022 verified local: reseñas, spoilers y críticas completas con tipo histórico/conversión. Check227Vitest/316SQL, Deno/DB, HTTP/E2E real e aislado repetido y regresionesG1/G2PASS. Dos rondas de revisión crítica y limpieza; ver G3-CRITICAL. Solicitudes, votos, comentarios y agregados pendientes; G3 remoto no publicado. |
+| G3 Comunidad | in_progress | GH-020–022 verified local: reseñas, spoilers y críticas completas con tipo histórico/conversión. Check227Vitest/316SQL, Deno/DB, HTTP/E2E real e aislado repetido y regresionesG1/G2PASS. Dos rondas de revisión crítica y limpieza; ver G3-CRITICAL. GH-024 votos implementados, en verificación local (G3-VOTES); solicitudes, comentarios y agregados pendientes. G3 remoto no publicado. |
 | G4 Biblioteca/perfiles | pending | Onboarding persistente implementado en G1; biblioteca y seguimiento pendientes. |
 | G5 Moderación | pending | Auditoría de autoridad implementada en G1; reportes y moderación de contenido pendientes. |
 | G6 Entrega | pending | Tema/teclado/axe verificados en recorridosG0–G3 implementados. Evaluación final integral y despliegue pendientes. |
@@ -104,3 +104,12 @@ Rederivadas las correcciones BL/EC/VG de la spec: estructura de borrador y núme
 ## GH-022 verificado localmente — 2026-11-02
 
 Dos rondas de tres revisiones independientes, rederivación y correcciones revalidadas; intención aprobada idéntica. Check227/4omitidas, SQL316, Deno frozen5handlers/DBPASS; real2HTTP+2E2E y víaCIaislada dos veces2HTTP+2E2EPASS cada una. Regresiones Auth/manual/RAWG/offline, db lint y limpiezaPASS. Runtime local oneshot corrigió WorkerAlreadyRetired demostrado; no se ocultó el500 con expectativas permisivas. Ver [G3-CRITICAL](../qa-reports/G3-CRITICAL.md) y [demo](DEMO.md). G3 sigue abierto, G4–G6 pendientes; sin publicación remotaG3/Vercel.
+
+## GH-024 — votos locales,2026-11-06
+
+Implementados voto irreversible en ambas fichas, lectura propia por lote, contadores públicos, RLS privada, cuotas atómicas y auditoría. Check240/SQL371/HTTP1/DenoDB y E2E aislado PASS. Fase manual real pasó; RAWG real bloqueado por conectividad actual del proveedor (503local/timeoutdirecto). Limpieza HTTP final PASS por IDs exactos; revisiones y regresiones globales pendientes antes de verified. [Evidencia y limitaciones](../qa-reports/G3-VOTES.md). G3 permanece in_progress; sin cambios remotos ni despliegueVercel.
+## Revalidación y bloqueo actual — 2026-11-06
+
+GH024 permanece `in_progress`: coordinador confirma check240PASS/5omitidas, SQL371PASS, Deno frozen de seis handlers, runtime/DB de votos, db lint y regresiones Auth/manual/reseñas/críticas HTTP+E2E. Las fichas del test aislado son contratos explícitos; el recorrido manual real pasó, pero RAWG real devuelve503 y consultas directas al proveedor agotan el tiempo de espera. B-06 en `BLOCKERS.md` documenta el impedimento para completar aceptación y pasar a revisión BMAD; no hay publicación G3 ni Vercel.
+
+GH023: borrador preparado en `_bmad-output/implementation-artifacts/spec-gh-023-solicitud-critico.md`. Decisiones humanas recibidas: aprobación concede rol crítico y sello verificado; rechazo impone siete días completos de espera. Falta resolver quién puede solicitar y después presentar el checkpoint de historia. No se ha implementado este flujo.

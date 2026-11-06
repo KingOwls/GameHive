@@ -7,5 +7,7 @@ export default defineConfig({
     setupFiles: "./tests/setup.ts",
     include: ["tests/**/*.test.{ts,tsx}"],
     restoreMocks: true,
+    // Bound jsdom/fork pressure so local Auth/Edge verification stays responsive.
+    maxWorkers: 2,
   },
 });

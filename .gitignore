@@ -13,3 +13,4 @@ _bmad/render/
 _bmad/config.user.toml
 _bmad/custom/config.user.toml
 __pycache__/
+.venv/

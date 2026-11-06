@@ -1,3 +1,4 @@
+import { ReviewVotesProvider, VoteControls } from "./VoteControls";
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { Link } from "react-router-dom";
 import type {
@@ -384,52 +385,55 @@ function ReviewsContent({
               ? `${list.data.total} reseña${list.data.total === 1 ? "" : "s"} publicada${list.data.total === 1 ? "" : "s"} · Cálculo de puntuación GameHive pendiente`
               : "Sin evaluaciones GameHive"}
           </p>
-          {list.data.items.map((review) => (
-            <article
-              key={`${review.id}:${review.version}`}
-              className="review-card"
-            >
-              <p>
-                <span
-                  role="img"
-                  aria-label={`Avatar ${review.profiles.avatar_key}`}
-                >
-                  {
-                    ({ hive: "⬡", orbit: "◎", spark: "✦" } as const)[
-                      review.profiles.avatar_key
-                    ]
-                  }
-                </span>{" "}
-                {review.profiles.username}
-              </p>
-              <h3>{review.title}</h3>
-              {review.kind === "critic" && (
+          <ReviewVotesProvider reviews={list.data.items}>
+            {list.data.items.map((review) => (
+              <article
+                key={`${review.id}:${review.version}`}
+                className="review-card"
+              >
                 <p>
-                  Análisis crítico ·{" "}
-                  {review.critic_verified
-                    ? "Crítico verificado"
-                    : "Sin verificación de crítico"}
+                  <span
+                    role="img"
+                    aria-label={`Avatar ${review.profiles.avatar_key}`}
+                  >
+                    {
+                      ({ hive: "⬡", orbit: "◎", spark: "✦" } as const)[
+                        review.profiles.avatar_key
+                      ]
+                    }
+                  </span>{" "}
+                  {review.profiles.username}
                 </p>
-              )}
-              <p>
-                Nota del autor: {review.rating} / 10 ·{" "}
-                <time dateTime={review.updated_at}>
-                  {new Date(review.updated_at).toLocaleDateString("es")}
-                </time>
-              </p>
-              <p className="game-description">{review.body_public}</p>
-              {!!review.pros.length && <p>Pros: {review.pros.join(" · ")}</p>}
-              {!!review.cons.length && (
-                <p>Contras: {review.cons.join(" · ")}</p>
-              )}
-              {review.critical && (
-                <CriticalAnalysis details={review.critical} />
-              )}
-              {review.body_spoiler && (
-                <SpoilerReveal key={review.id} text={review.body_spoiler} />
-              )}
-            </article>
-          ))}
+                <h3>{review.title}</h3>
+                {review.kind === "critic" && (
+                  <p>
+                    Análisis crítico ·{" "}
+                    {review.critic_verified
+                      ? "Crítico verificado"
+                      : "Sin verificación de crítico"}
+                  </p>
+                )}
+                <p>
+                  Nota del autor: {review.rating} / 10 ·{" "}
+                  <time dateTime={review.updated_at}>
+                    {new Date(review.updated_at).toLocaleDateString("es")}
+                  </time>
+                </p>
+                <p className="game-description">{review.body_public}</p>
+                {!!review.pros.length && <p>Pros: {review.pros.join(" · ")}</p>}
+                {!!review.cons.length && (
+                  <p>Contras: {review.cons.join(" · ")}</p>
+                )}
+                {review.critical && (
+                  <CriticalAnalysis details={review.critical} />
+                )}
+                {review.body_spoiler && (
+                  <SpoilerReveal key={review.id} text={review.body_spoiler} />
+                )}
+                <VoteControls review={review} />
+              </article>
+            ))}
+          </ReviewVotesProvider>
           {(list.data.total > 10 || page > 1) && (
             <nav aria-label="Páginas de reseñas">
               <button

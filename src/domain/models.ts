@@ -163,6 +163,8 @@ export interface ManualGameInput {
 }
 
 export interface Review {
+  helpful_count?: number;
+  unhelpful_count?: number;
   kind?: "user" | "critic";
   critic_verified?: boolean;
   critical?: CriticalDetails | null;
@@ -186,3 +188,10 @@ export interface PublicReview extends Review {
 }
 export type ReviewAction =
   "create" | "update" | "convert" | "withdraw" | "republish";
+
+export interface ReviewVote {
+  reviewId: string;
+  value: 1 | -1 | null;
+  helpfulCount: number | null;
+  unhelpfulCount: number | null;
+}

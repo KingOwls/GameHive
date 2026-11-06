@@ -2,7 +2,7 @@
 
 Actualizado: 2026-11-02, America/Bogota. Producto completo P0 todavía pendiente. Esta guía describe la funcionalidad implementada; el cierre verificable de cada historia está en [PROGRESS](PROGRESS.md) y sus informes QA.
 
-La demo mantenida por Codex se abre en [http://127.0.0.1:5173/](http://127.0.0.1:5173/). Es local a este equipo. La revisión crítica GH-022 se incorpora al build de esa demo tras su verificación final; no confundirla con un despliegue Vercel. G1/G2 remotos están documentados aparte; G3 no se ha publicado en Supabase remoto.
+La demo mantenida por Codex se abre en [http://127.0.0.1:5173/](http://127.0.0.1:5173/). Es local a este equipo. El build estable actual incluye GH-022 verificado, commit e001062; no confundirlo con un despliegue Vercel. G1/G2 remotos están documentados aparte; G3 no se ha publicado en Supabase remoto.
 
 ## Recorrido de jugador
 

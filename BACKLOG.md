@@ -44,7 +44,7 @@
 | GH-021 | Vista reseñas con pros/contras, spoiler-free y detalle oculto | GH-020 | lector no ve spoiler sin acción explícita | verified |
 | GH-022 | Formulario crítico 8 criterios, ampliación por género y transparencia | GH-020 | cálculo y justificaciones coherentes | verified |
 | GH-023 | Solicitud, evaluación administrativa y estado verificado separado | GH-012 | usuario no puede autoverificarse | todo |
-| GH-024 | Votos +1/-1 irrevocables, únicos, no propios | GH-020 | duplicado, UPDATE, DELETE y auto-voto rechazados | todo |
+| GH-024 | Votos +1/-1 irrevocables, únicos, no propios | GH-020 | duplicado, UPDATE, DELETE y auto-voto rechazados | in_progress |
 | GH-025 | Comentarios/replies con 10h de antigüedad para usuario, 0h crítico | GH-020 | pruebas de 9h59m, 10h y privilegio crítico | todo |
 | GH-026 | Agregados separados User/Critic/External con muestras reales | GH-020,GH-022 | sin reseñas = sin score GameHive | todo |
 
@@ -141,3 +141,7 @@ Análisis completo, media DB de ocho criterios, preguntas/versiones editoriales,
 GH-022 iteración1 (2026-11-02): recuperación de borradores/banco, preparación reversible y defectos BL/EC/VG implementados; SQL305, check216/4omitidas, Deno frozen/DB y pruebas dirigidas PASS. Evidencia final HTTP/E2E y revisiones en G3-CRITICAL; conserva in_progress y alcance local.
 
 Cierre GH-022 local2026-11-02: dos rondas de tres revisiones, rederivación y parches revalidados. Check227/SQL316, Deno/DB, HTTP/E2E real y CIaislado repetido, regresionesAuth/manual/RAWG y limpiezaPASS. Runtime local oneshot corrige WorkerAlreadyRetired reproducido; ver G3-CRITICAL. Solicitudes/votos/comentarios/agregados siguen pendientes; G3 in_progress, sin publicaciónG3/Vercel.
+
+## GH-024 — implementación local2026-11-06
+
+Votos irreversibles, privacidad, cuotas y contadores implementados. Check240/SQL371/HTTP1/DenoDB y E2E aislado PASS; manual real pasó, RAWG real bloqueado por503/timeoutproveedor. Limpieza HTTP final PASS por IDs exactos; regresiones y tres revisiones pendientes para cierre. Ver [G3-VOTES](qa-reports/G3-VOTES.md). G3 abierto; sin publicación remota.

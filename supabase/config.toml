@@ -432,3 +432,6 @@ verify_jwt = false
 
 [functions.reviews]
 verify_jwt = false
+
+[functions.review-votes]
+verify_jwt = false

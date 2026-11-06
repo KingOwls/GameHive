@@ -1,6 +1,6 @@
 # Bloqueos observados
 
-Actualizado: 2026-11-01, America/Bogota.
+Actualizado: 2026-11-06, America/Bogota.
 
 | ID | Hecho observado | Efecto | Paso para resolver |
 |---|---|---|---|
@@ -9,6 +9,7 @@ Actualizado: 2026-11-01, America/Bogota.
 | B-03 | Resuelto: Docker 29.4.0 responde fuera del sandbox; el error inicial era del contexto restringido. | Backend local G1 ejecutado con SQL/Auth/Edge/RLS reales. | Ejecutar comandos Docker/Supabase con permisos adecuados, sin cambiar grupos del sistema. |
 | B-04 | Resuelto: clave RAWG privada configurada por el humano; ocho fichas y recorrido real local verificados. | Descubrimiento implementado y probado localmente. | RAWG y alta manual autorizados, publicados y verificados en GameHive Next; ver G2-REMOTE. |
 | B-05 | Vercel anterior detectado, sin proyecto nuevo vinculado ni despliegue autorizado. | No URL de entrega ni verificación hosting. | En G6 elegir destino y autorizar despliegue después de pasar gates. |
+| B-06 | El 2026-11-06 la ficha RAWG local devuelve503. GET directo autenticado de dos juegos reales agota10–12s; la prueba sin clave establece DNS/TCP/TLS, pero no recibe respuesta HTTP antes de12s. No se ha determinado si la causa está en el proveedor o en la conexión. | GH024: recorrido manual real y recorrido aislado de ambos catálogos pasan; E2E RAWG real pendiente. No invalida la evidencia histórica G2 ni acredita disponibilidad actual. | Repetir la consulta y el E2E real cuando responda RAWG. No cambiar TTL ni presentar fixtures como integración real. No hace falta compartir la clave por chat. |
 
 Red npm y localhost inicialmente restringidos: resueltos mediante ejecución con permisos revisados. No son fallos del producto. Alertas de dependencias de desarrollo: ver QA-003.
 

@@ -87,3 +87,9 @@ La revalidación posterior al ajuste local pasó: real2HTTP+2E2E; CIaislado2HTTP
 Limpieza independiente por conteos: cuentas de fixture, juegos manuales de reseñas, juegos RAWG aislados, triggers de fallo y preguntas de recuperación todos0. Clave RAWG no encontrada en archivos versionables. Build543KB/gzip158KB conserva advertencia de fragmento grande para G6; no se afirma rendimiento final ni alta carga.
 
 GH-022 `verified` únicamente en local. No hay hallazgos diferidos: los falsos/bajo impacto rechazados tienen evidencia individual en la historia y los aceptados están corregidos. G3 sigue incompleto por GH023–026. La demo/guía se actualiza sin crear usuarios críticos/admin predefinidos ni publicar cambios remotos.
+
+### CI y demo estable
+
+Commit de código `e001062f05ecc231c31b72238ae2b6e26e1d426c`, [PR#5](https://github.com/KingOwls/GameHive/pull/5). [CI41441855148](https://github.com/KingOwls/GameHive/actions/runs/41441855148) SUCCESS en foundation e identity-backend, confirmada tras completar ambos jobs.
+
+Demo estable local en127.0.0.1:5173 desde snapshot de ese commit, separada de dist para permitir pruebas posteriores. Smoke real fichaRAWG→reseñas,0pageerrors y auditoría axe completa0violaciones; captura revisada `/tmp/gamehive-gh022-demo.png`. El primer helper de smoke usó browser.newPage y axe exigió contexto explícito; se corrigió el helper a browser.newContext y se repitióPASS, sin cambiar producto. No prueba despliegue remoto ni cierra G3.
