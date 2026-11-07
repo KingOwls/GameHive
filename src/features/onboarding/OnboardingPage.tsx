@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type FormEvent } from "react";
-import { Navigate } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import type {
   Identity,
   PublicProfile,
@@ -124,9 +124,6 @@ function OnboardingAccount({
       );
       const settings = await service.updateSettings(userId, {
         theme_mode: String(values.get("theme")) as UserSettings["theme_mode"],
-        library_visibility: String(
-          values.get("visibility"),
-        ) as UserSettings["library_visibility"],
         platforms: values.getAll("platform").map(String),
         genres: values.getAll("genre").map(String),
         interests: String(values.get("interests")),
@@ -159,6 +156,9 @@ function OnboardingAccount({
       <p>
         Rol vigente: {account.identity.role} · Crítico{" "}
         {account.identity.criticVerified ? "verificado" : "sin verificar"}
+      </p>
+      <p>
+        <Link to={`/u/${profile.username}`}>Ver mi perfil público</Link>
       </p>
       <form onSubmit={submit} aria-busy={busy}>
         <label>
@@ -230,13 +230,10 @@ function OnboardingAccount({
             <option value="light">Claro</option>
           </select>
         </label>
-        <label>
-          Privacidad de tu futura biblioteca
-          <select name="visibility" defaultValue={settings.library_visibility}>
-            <option value="private">Privada</option>
-            <option value="public">Pública</option>
-          </select>
-        </label>
+        <p>
+          La privacidad se cambia expresamente desde{" "}
+          <Link to="/library">tu biblioteca</Link>.
+        </p>
         {error && (
           <p role="alert">
             {error} Si el perfil se guardó antes del fallo de preferencias,

@@ -91,9 +91,7 @@ test("admin real → alta Celeste → visitante → recarga y fuente", async ({
       publicPage.getByRole("link", { name: "Sitio oficial de Celeste" }),
     ).toHaveAttribute("href", sourceUrl);
     await expect(
-      publicPage.getByText(
-        "Sin portada · Sin rating externo",
-      ),
+      publicPage.getByText("Sin portada · Sin rating externo"),
     ).toBeVisible();
     expect(
       (
@@ -147,8 +145,16 @@ test("admin real → alta Celeste → visitante → recarga y fuente", async ({
       .click();
     // A previous legitimate Celeste record may also exist: open our exact ID.
     await publicPage.locator(`a[href="${route}"]`).click();
+    await expect(publicPage).toHaveURL(route!);
+    const createdDetail = publicPage.getByRole("article").filter({
+      has: publicPage.locator(`a[href="${sourceUrl}"]`),
+    });
     await expect(
-      publicPage.getByRole("heading", { name: "Celeste", exact: true }),
+      createdDetail.getByRole("heading", {
+        name: "Celeste",
+        exact: true,
+        level: 1,
+      }),
     ).toBeVisible();
     await publicPage.goto("/admin/games");
     await expect(

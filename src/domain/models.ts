@@ -195,3 +195,39 @@ export interface ReviewVote {
   helpfulCount: number | null;
   unhelpfulCount: number | null;
 }
+
+export interface LibraryMarks {
+  state: LibraryState | null;
+  favorite: boolean;
+  interested: boolean;
+  progress: number | null;
+}
+export interface LibraryEntry extends LibraryMarks {
+  id: string;
+  user_id: string;
+  game_id: string | null;
+  manual_game_id: string | null;
+  version: number;
+  created_at: string;
+  updated_at: string;
+}
+export interface LibrarySnapshot {
+  entry: LibraryEntry | null;
+  visibility: "private" | "public";
+  visibilityVersion: number;
+}
+export interface LibraryGame {
+  id: string;
+  title: string;
+  cover_url: string | null;
+  source_label: string;
+}
+export interface LibraryItem extends LibraryEntry {
+  games: { document: Game } | null;
+  manual_games: ManualGame | null;
+}
+
+export type LibraryProfile = Pick<
+  PublicProfile,
+  "id" | "username" | "bio" | "avatar_key" | "created_at"
+>;

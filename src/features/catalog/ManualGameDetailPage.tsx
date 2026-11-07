@@ -1,3 +1,4 @@
+import { LibraryAction } from "../library/LibraryAction";
 import { ReviewsSection } from "../reviews/ReviewsSection";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
@@ -89,6 +90,7 @@ function ManualDetail({
                 {state.data.source_label}
               </a>
             </p>
+            <LibraryAction gameId={`manual:${state.data.id}`} />
             <ReviewsSection gameId={`manual:${state.data.id}`} />
           </article>
         ) : (

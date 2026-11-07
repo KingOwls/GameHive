@@ -1,3 +1,4 @@
+import { LibraryAction } from "../library/LibraryAction";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import type { CatalogProvider, Game, Resource } from "../../domain/models";
@@ -165,6 +166,7 @@ export function GameDetailPage({ provider }: { provider: CatalogProvider }) {
           </p>
         </div>
       </section>
+      <LibraryAction gameId={game.id} />
       <ReviewsSection gameId={game.id} />
     </article>
   );

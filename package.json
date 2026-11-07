@@ -28,7 +28,9 @@
     "test:reviews": "node scripts/local-reviews-tests.mjs",
     "test:reviews:db": "node scripts/test-reviews-db.mjs",
     "test:votes": "node scripts/local-votes-tests.mjs",
-    "test:votes:db": "node scripts/test-votes-db.mjs"
+    "test:votes:db": "node scripts/test-votes-db.mjs",
+    "test:library": "node scripts/local-library-tests.mjs",
+    "test:library:db": "node scripts/test-library-db.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "2.118.0",

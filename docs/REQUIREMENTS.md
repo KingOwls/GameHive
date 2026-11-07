@@ -30,8 +30,8 @@ Estado por ticket, actualizado G2 el 2026-11-01. `verified` tiene alcance local 
 | GH-024 | Votos +1/-1 irrevocables, únicos, no propios | in_progress | Migración/Edge/UI local; check240/SQL371/HTTP/DenoDB PASS. E2E aislado/manual real PASS; RAWG real bloqueado por proveedor. Revisiones/regresiones en G3-VOTES. |
 | GH-025 | Comentarios/replies con 10h de antigüedad para usuario, 0h crítico | todo | Pendiente; criterio de aceptación en BACKLOG.md, dependencias sin verificar. |
 | GH-026 | Agregados separados User/Critic/External con muestras reales | todo | Pendiente; criterio de aceptación en BACKLOG.md, dependencias sin verificar. |
-| GH-027 | Biblioteca persistente estados/favorito/"Me interesa" | todo | Pendiente; criterio de aceptación en BACKLOG.md, dependencias sin verificar. |
-| GH-028 | Biblioteca pública/privada, RLS de lectura y perfil | todo | Pendiente; criterio de aceptación en BACKLOG.md, dependencias sin verificar. |
+| GH-027 | Biblioteca persistente estados/favorito/"Me interesa" | verified local | SQL/RLS, servicio/Edge/UI, dos sesiones, CAS/ABA/ACK y marcas exactas; G4-LIBRARY. |
+| GH-028 | Biblioteca pública/privada, RLS de lectura y perfil | verified local | Privado/público, tercero/anon/mod/admin, suspensión/revocación, perfil básico y paginación real; G4-LIBRARY. |
 | GH-029 | Recomendaciones basadas en reglas + preferencias onboarding | todo | Pendiente; criterio de aceptación en BACKLOG.md, dependencias sin verificar. |
 | GH-030 | Perfil de crítico y seguidores únicamente a críticos | todo | Pendiente; criterio de aceptación en BACKLOG.md, dependencias sin verificar. |
 | GH-031 | Ajustes de tema, privacidad, descarga/eliminación de cuenta | todo | Pendiente; criterio de aceptación en BACKLOG.md, dependencias sin verificar. |
@@ -63,3 +63,10 @@ GH-020–021 verified local: reseña propia y spoilers, tres revisiones/parches 
 ## GH-024 — votos irreversibles,2026-11-06
 
 Implementación local `in_progress`: voto único±1, no propio, autoridad/sesión vigentes, cuotas atómicas, identidad privada y contadores públicos; migración/Edge/UI y pruebas en [G3-VOTES](../qa-reports/G3-VOTES.md). Check240/SQL371/HTTP/DenoDB y E2E aislado ejecutados; fase manual real pasó, RAWG actual bloqueado por conectividad. Limpieza HTTP final PASS por IDs exactos. Cierre requiere regresiones y revisión. No concede reputación/rol ni cierraG3.
+
+## GH027–028 — biblioteca y perfil básico
+
+Trazabilidad: especificación `spec-gh-027-biblioteca-privada.md` → migración `20261106234148_library.sql` → gateway `library` → servicio `src/services/library.ts` → rutas `/library`, `/u/:handle`, `/u/:handle/library` y controles en ambas fichas. Cobertura: identidad por juego/propietario, marcas independientes, privacidad explícita, sesión/estado/propiedad/versión, filtros y catálogo persistido, perfil y reseñas públicas paginadas. Evidencia: [G4-LIBRARY](../qa-reports/G4-LIBRARY.md). Estado `in_progress` hasta revisión final; sin recomendaciones/seguimiento/exportación.
+
+
+CierreGH027–028:verified local2026-11-07; tres revisiones BMAD y revalidación final en G4-LIBRARY. No incluye recomendaciones, seguidores, reputación ni datos propios/exportación/baja.

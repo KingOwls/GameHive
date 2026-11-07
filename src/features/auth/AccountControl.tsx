@@ -23,6 +23,7 @@ export function AccountControl() {
   return (
     <div className="account-control">
       <NavLink to="/onboarding">Mi perfil</NavLink>
+      <NavLink to="/library">Mi biblioteca</NavLink>
       <button disabled={busy} onClick={logout}>
         {busy ? "Cerrando…" : error ? "Reintentar cierre" : "Cerrar sesión"}
       </button>
