@@ -1,3 +1,5 @@
+import { LibraryPage } from "../features/library/LibraryPage";
+import { ProfilePage } from "../features/profiles/ProfilePage";
 import { Link, NavLink, Route, Routes } from "react-router-dom";
 import { ThemeControl } from "./ThemeControl";
 import { createCatalogProvider } from "../services/catalog";
@@ -45,8 +47,8 @@ function Setup() {
         {provider.mode === "live"
           ? "El catálogo consulta RAWG mediante el servidor configurado."
           : "El catálogo curado funciona sin conexión."}{" "}
-        Reseñas propias disponibles en fichas reales. Biblioteca y moderación
-        siguen pendientes de sus próximas historias.
+        Reseñas propias disponibles en fichas reales. Biblioteca disponible para
+        juegos persistidos. Moderación pendiente.
       </p>
       <Link className="button" to="/explore">
         Explorar juegos
@@ -94,6 +96,9 @@ export function App() {
           <Route path="/login" element={<AuthPage />} />
           <Route path="/register" element={<AuthPage register />} />
           <Route path="/onboarding" element={<OnboardingPage />} />
+          <Route path="/library" element={<LibraryPage />} />
+          <Route path="/u/:handle" element={<ProfilePage />} />
+          <Route path="/u/:handle/library" element={<LibraryPage />} />
           <Route path="/settings" element={<OnboardingPage />} />
           <Route
             path="*"

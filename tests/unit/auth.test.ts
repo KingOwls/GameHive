@@ -21,14 +21,12 @@ describe("logout acknowledgements", () => {
           getSession,
           signOut,
           admin: {
-            signOut: vi
-              .fn()
-              .mockResolvedValue({
-                error:
-                  status === "missing"
-                    ? new AuthSessionMissingError()
-                    : { status },
-              }),
+            signOut: vi.fn().mockResolvedValue({
+              error:
+                status === "missing"
+                  ? new AuthSessionMissingError()
+                  : { status },
+            }),
           },
         },
       } as unknown as SupabaseClient;
@@ -52,5 +50,34 @@ describe("logout acknowledgements", () => {
       "No pudimos completar",
     );
     expect(signOut).not.toHaveBeenCalled();
+  });
+});
+
+describe("ordinary preferences never publish a library", () => {
+  it("whitelists ordinary fields even when a stale caller supplies visibility", async () => {
+    const update = vi
+      .fn()
+      .mockReturnValue({
+        eq: () => ({
+          select: () => ({
+            single: async () => ({ data: { user_id: "actor" }, error: null }),
+          }),
+        }),
+      });
+    const sdk = { from: () => ({ update }) } as unknown as SupabaseClient;
+    const stale = {
+      theme_mode: "dark" as const,
+      library_visibility: "public",
+      library_visibility_version: 1,
+      platforms: ["PC"],
+      genres: [],
+      interests: "test",
+      onboarding_complete: true,
+    };
+    await createAuthService(sdk).updateSettings("actor", stale);
+    expect(update.mock.calls[0][0]).not.toHaveProperty("library_visibility");
+    expect(update.mock.calls[0][0]).not.toHaveProperty(
+      "library_visibility_version",
+    );
   });
 });

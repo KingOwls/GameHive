@@ -52,8 +52,8 @@
 
 | ID | Tarea | Depende | Comprobación mínima | Estado actual |
 |---|---|---|---|---|
-| GH-027 | Biblioteca persistente estados/favorito/"Me interesa" | GH-010,GH-017 | cambios desde 2 sesiones | todo |
-| GH-028 | Biblioteca pública/privada, RLS de lectura y perfil | GH-027 | no acceso a privada por URL/Data API | todo |
+| GH-027 | Biblioteca persistente estados/favorito/"Me interesa" | GH-010,GH-017 | cambios desde 2 sesiones | verified local |
+| GH-028 | Biblioteca pública/privada, RLS de lectura y perfil | GH-027 | no acceso a privada por URL/Data API | verified local |
 | GH-029 | Recomendaciones basadas en reglas + preferencias onboarding | GH-027 | explicación género/plataforma y sin datos inventados | todo |
 | GH-030 | Perfil de crítico y seguidores únicamente a críticos | GH-023 | no se puede seguir cuenta no elegible | todo |
 | GH-031 | Ajustes de tema, privacidad, descarga/eliminación de cuenta | GH-010,GH-028 | export personal, borrado/anónimo según reglas | todo |
@@ -145,3 +145,10 @@ Cierre GH-022 local2026-11-02: dos rondas de tres revisiones, rederivación y pa
 ## GH-024 — implementación local2026-11-06
 
 Votos irreversibles, privacidad, cuotas y contadores implementados. Check240/SQL371/HTTP1/DenoDB y E2E aislado PASS; manual real pasó, RAWG real bloqueado por503/timeoutproveedor. Limpieza HTTP final PASS por IDs exactos; regresiones y tres revisiones pendientes para cierre. Ver [G3-VOTES](qa-reports/G3-VOTES.md). G3 abierto; sin publicación remota.
+
+### GH027–028 — biblioteca local, 2026-11-06
+
+`in_progress`: implementación de biblioteca, privacidad versionada y perfil básico según especificación aprobada. Evidencia y pendientes: [G4-LIBRARY](qa-reports/G4-LIBRARY.md). Mantener abierta hasta regresiones y tres revisiones BMAD independientes; G3/G4 no cerrados.
+
+
+Cierre GH027–0282026-11-07:verified local tras tres revisiones/correcciones/check257/SQL418/HTTP/E2E/biblioteca24entradas-perfil11reseñas/regresiones/seguridad y limpieza. [Evidencia](qa-reports/G4-LIBRARY.md). G4 permanece abierto por GH029–031; remoto no publicado.

@@ -16,7 +16,7 @@ Una persona presenta su candidatura privada a crítico, un administrador la admi
 
 ## Boundaries & Constraints
 
-Solo una solicitud pendiente por cuenta activa; historial de resoluciones conservado. Decisiones humanas2026-11-06: aprobar concede rol critic y sello critic_verified=true en la misma operación; tras rechazo, esperar siete días completos desde la resolución antes de otra candidatura. Rol y sello siguen siendo campos separados; solicitar no concede ninguno.
+Solo usuarios y críticos sin verificar con cuenta activa pueden solicitar; moderadores, administradores y críticos ya verificados no son elegibles. Una solicitud pendiente por cuenta; historial de resoluciones conservado. Decisiones humanas2026-11-06: aprobar concede rol critic y sello critic_verified=true en la misma operación; tras rechazo, esperar siete días completos desde la resolución antes de otra candidatura. Elegibilidad confirmada por el humano2026-11-07: «Usuarios y críticos sin verificar». Rol y sello siguen siendo campos separados; solicitar no concede ninguno.
 
 Candidatura contiene procedencia/grupo (admite independiente), experiencia, muestra textual y enlacesHTTPS opcionales. Nunca subir archivos, descargar enlaces ni enviar correos. Evidencias, decisiones y avisos son privados: dueño y admin activo pueden consultar candidatura; moderador no la resuelve ni lee evidencia ajena. No incluir email/secretos en respuestas públicas.
 
@@ -41,7 +41,7 @@ Bandeja mínima propia permite leer/marcar leído con sesión vigente incluso es
 
 ## Open Questions
 
-1. ¿Solicitan solo usuarios o también críticos sin verificar para pedir el sello? Solo usuarios limita el flujo a admisión; admitir críticos sin sello permite también solicitar verificación. Sin respuesta no implementar.
+Elegibilidad resuelta2026-11-07. El borrador sigue pendiente de revisión de preparación y del checkpoint de aprobación de historia; esta respuesta de producto no sustituye ese checkpoint.
 
 ## Code Map
 
@@ -62,7 +62,7 @@ Cada fila de matriz cubierta por test realmente ejecutado; npm run check, SQL/RL
 
 ## Implementation Notes
 
-Pendiente resolver elegibilidad y checkpoint humano. Irreversibles: migración y datos solo locales, sin despliegue ni cargos. Huella: nuevas tablas/Edge, tres pantallas, servicio, rutas, pruebas y documentación. Verificar funciones existentes antes de reutilizar autoridad; avisos suspendidos requieren sesión vigente, sin exigir estado activo.
+Elegibilidad resuelta; pendiente checkpoint humano de historia. Irreversibles: migración y datos solo locales, sin despliegue ni cargos. Huella: nuevas tablas/Edge, tres pantallas, servicio, rutas, pruebas y documentación. Verificar funciones existentes antes de reutilizar autoridad; avisos suspendidos requieren sesión vigente, sin exigir estado activo.
 
 ## Spec Change Log
 

@@ -8,6 +8,9 @@ import { GameDetailPage } from "../../src/features/catalog/GameDetailPage";
 vi.mock("../../src/features/reviews/ReviewsSection", () => ({
   ReviewsSection: () => null,
 }));
+vi.mock("../../src/features/auth/AuthContext", () => ({
+  useAuth: () => ({ session: null, loading: false }),
+}));
 // Explicitly isolated provider fixtures, never a connection certification.
 const fixture: Game = {
   id: "rawg:42",
@@ -101,7 +104,11 @@ it("detail retries errors, keeps external ratings separate and renders descripti
   await user.click(screen.getByRole("button", { name: "Reintentar" }));
   await screen.findByRole("heading", { name: "Test fixture game" });
   expect(screen.getByText("RAWG: 4.2 / 5 · muestra: 12")).toBeVisible();
-  expect(screen.getByText("Consulta los análisis publicados. Cálculo de puntuación crítica pendiente.")).toBeVisible();
+  expect(
+    screen.getByText(
+      "Consulta los análisis publicados. Cálculo de puntuación crítica pendiente.",
+    ),
+  ).toBeVisible();
   expect(screen.getByText("Sin fecha confirmada")).toBeVisible();
   await user.click(screen.getByText("Ficha completa"));
   expect(screen.getByText("<script>unsafe()</script>")).toBeVisible();

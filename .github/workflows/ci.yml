@@ -39,7 +39,7 @@ jobs:
           echo "e890975bc2549807bbcc0b584ffafda72cc7c93349dd99c80483dd784f6c4609  $RUNNER_TEMP/deno.zip" | sha256sum --check
           unzip -q "$RUNNER_TEMP/deno.zip" -d "$RUNNER_TEMP/deno"
       - name: Check all Edge entrypoints
-        run: '"$RUNNER_TEMP/deno/deno" check --frozen supabase/functions/identity/index.ts supabase/functions/admin-identity/index.ts supabase/functions/catalog/index.ts supabase/functions/admin-games/index.ts supabase/functions/reviews/index.ts supabase/functions/review-votes/index.ts'
+        run: '"$RUNNER_TEMP/deno/deno" check --frozen supabase/functions/identity/index.ts supabase/functions/admin-identity/index.ts supabase/functions/catalog/index.ts supabase/functions/admin-games/index.ts supabase/functions/reviews/index.ts supabase/functions/review-votes/index.ts supabase/functions/library/index.ts'
       - name: Start temporary local Supabase
         run: |
           # CLI emits credentials: keep its output private, including on failure.
@@ -64,6 +64,10 @@ jobs:
         run: GH_DENO_BIN="$RUNNER_TEMP/deno/deno" npm run test:votes:db
       - name: Irreversible votes HTTP and browser with explicitly isolated catalog fixture
         run: GH_REVIEWS_ISOLATED=1 npm run test:votes -- --e2e
+      - name: Library deadlines and concurrent sessions/authority
+        run: GH_DENO_BIN="$RUNNER_TEMP/deno/deno" npm run test:library:db
+      - name: Library HTTP and browser with explicitly isolated persisted catalog fixture
+        run: GH_REVIEWS_ISOLATED=1 npm run test:library -- --e2e
       - name: Always stop temporary stack and remove private output
         if: always()
         run: |

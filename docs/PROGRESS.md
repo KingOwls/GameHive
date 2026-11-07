@@ -1,6 +1,6 @@
 # Progreso GameHive
 
-Actualizado: 2026-11-06, America/Bogota. Implementación nueva en `/home/jhonatan-crow/Documentos/ChatGPT/Universidad/GameHive`. Producto final P0 **incompleto**. No se modificó ni copió código de `KingOwls/ProjectWebVideoGame`.
+Actualizado: 2026-11-07, America/Bogota. Implementación nueva en `/home/jhonatan-crow/Documentos/ChatGPT/Universidad/GameHive`. Producto final P0 **incompleto**. No se modificó ni copió código de `KingOwls/ProjectWebVideoGame`.
 
 | Gate | Estado | Evidencia y brecha |
 |---|---|---|
@@ -8,7 +8,7 @@ Actualizado: 2026-11-06, America/Bogota. Implementación nueva en `/home/jhonata
 | G1 Identidad/datos | verified | SQL/RLS, HTTP/E2E y CI pasaron; Auth remoto configurado. Registro, cuatro roles, privacidad, refresh, revocación, suspensión y dos auditorías comprobados en GameHive Next. Cinco cuentas temporales autorizadas y eliminadas; cero filas residuales. Ver [G1-REMOTE](../qa-reports/G1-REMOTE.md). |
 | G2 Descubrimiento | verified | GH-014–017 revisados y revalidados localmente con RAWG real:101 Vitest,134 SQL/RLS, adaptador real/DB, concurrencia y E2E búsqueda→ficha→capturas→recarga+axe. G1 regresión HTTP/E2E pasa. GH-018 revisado y verificado localmente (141 Vitest,178 SQL,3 Deno/DB,HTTP/E2E real); RAWG y alta manual publicados/verificados con limpieza remota (G2-REMOTE); GH-019 condicionado; score/filtro GameHive depende de G3. |
 | G3 Comunidad | in_progress | GH-020–022 verified local: reseñas, spoilers y críticas completas con tipo histórico/conversión. Check227Vitest/316SQL, Deno/DB, HTTP/E2E real e aislado repetido y regresionesG1/G2PASS. Dos rondas de revisión crítica y limpieza; ver G3-CRITICAL. GH-024 votos implementados, en verificación local (G3-VOTES); solicitudes, comentarios y agregados pendientes. G3 remoto no publicado. |
-| G4 Biblioteca/perfiles | pending | Onboarding persistente implementado en G1; biblioteca y seguimiento pendientes. |
+| G4 Biblioteca/perfiles | in_progress | GH027–028 verified local: biblioteca/privacidad y perfil básico; check257/SQL418, HTTP/E2E2+2 real y CIaislado2+2, tres revisiones BMAD, regresiones y seguridad/limpiezaPASS. Ver G4-LIBRARY. Recomendaciones, seguimiento y exportación/baja pendientes; sin publicación remotaG4. |
 | G5 Moderación | pending | Auditoría de autoridad implementada en G1; reportes y moderación de contenido pendientes. |
 | G6 Entrega | pending | Tema/teclado/axe verificados en recorridosG0–G3 implementados. Evaluación final integral y despliegue pendientes. |
 
@@ -112,4 +112,15 @@ Implementados voto irreversible en ambas fichas, lectura propia por lote, contad
 
 GH024 permanece `in_progress`: coordinador confirma check240PASS/5omitidas, SQL371PASS, Deno frozen de seis handlers, runtime/DB de votos, db lint y regresiones Auth/manual/reseñas/críticas HTTP+E2E. Las fichas del test aislado son contratos explícitos; el recorrido manual real pasó, pero RAWG real devuelve503 y consultas directas al proveedor agotan el tiempo de espera. B-06 en `BLOCKERS.md` documenta el impedimento para completar aceptación y pasar a revisión BMAD; no hay publicación G3 ni Vercel.
 
-GH023: borrador preparado en `_bmad-output/implementation-artifacts/spec-gh-023-solicitud-critico.md`. Decisiones humanas recibidas: aprobación concede rol crítico y sello verificado; rechazo impone siete días completos de espera. Falta resolver quién puede solicitar y después presentar el checkpoint de historia. No se ha implementado este flujo.
+GH023: borrador preparado en `_bmad-output/implementation-artifacts/spec-gh-023-solicitud-critico.md`. Decisiones humanas recibidas: aprobación concede rol crítico y sello verificado; rechazo impone siete días completos de espera. Elegibilidad resuelta por decisión humana2026-11-07: pueden solicitar usuarios y críticos sin verificar; checkpoint de historia todavía pendiente. No se ha implementado este flujo.
+
+## GH027–028 — biblioteca local, 2026-11-06
+
+Implementados SQL/RLS, gateway con verificación online y límite de cuerpo/plazo, CAS UUID+versión, privacidad canónica versionada, búsqueda de catálogo persistido, perfil básico y páginas propias/públicas. Onboarding excluye privacidad del payload ordinario. SQL418PASS, runtime/DBPASS,10pruebas unit/UIbibliotecaPASS y check251PASS/6omitidas; evidencia completa y límites en [G4-LIBRARY](../qa-reports/G4-LIBRARY.md). HTTPbiblioteca1+E2E1reales, víaCIaislada1HTTP+1E2EPASS y G1HTTP1+E2E1PASS; regresiones restantes y revisiones independientes todavía en curso; G3/G4 abiertos. Sin reset, publicación remota ni Vercel.
+
+
+## GH027–028 verificado localmente —2026-11-07
+
+Biblioteca privada/pública, estados/favorito/interés/progreso, versiones/identidad permanente por encarnación, buscador de juegos registrados y perfil básico con reseñas paginadas verificados. Tres revisiones BMAD, correcciones y auditoría de las ocho filas completas:check257/7omitidas,SQL418,Deno7,runtimeDB4suites, biblioteca2HTTP+2E2Ereal y2+2CIaislada; G1/manual/reseñas/críticas/votos y db lint/advisorsPASS. Fixtures finales0; ver [evidencia y límites](../qa-reports/G4-LIBRARY.md) y [demo](DEMO.md). G3/G4 abiertos; nuevas decisiones GH023 registradas, historia pendiente de aprobación. Sin despliegue Supabase/Vercel.
+
+Entrega subida en [PR#6](https://github.com/KingOwls/GameHive/pull/6), borrador sobre la rama de votos. Primera CI detectó selector E2E ambiguo; corregido y revalidado2PASS en cada modo de navegador y check257PASS. Nueva CI pendiente. Auditoría:0vulnerabilidades de producción;10moderadas en herramientas de desarrollo, seguimiento G6. GH023 conserva una decisión pendiente sobre solicitudes cuyo rol/sello cambia antes de resolverse; no se ha implementado sin cerrar ese contrato.

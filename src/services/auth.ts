@@ -22,7 +22,10 @@ export interface AuthService {
   settings(id: string): Promise<UserSettings>;
   updateSettings(
     id: string,
-    settings: Omit<UserSettings, "user_id">,
+    settings: Omit<
+      UserSettings,
+      "user_id" | "library_visibility" | "library_visibility_version"
+    >,
   ): Promise<UserSettings>;
 }
 const failure = () =>
@@ -143,7 +146,13 @@ export function createAuthService(client: SupabaseClient): AuthService {
     async updateSettings(id, settings) {
       const { data, error } = await client
         .from("private_user_settings")
-        .update(settings)
+        .update({
+          theme_mode: settings.theme_mode,
+          platforms: settings.platforms,
+          genres: settings.genres,
+          interests: settings.interests,
+          onboarding_complete: settings.onboarding_complete,
+        })
         .eq("user_id", id)
         .select("*")
         .single();
