@@ -71,7 +71,8 @@ test("library manual detail and persisted RAWG search, two sessions and explicit
     console.log("Library E2E: concurrent marks and uncertain acknowledgement");
     const ownedManual = second
       .getByRole("article")
-      .filter({ has: second.locator(`a[href="/manual-games/${f.manualId}"]`) });
+      .filter({ has: second.locator(`a[href="/manual-games/${f.manualId}"]`) })
+      .filter({ hasText: "Progreso: 31" });
     await ownedManual
       .getByRole("button", { name: "Organizar este juego" })
       .click();

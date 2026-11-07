@@ -94,3 +94,11 @@ HTTP envía JSON válido con padding>4096bytes al handler real y recibe400 sin c
 Logs finales locales600: `/tmp/gamehive-g4-final-*.log`. Conteos tras terminar:0perfilesfixture,0juegospaginación,0reseñasfixtureperfil,0manualesfixtureconfuente. El escáner de la clave privada RAWG en fuente/build pasó; primer intento de inventario desde subprocessNode encontróEPERM del sandbox y se repitió separando inventarioGit, sin exponer la clave. No se escanearon credenciales remotas.
 
 Intención aprobada preservada. GH027–028verified local; G3/G4 completos abiertos. Sin reset, cargos, publicación Supabase/Vercel o cambios al repositorio de referencia. Este cierre certifica ejecución local; la CI remota se comprueba al subir la rama.
+
+## Corrección de prueba en CI — 2026-11-07
+
+El [run 42380474379](https://github.com/KingOwls/GameHive/actions/runs/42380474379) pasó foundation y todas las etapas de backend anteriores a biblioteca. Su E2E principal falló por selector ambiguo: en la base nueva, el juego manual aparecía tanto en resultados de búsqueda como en la biblioteca y ambos artículos tenían «Organizar este juego». El segundo E2E y las pruebas HTTP pasaron. No fue un defecto de persistencia ni de permisos.
+
+El selector exige ahora el progreso31 de la entrada propia, además de su enlace exacto; no usa first/nth ni cambia la aplicación. Revalidación: navegador con catálogo persistido2PASS26.0s y aislado2PASS27.5s; check completo257PASS/7omitidas, lint/tipos/buildPASS. Logs privados `/tmp/gamehive-library-ci-selector-{real,isolated}.log` y `/tmp/gamehive-g4-ci-selector-check.log`. La nueva CI queda pendiente de ejecutarse tras subir esta corrección.
+
+Auditoría de dependencias: npm audit informa10moderadas,0altas/0críticas, en herramientas de desarrollo; npm audit --omit=dev informa0vulnerabilidades. G4 no cambió versiones ni lockfile. La actualización compatible de herramientas y su revalidación se registra para G6; no se aplicaron actualizaciones forzadas.
