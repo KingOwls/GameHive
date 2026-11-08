@@ -231,3 +231,46 @@ export type LibraryProfile = Pick<
   PublicProfile,
   "id" | "username" | "bio" | "avatar_key" | "created_at"
 >;
+
+export interface CriticApplicationInput {
+  organization: string;
+  experience: string;
+  sample: string;
+  links: string[];
+}
+export type ApplicationStatus =
+  "pending" | "approved" | "rejected" | "cancelled";
+export interface CriticApplication extends CriticApplicationInput {
+  id: string;
+  user_id: string;
+  expected_role: "user" | "critic";
+  expected_status: "active";
+  expected_verified: boolean;
+  status: ApplicationStatus;
+  version: number;
+  created_at: string;
+  resolved_at: string | null;
+  resolved_by: string | null;
+  reason: string | null;
+}
+export interface AdminCriticApplication extends CriticApplication {
+  current_authority: {
+    role: Identity["role"];
+    status: Identity["status"];
+    critic_verified: boolean;
+  };
+}
+export interface ApplicationNotice {
+  id: string;
+  user_id: string;
+  application_id: string;
+  outcome: Exclude<ApplicationStatus, "pending">;
+  reason: string;
+  created_at: string;
+  read_at: string | null;
+}
+export interface ApplicationPage<T> extends Page<T> {
+  eligible: boolean;
+  hasPending: boolean;
+  nextAllowedAt: string | null;
+}

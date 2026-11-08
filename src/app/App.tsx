@@ -1,3 +1,6 @@
+import { CriticApplicationPage } from "../features/critics/CriticApplicationPage";
+import { CriticApplicationsPage } from "../features/admin/CriticApplicationsPage";
+import { NotificationsPage } from "../features/notifications/NotificationsPage";
 import { LibraryPage } from "../features/library/LibraryPage";
 import { ProfilePage } from "../features/profiles/ProfilePage";
 import { Link, NavLink, Route, Routes } from "react-router-dom";
@@ -88,6 +91,9 @@ export function App() {
             path="/games/:id"
             element={<GameDetailPage provider={provider} />}
           />
+          <Route path="/critic/apply" element={<CriticApplicationPage />} />
+          <Route path="/admin/users" element={<CriticApplicationsPage />} />
+          <Route path="/notifications" element={<NotificationsPage />} />
           <Route path="/admin/games" element={<AdminGamesPage />} />
           <Route path="/manual-games" element={<ManualCatalogPage />} />
           <Route path="/manual-games/:id" element={<ManualGameDetailPage />} />

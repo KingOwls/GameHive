@@ -43,7 +43,7 @@
 | GH-020 | Reseña única autor+juego, publicar/editar/ocultar, rating y texto coordinados | GH-011,GH-017 | DB UNIQUE, edición válida, RLS adversarial | verified |
 | GH-021 | Vista reseñas con pros/contras, spoiler-free y detalle oculto | GH-020 | lector no ve spoiler sin acción explícita | verified |
 | GH-022 | Formulario crítico 8 criterios, ampliación por género y transparencia | GH-020 | cálculo y justificaciones coherentes | verified |
-| GH-023 | Solicitud, evaluación administrativa y estado verificado separado | GH-012 | usuario no puede autoverificarse | todo |
+| GH-023 | Solicitud, evaluación administrativa y estado verificado separado | GH-012 | usuario no puede autoverificarse | verified local |
 | GH-024 | Votos +1/-1 irrevocables, únicos, no propios | GH-020 | duplicado, UPDATE, DELETE y auto-voto rechazados | in_progress |
 | GH-025 | Comentarios/replies con 10h de antigüedad para usuario, 0h crítico | GH-020 | pruebas de 9h59m, 10h y privilegio crítico | todo |
 | GH-026 | Agregados separados User/Critic/External con muestras reales | GH-020,GH-022 | sin reseñas = sin score GameHive | todo |
@@ -152,3 +152,12 @@ Votos irreversibles, privacidad, cuotas y contadores implementados. Check240/SQL
 
 
 Cierre GH027–0282026-11-07:verified local tras tres revisiones/correcciones/check257/SQL418/HTTP/E2E/biblioteca24entradas-perfil11reseñas/regresiones/seguridad y limpieza. [Evidencia](qa-reports/G4-LIBRARY.md). G4 permanece abierto por GH029–031; remoto no publicado.
+
+## GH-023 — implementación local2026-11-07
+
+Candidaturas privadas, cola administrativa, admisión/rechazo/anulación motivadas y avisos propios implementados. Validación local y defectos reales en [G3-APPLICATIONS](qa-reports/G3-APPLICATIONS.md). Conserva `in_progress` hasta verificaciones finales y tres revisiones; G3 sigue abierto y sin publicación remota.
+
+
+GH023, rederivación1 (2026-11-07): quinta migraciónCLI preserva las cuatro aplicadas; normalizaciónUnicode, historial/admin-get privado con autoridad actual, recuperación exacta de decisiones y borrador completo, ocultación tras lectura fallida, paginación y reloj de espera determinista. Check276/SQL528/Deno8/runtimeDB/HTTP y navegador ampliadoPASS (crítica funcional desde sesión admitida, ACK perdido y anulación completa). [Evidencia y límites](qa-reports/G3-APPLICATIONS.md). Conserva `in_progress`; auditoría/tres revisiones pendientes y G3 abierto, sin publicación remota.
+
+CierreGH023 local2026-11-07:check285/SQL529/Deno8/runtimeDB/HTTP/E2E/regresiones/seguridadPASS. Primera ronda independiente y segunda revisión manual autorizada ADR-003; ver G3-APPLICATIONS. G3/G4 abiertos; sin despliegue remoto.

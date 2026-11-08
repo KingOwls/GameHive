@@ -438,3 +438,6 @@ verify_jwt = false
 
 [functions.library]
 verify_jwt = false
+
+[functions.critic-applications]
+verify_jwt = false

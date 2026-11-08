@@ -1,0 +1,119 @@
+-- GH023: private evidence and notices, accessed exclusively by the invoker gateway.
+create function private.valid_application_links(links jsonb) returns boolean
+language plpgsql immutable security invoker set search_path='' as $$
+declare link jsonb;
+begin
+ if jsonb_typeof(links) is distinct from 'array' or jsonb_array_length(links)>3 then return false; end if;
+ for link in select value from jsonb_array_elements(links) loop
+  if jsonb_typeof(link)<>'string' or char_length(link#>>'{}')>2048 or (link#>>'{}') !~ '^https://[^/@[:space:]?#]+([/?#][^[:space:]]*)?$' then return false; end if;
+ end loop;
+ return true;
+end; $$;
+revoke all on function private.valid_application_links(jsonb) from public,anon,authenticated,service_role;
+create table private.critic_applications (
+ id uuid primary key default gen_random_uuid(),
+ user_id uuid not null references public.profiles(id) on delete cascade,
+ organization text not null check(char_length(btrim(organization)) between 3 and 120),
+ experience text not null check(char_length(btrim(experience)) between 40 and 3000),
+ sample text not null check(char_length(btrim(sample)) between 40 and 5000),
+ links jsonb not null default '[]' check(private.valid_application_links(links)),
+ expected_role private.account_role not null check(expected_role in ('user','critic')),
+ expected_status private.account_status not null check(expected_status='active'),
+ expected_verified boolean not null check(not expected_verified),
+ status text not null default 'pending' check(status in ('pending','approved','rejected','cancelled')),
+ version integer not null default 1 check(version>0),
+ created_at timestamptz not null default clock_timestamp(),
+ resolved_at timestamptz,
+ resolved_by uuid references auth.users(id) on delete set null,
+ reason text,
+ check((status='pending' and resolved_at is null and resolved_by is null and reason is null and version=1)
+   or (status<>'pending' and resolved_at>=created_at and char_length(btrim(reason)) between 10 and 500 and version=2))
+);
+create unique index application_one_pending on private.critic_applications(user_id) where status='pending';
+create index application_owner_order on private.critic_applications(user_id,created_at desc,id);
+create index application_queue_order on private.critic_applications(status,created_at desc,id);
+create index application_resolver on private.critic_applications(resolved_by);
+create table private.application_notices (
+ id uuid primary key default gen_random_uuid(),
+ user_id uuid not null references public.profiles(id) on delete cascade,
+ application_id uuid not null unique references private.critic_applications(id) on delete cascade,
+ outcome text not null check(outcome in ('approved','rejected','cancelled')),
+ reason text not null check(char_length(btrim(reason)) between 10 and 500),
+ created_at timestamptz not null default clock_timestamp(),
+ read_at timestamptz check(read_at>=created_at)
+);
+create index application_notice_owner_order on private.application_notices(user_id,created_at desc,id);
+alter table private.critic_applications enable row level security;
+alter table private.application_notices enable row level security;
+revoke all on private.critic_applications,private.application_notices from public,anon,authenticated,service_role;
+create function private.critic_application_operation(actor uuid, session uuid, operation text, input jsonb) returns jsonb
+language plpgsql security invoker set search_path='' as $$
+declare authority private.authz; target private.authz; application private.critic_applications;
+ keys text[]; result jsonb; page_number integer; total bigint; next_allowed timestamptz; decision text; notice private.application_notices;
+begin
+ perform pg_catalog.pg_advisory_xact_lock(718007013);
+ perform 1 from auth.sessions s where s.id=session and s.user_id=actor for share;
+ if not found then raise exception 'Session unavailable' using errcode='42501'; end if;
+ select * into authority from private.authz where user_id=actor for share;
+ if authority.user_id is null or (operation not in ('own-notices','markRead') and authority.status<>'active') then raise exception 'Account unavailable' using errcode='42501'; end if;
+ if input is null or jsonb_typeof(input)<>'object' then raise exception 'Invalid request' using errcode='22023'; end if;
+ select array_agg(k order by k) into keys from jsonb_object_keys(input) k;
+ if operation in ('own-history','admin-queue','own-notices') then
+  if keys is distinct from array['page'] or jsonb_typeof(input->'page') is distinct from 'number' or coalesce(input->>'page','') !~ '^[1-9][0-9]{0,4}$' then raise exception 'Invalid page' using errcode='22023'; end if;
+  page_number:=(input->>'page')::integer;
+  if operation='admin-queue' and authority.role<>'admin' then raise exception 'Forbidden' using errcode='42501'; end if;
+  if operation='own-notices' then
+   select count(*) into total from private.application_notices where user_id=actor;
+   select coalesce(jsonb_agg(to_jsonb(n) order by n.created_at desc,n.id),'[]') into result from
+    (select * from private.application_notices where user_id=actor order by created_at desc,id limit 20 offset (page_number-1)*20) n;
+  else
+   select count(*) into total from private.critic_applications a where (operation='own-history' and a.user_id=actor) or (operation='admin-queue' and a.status='pending');
+   select coalesce(jsonb_agg(to_jsonb(a) order by a.created_at desc,a.id),'[]') into result from
+    (select * from private.critic_applications a where (operation='own-history' and a.user_id=actor) or (operation='admin-queue' and a.status='pending') order by created_at desc,id limit 20 offset (page_number-1)*20) a;
+  end if;
+  select max(resolved_at)+interval '168 hours' into next_allowed from private.critic_applications where user_id=actor and status='rejected';
+  return jsonb_build_object('items',result,'total',total,'page',page_number,'pageSize',20,'eligible',authority.role in ('user','critic') and not authority.critic_verified,
+   'nextAllowedAt',next_allowed,'hasPending',exists(select 1 from private.critic_applications where user_id=actor and status='pending'));
+ elsif operation='markRead' then
+  if keys is distinct from array['id'] or jsonb_typeof(input->'id') is distinct from 'string' then raise exception 'Invalid notice' using errcode='22023'; end if;
+  update private.application_notices set read_at=coalesce(read_at,clock_timestamp()) where id=(input->>'id')::uuid and user_id=actor returning * into notice;
+  if notice.id is null then raise exception 'Forbidden' using errcode='42501'; end if;
+  return to_jsonb(notice);
+ elsif operation='submit' then
+  if authority.role not in ('user','critic') or authority.critic_verified then raise exception 'Forbidden' using errcode='42501'; end if;
+  if keys is distinct from array['experience','links','organization','sample'] or jsonb_typeof(input->'organization') is distinct from 'string'
+   or jsonb_typeof(input->'experience') is distinct from 'string' or jsonb_typeof(input->'sample') is distinct from 'string'
+   or not private.valid_application_links(input->'links') then raise exception 'Invalid evidence' using errcode='22023'; end if;
+  if exists(select 1 from private.critic_applications where user_id=actor and status='pending') then raise exception 'Pending application' using errcode='23505'; end if;
+  select max(resolved_at)+interval '168 hours' into next_allowed from private.critic_applications where user_id=actor and status='rejected';
+  if clock_timestamp()<next_allowed then raise exception 'Cooldown' using errcode='23505'; end if;
+  insert into private.critic_applications(user_id,organization,experience,sample,links,expected_role,expected_status,expected_verified)
+   values(actor,btrim(input->>'organization'),btrim(input->>'experience'),btrim(input->>'sample'),input->'links',authority.role,authority.status,authority.critic_verified) returning * into application;
+  insert into private.audit_logs(actor_id,target_id,action,reason,before_data,after_data) values(actor,actor,'critic_application.submit','Candidatura privada presentada','{}',jsonb_build_object('id',application.id,'status','pending'));
+  return to_jsonb(application);
+ elsif operation in ('resolve','cancel') then
+  if authority.role<>'admin' then raise exception 'Forbidden' using errcode='42501'; end if;
+  if (operation='resolve' and keys is distinct from array['decision','id','reason','version']) or (operation='cancel' and keys is distinct from array['id','reason','version'])
+   or jsonb_typeof(input->'id') is distinct from 'string' or jsonb_typeof(input->'reason') is distinct from 'string'
+   or char_length(btrim(input->>'reason')) not between 10 and 500 or jsonb_typeof(input->'version') is distinct from 'number'
+   or coalesce(input->>'version','') !~ '^[1-9][0-9]*$' then raise exception 'Invalid resolution' using errcode='22023'; end if;
+  decision:=case when operation='cancel' then 'cancelled' else input->>'decision' end;
+  if decision is null or decision not in ('approved','rejected','cancelled') or (operation='resolve' and decision='cancelled') then raise exception 'Invalid decision' using errcode='22023'; end if;
+  select * into application from private.critic_applications where id=(input->>'id')::uuid for update;
+  if application.user_id=actor then raise exception 'Self resolution forbidden' using errcode='42501'; end if;
+  if application.id is null or application.status<>'pending' or application.version<>(input->>'version')::integer then raise exception 'Stale application' using errcode='23505'; end if;
+  select * into target from private.authz where user_id=application.user_id for update;
+  if target.status<>'active' then raise exception 'Target suspended' using errcode='23505'; end if;
+  if operation='cancel' then
+   if target.role=application.expected_role and target.critic_verified=application.expected_verified then raise exception 'Authority unchanged' using errcode='23505'; end if;
+  elsif target.role<>application.expected_role or target.status<>application.expected_status or target.critic_verified<>application.expected_verified then raise exception 'Target changed' using errcode='23505'; end if;
+  if decision='approved' then update private.authz set role='critic',critic_verified=true where user_id=application.user_id; end if;
+  update private.critic_applications set status=decision,version=version+1,resolved_by=actor,resolved_at=clock_timestamp(),reason=btrim(input->>'reason') where id=application.id;
+  insert into private.application_notices(user_id,application_id,outcome,reason) values(application.user_id,application.id,decision,btrim(input->>'reason'));
+  insert into private.audit_logs(actor_id,target_id,action,reason,before_data,after_data)
+   values(actor,application.user_id,'critic_application.'||decision,btrim(input->>'reason'),jsonb_build_object('id',application.id,'status',application.status,'role',target.role,'critic_verified',target.critic_verified),jsonb_build_object('id',application.id,'status',decision,'role',case when decision='approved' then 'critic' else target.role::text end,'critic_verified',case when decision='approved' then true else target.critic_verified end));
+  select to_jsonb(a) into result from private.critic_applications a where id=application.id;
+  return result;
+ else raise exception 'Invalid operation' using errcode='22023'; end if;
+end; $$;
+revoke all on function private.critic_application_operation(uuid,uuid,text,jsonb) from public,anon,authenticated,service_role;
