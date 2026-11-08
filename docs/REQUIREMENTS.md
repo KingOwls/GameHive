@@ -26,7 +26,7 @@ Estado por ticket, actualizado G2 el 2026-11-01. `verified` tiene alcance local 
 | GH-020 | Reseña única autor+juego, publicar/editar/ocultar, rating y texto coordinados | verified | Implementación local propia + SQL249, HTTP/E2E real RAWG/manual, DenoDB; tres revisiones y revalidación final completas. Ver G3-REVIEWS. |
 | GH-021 | Vista reseñas con pros/contras, spoiler-free y detalle oculto | verified | Implementación local propia + SQL249, HTTP/E2E real RAWG/manual, DenoDB; tres revisiones y revalidación final completas. Ver G3-REVIEWS. |
 | GH-022 | Formulario crítico 8 criterios, ampliación por género y transparencia | verified | Local tras dos rondas de tres revisiones y parches:227Vitest/316SQL, Deno/DB, HTTP/E2E real e aislado repetido, regresiones/limpiezaPASS. Sin publicación remota; G3-CRITICAL. |
-| GH-023 | Solicitud, evaluación administrativa y estado verificado separado | todo | Pendiente; criterio de aceptación en BACKLOG.md, dependencias sin verificar. |
+| GH-023 | Solicitud, evaluación administrativa y estado verificado separado | verified local | Check285/SQL529/Deno8/runtime/HTTP/E2E/regresiones y seguridadPASS; primera revisión independiente y segunda manual autorizada ADR-003. G3-APPLICATIONS; sin publicación remota. |
 | GH-024 | Votos +1/-1 irrevocables, únicos, no propios | in_progress | Migración/Edge/UI local; check240/SQL371/HTTP/DenoDB PASS. E2E aislado/manual real PASS; RAWG real bloqueado por proveedor. Revisiones/regresiones en G3-VOTES. |
 | GH-025 | Comentarios/replies con 10h de antigüedad para usuario, 0h crítico | todo | Pendiente; criterio de aceptación en BACKLOG.md, dependencias sin verificar. |
 | GH-026 | Agregados separados User/Critic/External con muestras reales | todo | Pendiente; criterio de aceptación en BACKLOG.md, dependencias sin verificar. |
@@ -70,3 +70,6 @@ Trazabilidad: especificación `spec-gh-027-biblioteca-privada.md` → migración
 
 
 CierreGH027–028:verified local2026-11-07; tres revisiones BMAD y revalidación final en G4-LIBRARY. No incluye recomendaciones, seguidores, reputación ni datos propios/exportación/baja.
+
+
+GH023 — rederivación1: normalizaciónUnicode/privacidad administrativa terminal+autoridad actual/ACK exacto/borrador de decisión+paginación/predicado168h y vencimientoUI/anulación y crítica funcional cubiertos en SQL528,check276,HTTP y E2E localesPASS. [Informe](../qa-reports/G3-APPLICATIONS.md). Estado `in_progress` hasta auditoría y tres revisiones; G3 abierto.

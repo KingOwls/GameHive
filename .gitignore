@@ -14,3 +14,5 @@ _bmad/config.user.toml
 _bmad/custom/config.user.toml
 __pycache__/
 .venv/
+# Paquetes locales históricos: incluyen el diff completo y duplican código.
+/_bmad-output/implementation-artifacts/gh023-review-round2-*-standalone.md

@@ -2,7 +2,7 @@
 
 Actualizado: 2026-11-07, America/Bogota. Producto completo P0 todavía pendiente. Esta guía describe la funcionalidad implementada; el cierre verificable de cada historia está en [PROGRESS](PROGRESS.md) y sus informes QA.
 
-La demo mantenida por Codex se abre en [http://127.0.0.1:5173/](http://127.0.0.1:5173/). Es local a este equipo. El build estable actual corresponde a la biblioteca GH027–028 verificada localmente en la rama feat/g4-library; se sirve desde una copia independiente de futuras compilaciones. No es un despliegue Vercel. G1/G2 remotos están documentados aparte; G3/G4 no se han publicado en Supabase remoto; las cuentas de esta demo pertenecen al stack local.
+La demo mantenida por Codex se abre en [http://127.0.0.1:5173/](http://127.0.0.1:5173/). Es local a este equipo. El build estable actual corresponde a GH023 y la biblioteca GH027–028 verificados localmente en la rama feat/g3-critic-applications; se sirve desde una copia independiente de futuras compilaciones. No es un despliegue Vercel. G1/G2 remotos están documentados aparte; G3/G4 no se han publicado en Supabase remoto; las cuentas de esta demo pertenecen al stack local.
 
 ## Recorrido de jugador
 
@@ -15,7 +15,13 @@ La demo mantenida por Codex se abre en [http://127.0.0.1:5173/](http://127.0.0.1
 
 ## Recorrido de crítico
 
-Requiere una cuenta con rol `critic` concedido mediante un operador autorizado; registrarse o alterar metadata nunca concede ese rol. No se incluyen usuarios/contraseñas predefinidos ni se ofrece aún la solicitud administrativa GH-023.
+Una cuenta activa con rol usuario puede presentar **Solicitud de crítico**, incluso si conserva un sello anterior; un crítico activo puede solicitar si todavía no está verificado. Completar procedencia/grupo (puede ser Independiente), experiencia, muestra textual y hasta tres enlaces HTTPS. La evidencia es privada. Solicitar nunca cambia el rol ni concede un sello.
+
+Un administrador activo abre **Admisión de críticos**, consulta evidencia y autoridad registrada/actual y resuelve con motivo. Aprobar concede rol crítico y sello; rechazar impone siete días completos de espera. Si cambió rol/sello, puede anular sin alterar autoridad; una suspensión temporal mantiene la candidatura pendiente. No puede resolver su propia candidatura. El historial conserva las decisiones y la consulta por identificador recupera respuestas perdidas sin repetir escrituras.
+
+La persona consulta el resultado en su historial y **Mis avisos**; los avisos propios siguen disponibles durante una suspensión con sesión vigente. El borrador de candidatura y el de decisión/motivo se conservan por cuenta en la sesión del navegador. Otra cuenta no accede a la evidencia ni los avisos.
+
+El primer administrador necesita un operador autorizado según [IDENTITY](IDENTITY.md); no hay contraseñas privilegiadas predefinidas. Registrarse o alterar metadata nunca concede autoridad. Tras la admisión puede usarse la misma sesión para una acción crítica real.
 
 En una ficha real, preparar un análisis crítico completo o convertir explícitamente una reseña propia ordinaria. Completar los ocho criterios con nota/explicación, plataforma real, horas jugadas, finalización, transparencia sobre copia facilitada, justificación y preguntas editoriales. El servidor calcula la media simple; la nota orientativa no tiene autoridad. La conversión conserva ID y estado de publicación/retirada.
 
@@ -41,6 +47,8 @@ La compilación habitual sin configuración usa el catálogo curado explícito; 
 
 Las pruebas crean y limpian sus cuentas/publicaciones temporales. Por eso una ficha puede no tener evaluaciones al terminar la verificación; no se añaden opiniones ficticias para llenar pantallas.
 
+GH023 se cerró localmente con una primera ronda independiente y una segunda revisión manual autorizada ante límite de revisores; [evidencia](../qa-reports/G3-APPLICATIONS.md). No implica cerrar el proyecto completo.
+
 ## Pendiente para entrega completa
 
-Solicitudes de crítico, cierre de verificación de votos, comentarios, agregados, recomendaciones, perfiles/seguimiento de críticos, exportación/baja, moderación/reputación, evaluación integral y publicación Vercel autorizada. Esta demo todavía no demuestra los cinco flujos P0 completos de la especificación §15.
+Cierre de verificación de votos, comentarios, agregados, recomendaciones, perfiles/seguimiento de críticos, exportación/baja, moderación/reputación, evaluación integral y publicación Vercel autorizada. Esta demo todavía no demuestra los cinco flujos P0 completos de la especificación §15.
