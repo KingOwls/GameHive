@@ -21,7 +21,8 @@
     "format": "prettier --write src tests *.{ts,js,json,html}",
     "format:check": "prettier --check src tests *.{ts,js,json,html}",
     "test:backend": "node scripts/local-backend-tests.mjs",
-    "test:sql": "supabase test db --local"
+    "test:sql": "supabase test db --local",
+    "test:catalog:db": "node scripts/test-catalog-db.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "2.118.0",

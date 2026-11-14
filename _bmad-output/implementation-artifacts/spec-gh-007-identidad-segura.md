@@ -2,7 +2,7 @@
 title: 'GH-007–013: identidad persistente y autorización'
 type: 'feature'
 created: '2026-10-31'
-status: 'in-review'
+status: 'done'
 route: 'dispatch'
 review_loop_iteration: 0
 baseline_commit: af708a8d98a9eddc7f26d9e3b4c87607d90ceeff
@@ -109,3 +109,7 @@ Revisión: tres capas ejecutadas, sin capas omitidas. Hallazgos agrupados por ca
 ## Resolución de revisión y aceptación parcial
 
 Los 17 hallazgos se resolvieron con parches agrupados por causa; evidencia en qa-reports/G1-REVIEW-FIXES.md. Revalidación del orquestador: 40 Vitest, 43 pgTAP, HTTP real, 1 E2E Auth y 5 E2E sin configuración; Deno check ambos handlers, db lint y advisors locales pasan. Ninguna capa de revisión omitida. Las tareas de código están comprobadas; status permanece in-review y G1 in_progress porque falta configuración/prueba autenticada remota, no se marca done por ejecución local. Dos funciones remotas autorizadas y verificadas solo en negativos 401.
+
+## Cierre remoto 2026-11-01
+
+Auth configurado y flujo de cuatro roles, privacidad, sesiones, refresh, revocación, suspensión y auditoría comprobado en GameHive Next. Cinco cuentas temporales creadas y eliminadas con autorización; limpieza cero filas comprobada. Ver qa-reports/G1-REMOTE.md.

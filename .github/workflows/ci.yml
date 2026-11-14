@@ -38,14 +38,17 @@ jobs:
           curl --fail --silent --show-error --location --retry 3 https://github.com/denoland/deno/releases/download/v2.9.8/deno-x86_64-unknown-linux-gnu.zip -o "$RUNNER_TEMP/deno.zip"
           echo "e890975bc2549807bbcc0b584ffafda72cc7c93349dd99c80483dd784f6c4609  $RUNNER_TEMP/deno.zip" | sha256sum --check
           unzip -q "$RUNNER_TEMP/deno.zip" -d "$RUNNER_TEMP/deno"
-      - name: Check both Edge entrypoints
-        run: '"$RUNNER_TEMP/deno/deno" check --frozen supabase/functions/identity/index.ts supabase/functions/admin-identity/index.ts'
+      - name: Check all Edge entrypoints
+        run: '"$RUNNER_TEMP/deno/deno" check --frozen supabase/functions/identity/index.ts supabase/functions/admin-identity/index.ts supabase/functions/catalog/index.ts'
       - name: Start temporary local Supabase
         run: |
           # CLI emits credentials: keep its output private, including on failure.
           umask 077
           npx supabase start --exclude studio,storage-api,imgproxy,realtime,logflare,vector,supavisor > "$RUNNER_TEMP/gamehive-start.log" 2>&1
       - run: npm run test:sql
+      - run: node scripts/test-catalog-concurrency.mjs
+      - name: Actual catalog adapter with real local DB and controlled upstream
+        run: GH_DENO_BIN="$RUNNER_TEMP/deno/deno" npm run test:catalog:db
       - run: npx playwright install --with-deps chromium
       - name: Real Auth, Data API and browser sessions
         run: npm run test:backend -- --e2e

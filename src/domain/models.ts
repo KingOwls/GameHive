@@ -17,7 +17,16 @@ export interface Game {
   id: string;
   title: string;
   summary: string;
-  releasedYear: number;
+  releasedYear: number | null;
+  provider?: "rawg";
+  externalId?: string;
+  releasedAt?: string | null;
+  coverUrl?: string | null;
+  description?: string;
+  developers?: string[];
+  publishers?: string[];
+  tags?: string[];
+  requirements?: { platform: string; minimum: string; recommended: string }[];
   genres: string[];
   platforms: string[];
   sourceUrl: string;
@@ -29,7 +38,8 @@ export interface CatalogQuery {
   genre: string;
   platform: string;
   year: string;
-  order: "title" | "year";
+  tag?: string;
+  order: "title" | "year" | "rating";
   page: number;
 }
 export interface Page<T> {
@@ -42,8 +52,19 @@ export type Resource<T> =
   | { status: "loading" }
   | { status: "error"; message: string }
   | { status: "success"; data: T };
+export interface CatalogTerm {
+  id: string;
+  name: string;
+}
+export interface CatalogTaxonomy {
+  genres: CatalogTerm[];
+  platforms: CatalogTerm[];
+  tags: CatalogTerm[];
+}
 export interface CatalogProvider {
   readonly mode: "curated-offline" | "live";
+  taxonomy?(signal?: AbortSignal): Promise<CatalogTaxonomy>;
+  screenshots?(id: string, signal?: AbortSignal): Promise<string[]>;
   search(query: CatalogQuery, signal?: AbortSignal): Promise<Page<Game>>;
   get(id: string, signal?: AbortSignal): Promise<Game | null>;
 }
