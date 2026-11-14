@@ -10,13 +10,13 @@ Estado por ticket, 2026-10-31. `verified` tiene alcance local explícito. Todos 
 | GH-004 | Configurar BMAD estable y AGENTS.md, contexto y registros de decisiones | verified | BMAD status 6.12.4, 29 skills, renderer/config resolver ejecutados; docs/BMAD.md. |
 | GH-005 | Definir diseño original, tokens, componentes principales, 2 temas y movimiento reducido | verified | src/styles.css y /design-system; axe ambos temas, teclado, reduce-motion E2E. |
 | GH-006 | Configurar service interfaces, tipos de dominio, errores y mocks SOLO de tests | verified | src/domain, src/services; contrato catálogo y errores probados en tests. |
-| GH-007 | Configurar Supabase CLI/proyecto Free y migraciones PostgreSQL | todo | Pendiente; criterio de aceptación en BACKLOG.md, dependencias sin verificar. |
-| GH-008 | Diseñar tablas, FKs, índices, checks, constraints y seeds de test | todo | Pendiente; criterio de aceptación en BACKLOG.md, dependencias sin verificar. |
-| GH-009 | Configurar Supabase Auth email+password sin verificación obligatoria en demo | todo | Pendiente; criterio de aceptación en BACKLOG.md, dependencias sin verificar. |
-| GH-010 | Perfil, alias único case-insensitive, avatar default y onboarding | todo | Pendiente; criterio de aceptación en BACKLOG.md, dependencias sin verificar. |
-| GH-011 | Cuatro roles y estado verificado independiente; protección RLS | todo | Pendiente; criterio de aceptación en BACKLOG.md, dependencias sin verificar. |
-| GH-012 | Edge Functions para operaciones administrativas necesarias | todo | Pendiente; criterio de aceptación en BACKLOG.md, dependencias sin verificar. |
-| GH-013 | Matriz de pruebas RLS y políticas de privacidad/columnas | todo | Pendiente; criterio de aceptación en BACKLOG.md, dependencias sin verificar. |
+| GH-007 | Configurar Supabase CLI/proyecto Free y migraciones PostgreSQL | in_progress | Implementado, revisado y revalidado localmente; G1-RESULTS/G1-REVIEW-FIXES. Esquema remoto aplicado; falta flujo autenticado remoto (G1-REMOTE). |
+| GH-008 | Diseñar tablas, FKs, índices, checks, constraints y seeds de test | in_progress | Implementado, revisado y revalidado localmente; G1-RESULTS/G1-REVIEW-FIXES. Esquema remoto aplicado; falta flujo autenticado remoto (G1-REMOTE). |
+| GH-009 | Configurar Supabase Auth email+password sin verificación obligatoria en demo | in_progress | Implementado, revisado y revalidado localmente; G1-RESULTS/G1-REVIEW-FIXES. Esquema remoto aplicado; falta flujo autenticado remoto (G1-REMOTE). |
+| GH-010 | Perfil, alias único case-insensitive, avatar default y onboarding | in_progress | Implementado, revisado y revalidado localmente; G1-RESULTS/G1-REVIEW-FIXES. Esquema remoto aplicado; falta flujo autenticado remoto (G1-REMOTE). |
+| GH-011 | Cuatro roles y estado verificado independiente; protección RLS | in_progress | Implementado, revisado y revalidado localmente; G1-RESULTS/G1-REVIEW-FIXES. Esquema remoto aplicado; falta flujo autenticado remoto (G1-REMOTE). |
+| GH-012 | Edge Functions para operaciones administrativas necesarias | in_progress | Implementado, revisado y revalidado localmente; G1-RESULTS/G1-REVIEW-FIXES. Esquema remoto aplicado; falta flujo autenticado remoto (G1-REMOTE). |
+| GH-013 | Matriz de pruebas RLS y políticas de privacidad/columnas | in_progress | Implementado, revisado y revalidado localmente; G1-RESULTS/G1-REVIEW-FIXES. Esquema remoto aplicado; falta flujo autenticado remoto (G1-REMOTE). |
 | GH-014 | Probar RAWG: 8 juegos reales, límites, licencia, campos | blocked | Términos consultados; sin clave ni prueba de 8 respuestas API (B-04). |
 | GH-015 | Integrar RAWG vía adaptador seguro y normalización | todo | Pendiente; criterio de aceptación en BACKLOG.md, dependencias sin verificar. |
 | GH-016 | Vista Home, Explorar, resultados y filtros combinables | in_progress | Búsqueda y filtros de catálogo curado; faltan RAWG/tag/score y G1. |

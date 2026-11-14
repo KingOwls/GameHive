@@ -19,7 +19,9 @@
     "test:e2e": "playwright test",
     "check": "npm run lint && npm run typecheck && npm run test && npm run build",
     "format": "prettier --write src tests *.{ts,js,json,html}",
-    "format:check": "prettier --check src tests *.{ts,js,json,html}"
+    "format:check": "prettier --check src tests *.{ts,js,json,html}",
+    "test:backend": "node scripts/local-backend-tests.mjs",
+    "test:sql": "supabase test db --local"
   },
   "dependencies": {
     "@supabase/supabase-js": "2.118.0",
